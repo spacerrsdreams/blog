@@ -5,6 +5,7 @@ import "./globals.css";
 
 import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import Header from "@/components/header/Header";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -24,7 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <ReactQueryProvider>
-        <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
+        <body
+          className={cn(
+            "flex size-full min-h-screen flex-col bg-background font-sans antialiased",
+            fontSans.variable,
+          )}
+        >
+          <Header />
           {children}
         </body>
       </ReactQueryProvider>
