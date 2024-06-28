@@ -5,12 +5,12 @@ import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import { MainNavigation } from "@/components/header/MainvNavigation";
 import { MobileNavigation } from "@/components/header/MobileNavigation";
-import { Icons } from "@/components/Icons";
+import { Icons } from "@/components/shared/Icons";
 import { buttonVariants } from "@/components/ui/button";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="top-0 z-50 mb-6 block w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
         <MainNavigation />
         <MobileNavigation />
@@ -43,7 +43,7 @@ export default function Header() {
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
-            <div className="flex items-center">
+            <div className="ml-2 flex items-center">
               <SignedOut>
                 <SignInButton>
                   <span className="cursor-pointer self-center rounded-xl bg-purple-500 px-3 py-2 text-xs font-semibold text-white transition-all duration-300 hover:bg-purple-600">

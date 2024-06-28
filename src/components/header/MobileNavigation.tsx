@@ -7,7 +7,7 @@ import * as React from "react";
 import { docsConfig } from "@/config/docsConfig";
 import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
-import { Icons } from "@/components/Icons";
+import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";

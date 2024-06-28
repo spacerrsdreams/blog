@@ -7,6 +7,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import Header from "@/components/header/Header";
+import Tab from "@/components/shared/Tab";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -34,8 +35,10 @@ export default function RootLayout({
             )}
           >
             <Header />
-
-            {children}
+            <div className="flex max-w-screen-md flex-col items-center justify-center">
+              <Tab />
+              {children}
+            </div>
           </body>
         </ReactQueryProvider>
       </ClerkProvider>
