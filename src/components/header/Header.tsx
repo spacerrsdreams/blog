@@ -1,3 +1,4 @@
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 import { siteConfig } from "@/config/siteConfig";
@@ -42,6 +43,18 @@ export default function Header() {
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
+            <div className="flex items-center">
+              <SignedOut>
+                <SignInButton>
+                  <span className="cursor-pointer self-center rounded-xl bg-purple-500 px-3 py-2 text-xs font-semibold text-white transition-all duration-300 hover:bg-purple-600">
+                    Get Started
+                  </span>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </div>
           </nav>
         </div>
       </div>

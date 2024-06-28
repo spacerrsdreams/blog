@@ -1,3 +1,4 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 
@@ -24,17 +25,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <ReactQueryProvider>
-        <body
-          className={cn(
-            "flex size-full min-h-screen flex-col bg-background font-sans antialiased",
-            fontSans.variable,
-          )}
-        >
-          <Header />
-          {children}
-        </body>
-      </ReactQueryProvider>
+      <ClerkProvider>
+        <ReactQueryProvider>
+          <body
+            className={cn(
+              "flex size-full min-h-screen flex-col bg-background font-sans antialiased",
+              fontSans.variable,
+            )}
+          >
+            <Header />
+
+            {children}
+          </body>
+        </ReactQueryProvider>
+      </ClerkProvider>
     </html>
   );
 }
