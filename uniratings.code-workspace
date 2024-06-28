@@ -1,0 +1,68 @@
+{
+  "folders": [
+    {
+      "path": ".",
+    },
+  ],
+  "extensions": {
+    "recommendations": [
+      "streetsidesoftware.code-spell-checker",
+      "formulahendry.auto-rename-tag",
+      "aaron-bond.better-comments",
+      "Prisma.prisma",
+      "dbaeumer.vscode-eslint",
+      "donjayamanne.githistory",
+      "eamodio.gitlens",
+      "esbenp.prettier-vscode",
+      "github.copilot",
+      "visualstudioexptteam.intellicode-api-usage-examples",
+      "visualstudioexptteam.vscodeintellicode",
+      "waderyan.gitblame",
+      "wix.vscode-import-cost",
+      "yoavbls.pretty-ts-errors",
+      "AntiAntiSepticeye.vscode-color-picker",
+      "naumovs.color-highlight",
+      "usernamehw.errorlens",
+      "dsznajder.es7-react-js-snippets",
+      "ms-vsliveshare.vsliveshare",
+      "PKief.material-icon-theme",
+      "YoavBls.pretty-ts-errors",
+    ],
+  },
+  "settings": {
+    "workbench.colorTheme": "Default Dark Modern",
+    "terminal.integrated.defaultProfile.linux": "fish",
+    "terminal.integrated.defaultProfile.osx": "fish",
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "terminal.integrated.profiles.osx": {
+      "fish": {
+        "path": "/bin/zsh",
+        "args": ["-c", "fish"],
+      },
+    },
+    "npm.packageManager": "npm",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.linkedEditing": true,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.stickyScroll.enabled": true,
+    "editor.glyphMargin": false,
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "never",
+      "source.fixAll.format": "never",
+    },
+    "tailwindCSS.experimental.classRegex": [
+      ["classes \\=([^;]*);", "'([^']*)'"],
+      ["classes \\=([^;]*);", "\"([^\"]*)\""],
+      ["classes \\=([^;]*);", "\\`([^\\`]*)\\`"],
+    ],
+    "files.exclude": {
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+    },
+  },
+}
