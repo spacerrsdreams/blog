@@ -1,6 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
+import { DM_Sans as FontSans } from "next/font/google";
 
 import "./globals.css";
 
@@ -35,9 +35,11 @@ export default function RootLayout({
             )}
           >
             <Header />
-            <div className="flex max-w-screen-md flex-col items-center justify-center">
-              <Tab />
-              {children}
+            <div className="flex flex-col items-center justify-center">
+              <div className="flex w-full max-w-screen-md flex-col">
+                <Tab />
+                {children}
+              </div>
             </div>
           </body>
         </ReactQueryProvider>
