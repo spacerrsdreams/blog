@@ -12,3 +12,8 @@ export type Post = {
   isSaved: boolean;
   coverImageSrc: string;
 };
+
+export type Tab = {
+  title: string;
+  slug: string;
+};

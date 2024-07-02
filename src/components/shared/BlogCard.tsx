@@ -25,10 +25,13 @@ export default function BlogCard({
         <div className="flex items-center gap-8 sm:gap-12">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-1 text-xs">
-              <Avatar className="size-6">
-                <AvatarImage src={avatarSrc} alt="author image" />
-                <AvatarFallback>{avatarFallback}</AvatarFallback>
-              </Avatar>
+              <Link href={`/contributor/${authorName.toLowerCase().replace(" ", "-")}`}>
+                <Avatar className="z-20 size-6">
+                  <AvatarImage src={avatarSrc} alt="author image" />
+                  <AvatarFallback>{avatarFallback}</AvatarFallback>
+                </Avatar>
+              </Link>
+
               <span className="capitalize">{authorName}</span>
               <span className="text-muted-foreground">in</span>
               <h5 className="font-semibold">{tag}</h5>

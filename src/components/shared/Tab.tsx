@@ -1,5 +1,7 @@
 "use client";
 
+import type { Tab } from "@/types";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -11,34 +13,13 @@ type TabProps = {
   onClick: () => void;
 };
 
-type Tab = {
-  title: string;
-  slug: string;
+type Props = {
+  tabList: Tab[];
 };
 
-const TABS: Tab[] = [
-  {
-    title: "AI",
-    slug: "",
-  },
-  { title: "Crypto", slug: "settings" },
-  {
-    title: "Finances",
-    slug: "profile",
-  },
-  {
-    title: "Startups",
-    slug: "profile",
-  },
-  {
-    title: "Gaming",
-    slug: "profile",
-  },
-];
-
-export default function TabMenu() {
+export default function TabMenu({ tabList }: Props) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("Dashboard");
+  const [activeTab, setActiveTab] = useState(tabList[0].title);
 
   const handleClick = (tab: Tab) => {
     setActiveTab(tab.title);
@@ -49,7 +30,7 @@ export default function TabMenu() {
   return (
     <div className="sticky top-0 z-20 mb-4 border-b border-border/40 bg-white">
       <ul className="-mb-px flex flex-wrap overflow-x-auto text-center text-sm font-medium">
-        {TABS.map((tab) => (
+        {tabList.map((tab) => (
           <Tab
             key={tab.title}
             title={tab.title}
