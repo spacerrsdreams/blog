@@ -1,6 +1,6 @@
 import { TABS } from "@/data/links";
 import { POSTS } from "@/data/posts";
-import Highlights from "@/components/shared/highlights/Highlights";
+import ContributorDetails from "@/components/contributor/ContributorDetails";
 import TabMenu from "@/components/shared/Tab";
 
 export default function Layout({
@@ -10,11 +10,11 @@ export default function Layout({
   children: React.ReactNode;
   params: { cotributor: string };
 }) {
-  const contributor = POSTS.find(
-    (post) => post.authorName.toLowerCase().replace(" ", "-") === params.cotributor,
-  );
+  const contributor = POSTS.find((post) => post.authorSlug === params.cotributor);
 
-  console.log(contributor);
+  if (!contributor) {
+    return <div>Something went wrong</div>;
+  }
 
   return (
     <>
@@ -28,7 +28,7 @@ export default function Layout({
       <div className="hidden min-h-screen w-full max-w-[328px] border-l border-border/40 pl-10 pr-6 md:block">
         <div className="relative inline-block size-full">
           <div className="pt-10" />
-          <Highlights />
+          <ContributorDetails authorSlug={contributor?.authorSlug} />
         </div>
       </div>
     </>

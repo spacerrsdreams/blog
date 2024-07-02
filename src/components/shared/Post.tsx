@@ -6,26 +6,31 @@ import Link from "next/link";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function BlogCard({
-  authorName,
-  avatarSrc,
-  avatarFallback,
-  tag,
-  title,
-  slug,
-  subTitle,
-  date,
-  totalLikes,
-  totalComments,
-  coverImageSrc,
-}: Post) {
+export default function Post({
+  post: {
+    authorName,
+    avatarSrc,
+    avatarFallback,
+    tag,
+    title,
+    slug,
+    subTitle,
+    date,
+    totalLikes,
+    totalComments,
+    coverImageSrc,
+    authorSlug,
+  },
+}: {
+  post: Post;
+}) {
   return (
     <Link href={`posts/${slug}`}>
       <div className="flex w-full border-b border-border/50 pb-8">
         <div className="flex items-center gap-8 sm:gap-12">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-1 text-xs">
-              <Link href={`/contributor/${authorName.toLowerCase().replace(" ", "-")}`}>
+              <Link href={`/contributor/${authorSlug}`}>
                 <Avatar className="z-20 size-6">
                   <AvatarImage src={avatarSrc} alt="author image" />
                   <AvatarFallback>{avatarFallback}</AvatarFallback>

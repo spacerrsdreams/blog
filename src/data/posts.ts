@@ -1,11 +1,11 @@
 import type { Post } from "@/types";
 
+import { CONTRIBUTORS } from "@/data/contributors";
+
 export const POSTS: Post[] = [
   {
+    ...CONTRIBUTORS[0],
     slug: "mortys-mind-blowers",
-    authorName: "rick sanchez",
-    avatarSrc: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-    avatarFallback: "RS",
     tag: "animation",
     title: "Hunt for my nemesis",
     subTitle:
@@ -18,10 +18,8 @@ export const POSTS: Post[] = [
       "https://sportshub.cbsistatic.com/i/2022/12/13/120579c9-9406-426f-bd59-140cd6aae468/rick-and-morty-season-7-rick-prime-tease.jpg",
   },
   {
+    ...CONTRIBUTORS[1],
     slug: "the-ricklantis-mixup",
-    authorName: "Morty",
-    avatarSrc: "https://github.com/shadcn.png",
-    avatarFallback: "RS",
     tag: "animation",
     title: "Morty's Mind Blowers",
     subTitle:
@@ -34,10 +32,8 @@ export const POSTS: Post[] = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJZ-F_Ljh92DIHpVr48GT0wNfPiTFXzy-COA&s",
   },
   {
+    ...CONTRIBUTORS[0],
     slug: "pickle-rick",
-    authorName: "Pickle Rick",
-    avatarSrc: "https://upload.wikimedia.org/wikipedia/en/5/53/Pickle_Rick.jpg",
-    avatarFallback: "PR",
     tag: "animation",
     title: "Pickle Rick",
     subTitle:
@@ -50,10 +46,8 @@ export const POSTS: Post[] = [
       "https://m.media-amazon.com/images/M/MV5BN2EzM2JlMDMtMmUzNC00ZTY4LThhNzItZjIyNzBiYzYzOGZkXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
   },
   {
+    ...CONTRIBUTORS[1],
     slug: "mortys-mind-blowers",
-    authorName: "rick sanchez",
-    avatarSrc: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-    avatarFallback: "RS",
     tag: "animation",
     title: "Hunt for my nemesis",
     subTitle:
@@ -66,10 +60,8 @@ export const POSTS: Post[] = [
       "https://sportshub.cbsistatic.com/i/2022/12/13/120579c9-9406-426f-bd59-140cd6aae468/rick-and-morty-season-7-rick-prime-tease.jpg",
   },
   {
+    ...CONTRIBUTORS[1],
     slug: "the-ricklantis-mixup",
-    authorName: "Morty",
-    avatarSrc: "https://github.com/shadcn.png",
-    avatarFallback: "RS",
     tag: "animation",
     title: "Morty's Mind Blowers",
     subTitle:
@@ -82,10 +74,8 @@ export const POSTS: Post[] = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJZ-F_Ljh92DIHpVr48GT0wNfPiTFXzy-COA&s",
   },
   {
+    ...CONTRIBUTORS[0],
     slug: "mortys-mind-blowers",
-    authorName: "rick sanchez",
-    avatarSrc: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-    avatarFallback: "RS",
     tag: "animation",
     title: "Hunt for my nemesis",
     subTitle:
@@ -98,10 +88,8 @@ export const POSTS: Post[] = [
       "https://sportshub.cbsistatic.com/i/2022/12/13/120579c9-9406-426f-bd59-140cd6aae468/rick-and-morty-season-7-rick-prime-tease.jpg",
   },
   {
+    ...CONTRIBUTORS[1],
     slug: "the-ricklantis-mixup",
-    authorName: "Morty",
-    avatarSrc: "https://github.com/shadcn.png",
-    avatarFallback: "RS",
     tag: "animation",
     title: "Morty's Mind Blowers",
     subTitle:

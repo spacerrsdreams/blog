@@ -1,8 +1,12 @@
-export type Post = {
-  slug: string;
+export type Contributor = {
+  authorSlug: string;
   authorName: string;
   avatarSrc: string;
   avatarFallback: string;
+};
+
+export type Post = Contributor & {
+  slug: string;
   tag: string;
   title: string;
   subTitle: string;

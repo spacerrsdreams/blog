@@ -1,7 +1,9 @@
-export const CONTRIBUTORS = [
+import type { Contributor } from "@/types";
+
+export const CONTRIBUTORS: Contributor[] = [
   {
     authorSlug: "rick-sanchez",
-    authorName: "rick sanchez",
+    authorName: "Rick Sanchez",
     avatarSrc: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
     avatarFallback: "RS",
   },
