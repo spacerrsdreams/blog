@@ -6,8 +6,9 @@ import "./globals.css";
 
 import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import Header from "@/components/header/Header";
-import Tab from "@/components/shared/Tab";
+import Header from "@/components/shared/header/Header";
+import Highlights from "@/components/shared/highlights/Highlights";
+import TabMenu from "@/components/shared/Tab";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -28,17 +29,23 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <ClerkProvider>
         <ReactQueryProvider>
-          <body
-            className={cn(
-              "flex size-full min-h-screen flex-col bg-background font-sans antialiased",
-              fontSans.variable,
-            )}
-          >
+          <body className={cn("bg-background font-sans antialiased", fontSans.variable)}>
             <Header />
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex w-full max-w-screen-md flex-col px-4 md:px-0">
-                <Tab />
-                {children}
+            <div className="m-auto block max-w-[1336px]">
+              <div className="flex flex-row justify-evenly">
+                <main className="block w-full max-w-[728px] flex-auto">
+                  <div className="block px-4 sm:px-0">
+                    <div className="pt-6" />
+                    <TabMenu />
+                    <div className="pt-6">{children}</div>
+                  </div>
+                </main>
+                <div className="hidden min-h-screen w-full max-w-[328px] border-l border-border/40 pl-10 pr-6 md:block">
+                  <div className="relative inline-block size-full">
+                    <div className="pt-10" />
+                    <Highlights />
+                  </div>
+                </div>
               </div>
             </div>
           </body>

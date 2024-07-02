@@ -3,14 +3,14 @@ import Link from "next/link";
 
 import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
-import { MainNavigation } from "@/components/header/MainvNavigation";
-import { MobileNavigation } from "@/components/header/MobileNavigation";
+import { MainNavigation } from "@/components/shared/header/MainvNavigation";
+import { MobileNavigation } from "@/components/shared/header/MobileNavigation";
 import { Icons } from "@/components/shared/Icons";
 import { buttonVariants } from "@/components/ui/button";
 
 export default function Header() {
   return (
-    <header className="top-0 z-50 mb-6 block w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="top-0 z-50 block w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
         <MainNavigation />
         <MobileNavigation />

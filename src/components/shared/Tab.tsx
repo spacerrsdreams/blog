@@ -18,12 +18,20 @@ type Tab = {
 
 const TABS: Tab[] = [
   {
-    title: "Dashboard",
+    title: "AI",
     slug: "",
   },
-  { title: "Settings", slug: "settings" },
+  { title: "Crypto", slug: "settings" },
   {
-    title: "Profile",
+    title: "Finances",
+    slug: "profile",
+  },
+  {
+    title: "Startups",
+    slug: "profile",
+  },
+  {
+    title: "Gaming",
     slug: "profile",
   },
 ];
@@ -39,7 +47,7 @@ export default function TabMenu() {
   };
 
   return (
-    <div className="sticky top-0 mb-4 border-b">
+    <div className="sticky top-0 z-20 mb-4 border-b border-border/40 bg-white">
       <ul className="-mb-px flex flex-wrap overflow-x-auto text-center text-sm font-medium">
         {TABS.map((tab) => (
           <Tab
@@ -60,7 +68,7 @@ function Tab({ title, active, onClick }: TabProps) {
       <button
         onClick={onClick}
         className={cn(
-          "inline-block rounded-t-lg border-b p-4 text-muted-foreground hover:text-black",
+          "inline-block rounded-t-lg border-b border-border/40 p-4 text-muted-foreground hover:text-black",
           {
             "border-black text-black": active,
           },
