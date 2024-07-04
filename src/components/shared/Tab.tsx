@@ -29,7 +29,7 @@ export default function TabMenu({ tabList }: Props) {
 
   return (
     <div className="sticky top-0 z-20 mb-4 border-b border-border/40 bg-white">
-      <ul className="-mb-px flex flex-wrap overflow-x-auto text-center text-sm font-medium">
+      <ul className="-mb-px flex overflow-x-auto text-center text-sm font-medium">
         {tabList.map((tab) => (
           <Tab
             key={tab.title}

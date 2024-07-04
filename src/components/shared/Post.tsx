@@ -25,25 +25,24 @@ export default function Post({
   post: Post;
 }) {
   return (
-    <div className="flex w-full border-b border-border/50 pb-8">
-      <div className="flex items-center gap-8 sm:gap-12">
+    <div className="flex w-full flex-col gap-2 border-b border-border/50 pb-8">
+      <div className="flex w-full items-center gap-1 text-xs">
+        <Link
+          className="z-[10] flex cursor-pointer items-center gap-2"
+          href={`/contributor/${authorSlug}`}
+        >
+          <Avatar className="size-6">
+            <AvatarImage src={avatarSrc} alt="author image" />
+            <AvatarFallback>{avatarFallback}</AvatarFallback>
+          </Avatar>
+
+          <span className="whitespace-nowrap capitalize">{authorName}</span>
+        </Link>
+        <span className="text-muted-foreground">in</span>
+        <h5 className="font-semibold">{tag}</h5>
+      </div>
+      <div className="flex items-center gap-4 sm:gap-8 md:gap-12">
         <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-1 text-xs">
-            <Link
-              className="z-[10] flex cursor-pointer items-center gap-2"
-              href={`/contributor/${authorSlug}`}
-            >
-              <Avatar className="size-6">
-                <AvatarImage src={avatarSrc} alt="author image" />
-                <AvatarFallback>{avatarFallback}</AvatarFallback>
-              </Avatar>
-
-              <span className="capitalize">{authorName}</span>
-            </Link>
-            <span className="text-muted-foreground">in</span>
-            <h5 className="font-semibold">{tag}</h5>
-          </div>
-
           <Link className="flex flex-col gap-4" href={`/posts/${slug}`}>
             <div className="flex flex-col gap-2">
               <h3 className="text-xl font-bold capitalize sm:text-2xl">{title}</h3>
@@ -79,7 +78,7 @@ export default function Post({
               src={coverImageSrc}
               width={800}
               height={600}
-              className="block h-[110px] w-full rounded-[2px] bg-cover"
+              className="block h-20 w-full rounded-[2px] bg-cover sm:h-[110px]"
               alt="morty's mind blowers"
             />
           </div>
