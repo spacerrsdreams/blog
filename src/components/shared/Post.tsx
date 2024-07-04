@@ -25,22 +25,26 @@ export default function Post({
   post: Post;
 }) {
   return (
-    <Link href={`posts/${slug}`}>
-      <div className="flex w-full border-b border-border/50 pb-8">
-        <div className="flex items-center gap-8 sm:gap-12">
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-1 text-xs">
-              <Link href={`/contributor/${authorSlug}`}>
-                <Avatar className="z-20 size-6">
-                  <AvatarImage src={avatarSrc} alt="author image" />
-                  <AvatarFallback>{avatarFallback}</AvatarFallback>
-                </Avatar>
-              </Link>
+    <div className="flex w-full border-b border-border/50 pb-8">
+      <div className="flex items-center gap-8 sm:gap-12">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-1 text-xs">
+            <Link
+              className="z-[10] flex cursor-pointer items-center gap-2"
+              href={`/contributor/${authorSlug}`}
+            >
+              <Avatar className="size-6">
+                <AvatarImage src={avatarSrc} alt="author image" />
+                <AvatarFallback>{avatarFallback}</AvatarFallback>
+              </Avatar>
 
               <span className="capitalize">{authorName}</span>
-              <span className="text-muted-foreground">in</span>
-              <h5 className="font-semibold">{tag}</h5>
-            </div>
+            </Link>
+            <span className="text-muted-foreground">in</span>
+            <h5 className="font-semibold">{tag}</h5>
+          </div>
+
+          <Link className="flex flex-col gap-4" href={`/posts/${slug}`}>
             <div className="flex flex-col gap-2">
               <h3 className="text-xl font-bold capitalize sm:text-2xl">{title}</h3>
               <h4 className="text-sm text-muted-foreground md:text-base">
@@ -67,7 +71,9 @@ export default function Post({
                 <Icons.bookmark />
               </div>
             </div>
-          </div>
+          </Link>
+        </div>
+        <Link href={`posts/${slug}`}>
           <div className="mt-4 flex min-w-[130px] md:min-w-[160px]">
             <Image
               src={coverImageSrc}
@@ -77,8 +83,8 @@ export default function Post({
               alt="morty's mind blowers"
             />
           </div>
-        </div>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }
