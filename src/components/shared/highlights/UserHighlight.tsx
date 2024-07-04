@@ -16,7 +16,7 @@ export default function UserHighlight({ post }: Props) {
         </Avatar>
         <span className="text-xs font-bold capitalize">{post.authorName}</span>
       </div>
-      <h3 className="text-xl font-bold capitalize">{post.title}</h3>
+      <h3 className="font-bold capitalize lg:text-xl">{post.title}</h3>
     </div>
   );
 }

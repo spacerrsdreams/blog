@@ -42,7 +42,7 @@ export default function Post({
         <h5 className="font-semibold">{tag}</h5>
       </div>
       <div className="flex items-center gap-4 sm:gap-8 md:gap-12">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-1 flex-col gap-4">
           <Link className="flex flex-col gap-4" href={`/posts/${slug}`}>
             <div className="flex flex-col gap-2">
               <h3 className="text-xl font-bold capitalize sm:text-2xl">{title}</h3>
@@ -73,15 +73,13 @@ export default function Post({
           </Link>
         </div>
         <Link href={`posts/${slug}`}>
-          <div className="mt-4 flex min-w-[130px] md:min-w-[160px]">
-            <Image
-              src={coverImageSrc}
-              width={800}
-              height={600}
-              className="block h-20 w-full rounded-[2px] bg-cover sm:h-[110px]"
-              alt="morty's mind blowers"
-            />
-          </div>
+          <Image
+            src={coverImageSrc}
+            width={800}
+            height={600}
+            className="block h-20 w-28 rounded-[2px] bg-cover sm:h-[110px] md:w-40"
+            alt="morty's mind blowers"
+          />
         </Link>
       </div>
     </div>
