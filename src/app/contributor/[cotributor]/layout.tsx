@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { TABS } from "@/data/links";
 import { POSTS } from "@/data/posts";
 import ContributorDetails from "@/components/contributor/ContributorDetails";
@@ -20,11 +22,21 @@ export default function Layout({
   return (
     <>
       <div className="block w-full max-w-[728px] flex-auto">
+        <Image
+          src="/images/rick-and-morty.jpg"
+          alt="rick and morty"
+          width={1536}
+          height={864}
+          className="h-[210px] w-full"
+        />
         <div className="block px-4 xl:px-0">
           <div className="pt-6" />
-          <div className="block md:hidden">
-            <ContributorDetailsMobile />
+          <div className="mb-4 block md:hidden">
+            <ContributorDetailsMobile post={contributor} />
           </div>
+          <h1 className="hidden py-5 text-2xl font-bold md:block md:text-6xl">
+            {contributor?.authorName}
+          </h1>
           <TabMenu tabList={TABS} />
           <div className="pt-6">{children}</div>
         </div>
