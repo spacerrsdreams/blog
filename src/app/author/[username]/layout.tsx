@@ -1,23 +1,20 @@
+import { getUserByUsername } from "@/server/user";
+
 import Image from "next/image";
 
 import { TABS } from "@/data/links";
-import { POSTS } from "@/data/posts";
-import ContributorDetails from "@/components/contributor/ContributorDetails";
-import ContributorDetailsMobile from "@/components/contributor/ContributorDetailsMobile";
+import AuthorDetails from "@/components/author/AuthorDetails";
+import AuthorDetailsMobile from "@/components/author/AuthorDetailsMobile";
 import TabMenu from "@/components/shared/Tab";
 
-export default function Layout({
+export default async function Layout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: { cotributor: string };
+  params: { username: string };
 }) {
-  const contributor = POSTS.find((post) => post.authorSlug === params.cotributor);
-
-  if (!contributor) {
-    return <div>Something went wrong</div>;
-  }
+  const author = await getUserByUsername(params.username);
 
   return (
     <>
@@ -32,10 +29,13 @@ export default function Layout({
         <div className="block px-4 xl:px-0">
           <div className="pt-6" />
           <div className="mb-4 block md:hidden">
-            <ContributorDetailsMobile post={contributor} />
+            <AuthorDetailsMobile
+              authorName={author.fullName || ""}
+              profileImageSrc={author.imageUrl}
+            />
           </div>
           <h1 className="hidden py-5 text-2xl font-bold md:block md:text-6xl">
-            {contributor?.authorName}
+            {author?.fullName}
           </h1>
           <TabMenu tabList={TABS} />
           <div className="pt-6">{children}</div>
@@ -44,7 +44,11 @@ export default function Layout({
       <div className="hidden min-h-screen w-full border-l border-border/40 pl-10 pr-6 md:block md:max-w-[250px] lg:max-w-[328px]">
         <div className="relative inline-block size-full">
           <div className="pt-10" />
-          <ContributorDetails authorSlug={contributor?.authorSlug} />
+          <AuthorDetails
+            authorId={author.id}
+            authorName={author.fullName || ""}
+            profileImageSrc={author.imageUrl}
+          />
         </div>
       </div>
     </>

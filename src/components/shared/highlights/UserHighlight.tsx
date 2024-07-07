@@ -1,6 +1,6 @@
 import type { Post } from "@/types";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 type Props = {
   post: Post;
@@ -12,9 +12,9 @@ export default function UserHighlight({ post }: Props) {
       <div className="flex items-center gap-1">
         <Avatar className="size-6">
           <AvatarImage src={post.coverImageSrc} alt="author image" />
-          <AvatarFallback>{post.avatarFallback}</AvatarFallback>
+          {/* <AvatarFallback>{post.avatarFallback}</AvatarFallback> */}
         </Avatar>
-        <span className="text-xs font-bold capitalize">{post.authorName}</span>
+        {/* <span className="text-xs font-bold capitalize">{post.authorName}</span> */}
       </div>
       <h3 className="font-bold capitalize lg:text-xl">{post.title}</h3>
     </div>

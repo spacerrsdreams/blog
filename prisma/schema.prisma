@@ -13,6 +13,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+
+model Post {
+  id            String    @id @default(uuid())
+  slug          String    @unique
+  tag           String
+  title         String
+  subTitle      String
+  isSaved       Boolean   @default(false)
+  coverImageSrc String
+  createdAt     DateTime  @default(now())
+  modifiedAt    DateTime  @updatedAt
+  authorId      String
+  author        User      @relation("userPosts", fields: [authorId], references: [id])
+  likes         Like[]    @relation("postLikes")
+  comments      Comment[] @relation("postComments")
+  bookmarks     Bookmark[] @relation("postBookmarks")
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @updatedAt
+  userId    String
+  postId    String
+  user      User     @relation("userLikes", fields: [userId], references: [id])
+  post      Post     @relation("postLikes", fields: [postId], references: [id])
+}
+
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @updatedAt
+  user      User     @relation("userComments", fields: [userId], references: [id])
+  post      Post     @relation("postComments", fields: [postId], references: [id])
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @updatedAt
+  userId    String
+  postId    String
+  user      User     @relation("userBookmarks", fields: [userId], references: [id])
+  post      Post     @relation("postBookmarks", fields: [postId], references: [id])
+}
+
 model User {
-  id String @id
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now())
+  posts     Post[]     @relation("userPosts")  
+  likes     Like[]     @relation("userLikes")  
+  comments  Comment[]  @relation("userComments")
+  bookmarks Bookmark[] @relation("userBookmarks")
 }
