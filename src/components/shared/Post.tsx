@@ -43,7 +43,7 @@ export default function Post({
       </div>
       <div className="flex items-center gap-4 sm:gap-8 md:gap-12">
         <div className="flex flex-1 flex-col gap-4">
-          <Link className="flex flex-col gap-4" href={`/posts/${slug}`}>
+          <Link className="flex flex-col gap-4" href={`/post/${slug}`}>
             <div className="flex flex-col gap-2">
               <h3 className="text-xl font-bold capitalize sm:text-2xl">{title}</h3>
               <h4 className="text-sm text-muted-foreground md:text-base">
@@ -72,7 +72,7 @@ export default function Post({
             </div>
           </Link>
         </div>
-        <Link href={`posts/${slug}`}>
+        <Link href={`/post/${slug}`}>
           <Image
             src={coverImageSrc}
             width={800}
