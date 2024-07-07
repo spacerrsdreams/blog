@@ -9,7 +9,7 @@ import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function Post({
-  post: { tag, title, slug, subTitle, likes, comments, authorId, createdAt, coverImageSrc },
+  post: { tag, title, slug, subTitle, _count, authorId, createdAt, coverImageSrc },
 }: {
   post: Post;
 }) {
@@ -54,11 +54,11 @@ export default async function Post({
                 </span>
                 <span className="ml-4 flex items-center">
                   <Icons.clap />
-                  <span>{formatNumberWithK(likes.length)}</span>
+                  <span>{formatNumberWithK(_count.likes)}</span>
                 </span>
                 <span className="flex items-center">
                   <Icons.message />
-                  <span>{formatNumberWithK(comments.length)}</span>
+                  <span>{formatNumberWithK(_count.comments)}</span>
                 </span>
               </div>
               <div className="flex items-center">

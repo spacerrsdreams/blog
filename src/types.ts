@@ -16,21 +16,10 @@ export type Post = {
   createdAt: Date;
   modifiedAt: Date;
   authorId: string;
-  likes: {
-    id: string;
-    createdAt: Date;
-    modifiedAt: Date;
-    userId: string;
-    postId: string;
-  }[];
-  comments: {
-    id: string;
-    content: string;
-    userId: string;
-    postId: string;
-    createdAt: Date;
-    modifiedAt: Date;
-  }[];
+  _count: {
+    likes: number;
+    comments: number;
+  };
 };
 
 export type Tab = {

@@ -7,8 +7,12 @@ export default async function Page({ params }: { params: { username: string } })
   const { id: authorid } = await getUserByUsername(params.username);
   const posts = await prisma.post.findMany({
     include: {
-      likes: true,
-      comments: true,
+      _count: {
+        select: {
+          likes: true,
+          comments: true,
+        },
+      },
     },
     where: {
       authorId: authorid,
