@@ -17,7 +17,7 @@ export default async function Layout({
   const author = await getUserByUsername(params.username);
 
   return (
-    <>
+    <div className="flex flex-row justify-evenly">
       <div className="block w-full max-w-[728px] flex-auto">
         <Image
           src="/images/rick-and-morty.jpg"
@@ -51,6 +51,6 @@ export default async function Layout({
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }

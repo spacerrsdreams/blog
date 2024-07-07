@@ -4,7 +4,7 @@ import TabMenu from "@/components/shared/Tab";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="flex flex-row justify-evenly">
       <div className="block w-full max-w-[728px] flex-auto">
         <div className="block px-4 xl:px-0">
           <div className="pt-6" />
@@ -19,6 +19,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Highlights />
         </div>
       </div>
-    </>
+    </div>
   );
 }

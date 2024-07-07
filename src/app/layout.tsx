@@ -30,7 +30,7 @@ export default function RootLayout({
           <body className={cn("bg-background font-sans antialiased", fontSans.variable)}>
             <Header />
             <div className="m-auto block max-w-[1336px]">
-              <main className="flex flex-row justify-evenly">{children}</main>
+              <main className="">{children}</main>
             </div>
           </body>
         </ReactQueryProvider>

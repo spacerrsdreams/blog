@@ -1,6 +1,7 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
+import { ROUTES } from "@/utils/routes";
 import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import { MainNavigation } from "@/components/shared/header/MainvNavigation";
@@ -17,17 +18,17 @@ export default function Header() {
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none" />
           <nav className="flex items-center">
-            <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
+            <Link href={ROUTES.createArticle}>
               <div
                 className={cn(
                   buttonVariants({
                     variant: "ghost",
                   }),
-                  "w-9 px-0",
+                  "flex items-center gap-2",
                 )}
               >
-                <Icons.gitHub className="h-4 w-4" />
-                <span className="sr-only">GitHub</span>
+                <Icons.squarePen className="size-6 text-muted-foreground" />
+                <span className="text-muted-foreground">Write</span>
               </div>
             </Link>
             <Link href={siteConfig.links.twitter} target="_blank" rel="noreferrer">

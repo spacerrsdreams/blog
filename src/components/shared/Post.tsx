@@ -4,6 +4,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 
+import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -45,13 +46,7 @@ export default async function Post({
             </div>
             <div className="flex w-full justify-between">
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-muted-foreground">
-                  {new Intl.DateTimeFormat("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                  }).format(createdAt)}
-                </span>
+                <span className="text-muted-foreground">{formatDate(createdAt)}</span>
                 <span className="ml-4 flex items-center">
                   <Icons.clap />
                   <span>{formatNumberWithK(_count.likes)}</span>
