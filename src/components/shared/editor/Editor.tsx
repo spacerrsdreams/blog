@@ -81,11 +81,11 @@ export default function Editor() {
   };
 
   return (
-    <div className="h-[calc(100vh - 60px)]">
+    <div className="h-full">
       <div className="flex w-full py-2">
         <div className="flex h-full flex-col gap-4">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="h-full space-y-2">
               <FormField
                 control={form.control}
                 name="title"
@@ -144,7 +144,7 @@ export default function Editor() {
             </form>
           </Form>
         </div>
-        <div className="overflow-y ml-4 h-[calc(100vh-60px)] max-w-[680px] flex-1 flex-col">
+        <div className="ml-4 h-[calc(100vh_-_80px)] max-w-[680px] flex-1 flex-col overflow-y-auto">
           <Article
             authorFullName={user?.fullName || ""}
             authorImageUrl={user?.imageUrl || ""}
