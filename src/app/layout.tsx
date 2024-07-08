@@ -29,9 +29,7 @@ export default function RootLayout({
         <ReactQueryProvider>
           <body className={cn("bg-background font-sans antialiased", fontSans.variable)}>
             <Header />
-            <div className="m-auto block max-w-[1336px]">
-              <main className="">{children}</main>
-            </div>
+            <main className="m-auto block max-w-[1336px]">{children}</main>
           </body>
         </ReactQueryProvider>
       </ClerkProvider>
