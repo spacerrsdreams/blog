@@ -47,8 +47,9 @@ export default function Editor() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      subTitle: "",
+      title: "How I Hunt Down My Nemesis",
+      subTitle:
+        "So I'm out here, jumping through dimensions, chasing down this pain-in-the-ass nemesis of mine. Portal gun's acting up, Morty's whining—typical Tuesday. But hey, who doesn't love a good multiverse showdown?",
       tag: "AI",
       postContent: undefined,
     },

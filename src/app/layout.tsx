@@ -4,6 +4,7 @@ import { DM_Sans as FontSans } from "next/font/google";
 
 import "./globals.css";
 
+import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import Header from "@/components/shared/header/Header";
@@ -14,8 +15,8 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "University Ratings",
-  description: "Find the best university for you",
+  title: siteConfig.name,
+  description: siteConfig.description,
 };
 
 export default function RootLayout({
