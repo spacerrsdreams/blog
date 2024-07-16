@@ -28,6 +28,13 @@ export type Like = {
   userId: string;
   postId: string;
 };
+export type Bookmark = {
+  id: string;
+  createdAt: Date;
+  modifiedAt: Date;
+  userId: string;
+  postId: string;
+};
 
 export type Tab = {
   title: string;

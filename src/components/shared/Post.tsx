@@ -9,8 +9,10 @@ import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import BookmarkButton from "./BookmarkButton";
+
 export default async function Post({
-  post: { tag, title, slug, subTitle, _count, authorId, createdAt, coverImageSrc },
+  post: { id, tag, title, slug, subTitle, _count, authorId, createdAt, coverImageSrc },
 }: {
   post: Post;
 }) {
@@ -56,9 +58,7 @@ export default async function Post({
                   <span>{formatNumberWithK(_count.comments)}</span>
                 </span>
               </div>
-              <div className="flex items-center">
-                <Icons.bookmark />
-              </div>
+              <BookmarkButton data={{ authorId: authorId, postId: id }} />
             </div>
           </Link>
         </div>

@@ -1,14 +1,12 @@
 "use server";
 
-import type { Like } from "@/types";
-
-import { revalidatePath } from "next/cache";
+import type { Bookmark } from "@/types";
 
 import prisma from "@/app/lib/prisma";
 
-export const likePost = async (postId: string, authId: string) => {
+export const makeBookmark = async (postId: string, authId: string) => {
   try {
-    const like = await prisma.like.create({
+    await prisma.bookmark.create({
       data: {
         createdAt: new Date(),
         modifiedAt: new Date(),
@@ -16,35 +14,29 @@ export const likePost = async (postId: string, authId: string) => {
         postId: postId,
       },
     });
-    if (like) {
-      revalidatePath("/");
-    }
   } catch (error) {
     console.error("Error updating user information:", error);
     throw new Error("An error occurred while updating user information.");
   }
 };
 
-export const unlikePost = async (postId: string, authorId: string) => {
-  let like: Like | null = null;
+export const removeBookmark = async (postId: string, authorId: string) => {
+  let bookmark: Bookmark | null = null;
   try {
-    like = await prisma.like.findFirst({
+    bookmark = await prisma.bookmark.findFirst({
       where: {
         userId: authorId,
         postId: postId,
       },
     });
-    if (like) {
-      revalidatePath("/");
-    }
   } catch (error) {
     console.error("Error fetching user information:", error);
     throw new Error("An error occurred while fetching user information.");
   }
   try {
-    await prisma.like.delete({
+    await prisma.bookmark.delete({
       where: {
-        id: like?.id,
+        id: bookmark?.id,
       },
     });
   } catch (error) {
@@ -53,15 +45,15 @@ export const unlikePost = async (postId: string, authorId: string) => {
   }
 };
 
-export const getLike = async (postId: string, authorId: string) => {
+export const getBookmark = async (postId: string, authorId: string) => {
   try {
-    const like = await prisma.like.findFirst({
+    const bookmark = await prisma.bookmark.findFirst({
       where: {
         userId: authorId,
         postId: postId,
       },
     });
-    return like;
+    return bookmark;
   } catch (error) {
     console.error("Error fetching user information:", error);
     throw new Error("An error occurred while fetching user information.");
