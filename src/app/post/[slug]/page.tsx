@@ -5,6 +5,7 @@ import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import prisma from "@/app/lib/prisma";
 import { Icons } from "@/components/shared/Icons";
+import LikeButton from "@/components/shared/LikeButton";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const post = await prisma.post.findUnique({
@@ -28,7 +29,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
     console.error("Author not found");
     throw new Error("Author not found");
   }
-
   return (
     <div className="flex size-full flex-col gap-10 px-20">
       <div className="mt-10 flex w-full flex-col items-center justify-center gap-2">
@@ -66,10 +66,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
             </div>
           </div>
           <div className="mt-6 flex items-center gap-4 border-b border-t border-border/60 py-4">
-            <span className="ml-8 flex items-center">
-              <Icons.clap />
-              <span>{formatNumberWithK(post.likes.length)}</span>
-            </span>
+            <LikeButton
+              data={{ count: post?.likes?.length, authorId: post?.authorId, postId: post?.id }}
+            />
             <span className="flex items-center">
               <Icons.message />
               <span>{formatNumberWithK(post.comments.length)}</span>

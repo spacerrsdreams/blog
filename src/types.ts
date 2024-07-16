@@ -21,6 +21,13 @@ export type Post = {
     comments: number;
   };
 };
+export type Like = {
+  id: string;
+  createdAt: Date;
+  modifiedAt: Date;
+  userId: string;
+  postId: string;
+};
 
 export type Tab = {
   title: string;
