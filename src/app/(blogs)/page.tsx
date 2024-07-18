@@ -1,4 +1,5 @@
 import prisma from "@/app/lib/prisma";
+import Image from "@/components/Image";
 import Post from "@/components/shared/Post";
 
 export default async function Home() {
@@ -17,6 +18,7 @@ export default async function Home() {
       {posts.map((post) => (
         <Post key={post.slug} post={post} />
       ))}
+      <Image />
     </div>
   );
 }
