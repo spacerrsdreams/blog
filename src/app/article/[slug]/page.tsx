@@ -4,6 +4,7 @@ import Image from "next/image";
 import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import prisma from "@/app/lib/prisma";
+import CommentSheet from "@/components/shared/CommentSheet";
 import { Icons } from "@/components/shared/Icons";
 
 export default async function Page({ params }: { params: { slug: string } }) {
@@ -70,10 +71,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
               <Icons.clap />
               <span>{formatNumberWithK(post.likes.length)}</span>
             </span>
-            <span className="flex items-center">
-              <Icons.message />
-              <span>{formatNumberWithK(post.comments.length)}</span>
-            </span>
+            <CommentSheet
+              authorId={post.authorId}
+              postId={post.id}
+              commentsCount={post.comments.length}
+            />
           </div>
         </div>
         <div className="mb-20">blablalbbal</div>

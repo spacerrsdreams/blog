@@ -21,6 +21,14 @@ export type Post = {
     comments: number;
   };
 };
+export type CommentT = {
+  id: string;
+  content: string;
+  createdAt: Date;
+  modifiedAt: Date;
+  userId: string;
+  postId: string;
+};
 
 export type Tab = {
   title: string;
