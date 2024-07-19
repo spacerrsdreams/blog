@@ -1,6 +1,6 @@
 import type { CommentT } from "@/types";
 
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 
 import Comment from "./Comment";
 

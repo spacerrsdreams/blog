@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { useLikePost, useUnLikePost } from "@/app/client/post";
+import { Button } from "@/components/ui/button";
 
 import { Icons } from "./Icons";
 
@@ -61,11 +62,9 @@ export default function LikeButton(postInfo: propsType) {
   };
 
   return (
-    <span className="flex items-center">
-      <>
-        {isLiked ? <Icons.clapDark onClick={handleClick} /> : <Icons.clap onClick={handleClick} />}
-        <span>{formatNumberWithK(likes)}</span>
-      </>
-    </span>
+    <Button variant="ghost" onClick={handleClick}>
+      {isLiked ? <Icons.clapDark /> : <Icons.clap />}
+      <span>{formatNumberWithK(likes)}</span>
+    </Button>
   );
 }

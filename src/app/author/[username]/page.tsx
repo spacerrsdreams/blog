@@ -1,6 +1,6 @@
 import { getUserByUsername } from "@/server/user";
 
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 import Post from "@/components/shared/Post";
 
 export default async function Page({ params }: { params: { username: string } }) {

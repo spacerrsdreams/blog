@@ -1,4 +1,5 @@
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
+import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 import CommentEditor from "./CommentEditor";
@@ -15,10 +16,10 @@ export default async function CommentSheet({ authorId, postId, commentsCount }: 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <span className="flex items-center">
+        <Button variant="ghost" className="flex items-center">
           <Icons.message />
           <span>{formatNumberWithK(commentsCount)}</span>
-        </span>
+        </Button>
       </SheetTrigger>
       <SheetContent className="overflow-x-scroll">
         <SheetHeader>

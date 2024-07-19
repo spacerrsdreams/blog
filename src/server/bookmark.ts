@@ -2,7 +2,7 @@
 
 import type { Bookmark } from "@/types";
 
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export const makeBookmark = async (postId: string, authId: string) => {
   try {

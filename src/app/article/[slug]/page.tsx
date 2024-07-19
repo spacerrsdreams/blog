@@ -2,7 +2,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 import Image from "next/image";
 
 import { formatDate } from "@/utils/formatDate";
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 import CommentSheet from "@/components/shared/CommentSheet";
 import LikeButton from "@/components/shared/LikeButton";
 
@@ -64,7 +64,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
               </div>
             </div>
           </div>
-          <div className="mt-6 flex items-center gap-4 border-b border-t border-border/60 py-4">
+          <div className="mt-6 flex items-center border-b border-t border-border/60 py-1">
             <LikeButton
               data={{ count: post?.likes?.length, authorId: post?.authorId, postId: post?.id }}
             />

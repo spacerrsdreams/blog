@@ -2,15 +2,13 @@
 
 import type { CommentT } from "@/types";
 
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export const addComment = async (postId: string, authId: string, content: string) => {
   try {
     await prisma.comment.create({
       data: {
         content,
-        createdAt: new Date(),
-        modifiedAt: new Date(),
         userId: authId,
         postId: postId,
       },

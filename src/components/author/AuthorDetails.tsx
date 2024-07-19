@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 
 type Props = {
   profileImageSrc: string;

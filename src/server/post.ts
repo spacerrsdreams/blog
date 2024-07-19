@@ -4,7 +4,7 @@ import type { Like } from "@/types";
 
 import { revalidatePath } from "next/cache";
 
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export const likePost = async (postId: string, authId: string) => {
   try {

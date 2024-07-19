@@ -1,4 +1,4 @@
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 import Image from "@/components/Image";
 import Post from "@/components/shared/Post";
 
