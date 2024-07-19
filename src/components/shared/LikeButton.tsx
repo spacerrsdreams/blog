@@ -62,8 +62,10 @@ export default function LikeButton(postInfo: propsType) {
 
   return (
     <span className="flex items-center">
-      {isLiked ? <Icons.clapDark onClick={handleClick} /> : <Icons.clap onClick={handleClick} />}
-      <span>{formatNumberWithK(likes)}</span>
+      <>
+        {isLiked ? <Icons.clapDark onClick={handleClick} /> : <Icons.clap onClick={handleClick} />}
+        <span>{formatNumberWithK(likes)}</span>
+      </>
     </span>
   );
 }

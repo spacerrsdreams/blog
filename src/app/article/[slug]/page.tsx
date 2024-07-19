@@ -2,9 +2,8 @@ import { clerkClient } from "@clerk/nextjs/server";
 import Image from "next/image";
 
 import { formatDate } from "@/utils/formatDate";
-import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import prisma from "@/app/lib/prisma";
-import { Icons } from "@/components/shared/Icons";
+import CommentSheet from "@/components/shared/CommentSheet";
 import LikeButton from "@/components/shared/LikeButton";
 
 export default async function Page({ params }: { params: { slug: string } }) {
@@ -69,10 +68,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <LikeButton
               data={{ count: post?.likes?.length, authorId: post?.authorId, postId: post?.id }}
             />
-            <span className="flex items-center">
-              <Icons.message />
-              <span>{formatNumberWithK(post.comments.length)}</span>
-            </span>
+            <CommentSheet
+              {...{ authorId: post.authorId, postId: post.id, commentsCount: post.comments.length }}
+            />
           </div>
         </div>
         <div className="mb-20">blablalbbal</div>
