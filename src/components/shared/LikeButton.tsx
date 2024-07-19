@@ -22,8 +22,8 @@ type propsType = {
 export default function LikeButton(postInfo: propsType) {
   const [likes, setLikes] = useState(postInfo.data.count);
   const [isLiked, setIsLiked] = useState(false);
-  const likePostData = useLikePost();
-  const unLikePostData = useUnLikePost();
+  const { mutateAsync: likePostAsync } = useLikePost();
+  const { mutateAsync: unlikePostAsync } = useUnLikePost();
 
   useEffect(() => {
     getLike(postInfo.data.postId, postInfo.data.authorId).then((data) => {
@@ -37,7 +37,7 @@ export default function LikeButton(postInfo: propsType) {
       setIsLiked(false);
 
       try {
-        await unLikePostData.mutateAsync({
+        await unlikePostAsync({
           postId: postInfo.data.postId,
           authId: postInfo.data.authorId,
         });
@@ -50,7 +50,7 @@ export default function LikeButton(postInfo: propsType) {
       setIsLiked(true);
 
       try {
-        await likePostData.mutateAsync({
+        await likePostAsync({
           postId: postInfo.data.postId,
           authId: postInfo.data.authorId,
         });

@@ -1,4 +1,4 @@
-import { getUserByUsername } from "@/server/user";
+import { getUserByUserName } from "@/server/user";
 
 import Image from "next/image";
 
@@ -14,7 +14,7 @@ export default async function Layout({
   children: React.ReactNode;
   params: { username: string };
 }) {
-  const author = await getUserByUsername(params.username);
+  const author = await getUserByUserName(params.username);
 
   return (
     <div className="flex flex-row justify-evenly">

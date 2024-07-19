@@ -10,8 +10,6 @@ export const likePost = async (postId: string, authId: string) => {
   try {
     const like = await prisma.like.create({
       data: {
-        createdAt: new Date(),
-        modifiedAt: new Date(),
         userId: authId,
         postId: postId,
       },

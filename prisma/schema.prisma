@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,9 +6,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
-
-
 model Post {
   id            String    @id @default(uuid())
   slug          String    @unique
@@ -64,11 +55,86 @@ model Bookmark {
   post      Post     @relation("postBookmarks", fields: [postId], references: [id])
 }
 
-model User {
-  id        String     @id @default(uuid())
-  createdAt DateTime   @default(now())
-  posts     Post[]     @relation("userPosts")  
-  likes     Like[]     @relation("userLikes")  
-  comments  Comment[]  @relation("userComments")
-  bookmarks Bookmark[] @relation("userBookmarks")
+
+
+// model User {
+//   id        String     @id @default(uuid())
+//   createdAt DateTime   @default(now())
+//   posts     Post[]     @relation("userPosts")  
+//   likes     Like[]     @relation("userLikes")  
+//   comments  Comment[]  @relation("userComments")
+//   bookmarks Bookmark[] @relation("userBookmarks")
+// }
+
+model EmailAddress {
+  id                     String       @id
+  emailAddress           String       @map("email_address")
+  verificationStatus     String       @map("verification_status")
+  verificationStrategy   String       @map("verification_strategy")
+  userId                 String
+  user                   User         @relation(fields: [userId], references: [id])
+
+  @@map("email_addresses")
 }
+
+model Web3Wallet {
+  id                     String       @id
+  userId                 String
+  user                   User         @relation(fields: [userId], references: [id])
+
+  @@map("web3_wallets")
+}
+
+model PhoneNumber {
+  id                     String       @id
+  number                 String?
+  userId                 String
+  user                   User         @relation(fields: [userId], references: [id])
+
+  @@map("phone_numbers")
+}
+
+model ExternalAccount {
+  id                     String       @id
+  userId                 String
+  user                   User         @relation(fields: [userId], references: [id])
+
+  @@map("external_accounts")
+}
+
+
+
+
+model User {
+  id                     String       @id
+  firstName              String?      @map("first_name")
+  lastName               String?      @map("last_name")
+  username               String       @map("username")
+  birthday               String?      @map("birthday") 
+  externalId             String?      @map("external_id")
+  gender                 String?      @map("gender")
+  imageUrl               String       @map("image_url")
+  lastSignInAt           BigInt?      @map("last_sign_in_at")
+  passwordEnabled        Boolean      @map("password_enabled")
+  primaryEmailAddressId  String?      @map("primary_email_address_id")
+  primaryPhoneNumberId   String?      @map("primary_phone_number_id")
+  primaryWeb3WalletId    String?      @map("primary_web3_wallet_id")
+  profileImageUrl        String       @map("profile_image_url")
+  twoFactorEnabled       Boolean      @map("two_factor_enabled")
+  updatedAt              BigInt       @map("updated_at")
+  createdAt              BigInt       @map("created_at")
+  privateMetadata        Json         @map("private_metadata")
+  publicMetadata         Json         @map("public_metadata")
+  unsafeMetadata         Json         @map("unsafe_metadata")
+  emailAddresses         EmailAddress[]
+  web3Wallets            Web3Wallet[]
+  phoneNumbers           PhoneNumber[]
+  externalAccounts       ExternalAccount[]
+  posts                  Post[]       @relation("userPosts")
+  likes                  Like[]       @relation("userLikes")
+  comments               Comment[]    @relation("userComments")
+  bookmarks              Bookmark[]   @relation("userBookmarks")
+
+  @@map("users")
+}
+

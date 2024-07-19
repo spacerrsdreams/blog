@@ -1,3 +1,58 @@
+interface EmailAddress {
+  email_address: string;
+  id: string;
+  linked_to: string[];
+  object: string;
+  verification: {
+    status: string;
+    strategy: string;
+  };
+}
+
+interface ExternalAccount {
+  // Define properties if needed
+}
+
+interface Web3Wallet {
+  // Define properties if needed
+}
+
+interface Metadata {
+  // Define properties as needed
+}
+
+export interface CreateUser {
+  data: {
+    birthday: string;
+    created_at: number; // Timestamp in milliseconds
+    email_addresses: EmailAddress[];
+    external_accounts: ExternalAccount[];
+    external_id: string;
+    first_name: string;
+    gender: string;
+    id: string;
+    image_url: string;
+    last_name: string;
+    last_sign_in_at: number; // Timestamp in milliseconds
+    object: string;
+    password_enabled: boolean;
+    phone_numbers: string[]; // Adjust type if there's more detail
+    primary_email_address_id: string;
+    primary_phone_number_id: string | null;
+    primary_web3_wallet_id: string | null;
+    private_metadata: Metadata;
+    profile_image_url: string;
+    public_metadata: Metadata;
+    two_factor_enabled: boolean;
+    unsafe_metadata: Metadata;
+    updated_at: number; // Timestamp in milliseconds
+    username: string;
+    web3_wallets: Web3Wallet[];
+  };
+  object: string;
+  type: string;
+}
+
 export type Contributor = {
   authorSlug: string;
   authorName: string;

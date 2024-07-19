@@ -1,10 +1,10 @@
-import { getUserByUsername } from "@/server/user";
+import { getUserByUserName } from "@/server/user";
 
 import prisma from "@/lib/prisma";
 import Post from "@/components/shared/Post";
 
 export default async function Page({ params }: { params: { username: string } }) {
-  const { id: authorid } = await getUserByUsername(params.username);
+  const { id: authorid } = await getUserByUserName(params.username);
   const posts = await prisma.post.findMany({
     include: {
       _count: {
