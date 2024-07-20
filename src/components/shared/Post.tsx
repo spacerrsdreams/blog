@@ -1,11 +1,12 @@
 import type { Post } from "@/types";
 
-import { clerkClient } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 
 import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
+import { ERROR_CODES } from "@/lib/error";
+import prismaClient from "@/lib/prisma";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -16,7 +17,15 @@ export default async function Post({
 }: {
   post: Post;
 }) {
-  const author = await clerkClient.users.getUser(authorId);
+  const author = await prismaClient.users.findUnique({
+    where: {
+      id: authorId,
+    },
+  });
+
+  if (!author) {
+    throw new Error(ERROR_CODES.POST_AUTHOR_NOT_FOUND);
+  }
 
   return (
     <div className="flex w-full flex-col gap-2 border-b border-border/50 pb-8">

@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { handleError } from "@/lib/error";
 import prismaClient from "@/lib/prisma";
-import { LikeRequestSchema } from "@/services/types";
+import { LikeRequestSchema, type LikeResponsePayload } from "@/services/types";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -15,12 +15,16 @@ export const POST = async (req: NextRequest) => {
         postId,
       },
     });
+
     if (data) {
-      return NextResponse.json({ data }, { status: 200 });
+      const payload: LikeResponsePayload = {
+        data,
+      };
+      return NextResponse.json(payload, { status: 200 });
     } else {
       return NextResponse.json(
         { data: null, message: "No like found for the specified user and post." },
-        { status: 404 },
+        { status: 200 },
       );
     }
   } catch (error) {

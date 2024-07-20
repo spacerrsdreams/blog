@@ -6,23 +6,6 @@ import { revalidatePath } from "next/cache";
 
 import prisma from "@/lib/prisma";
 
-export const likePost = async (postId: string, authId: string) => {
-  try {
-    const like = await prisma.likes.create({
-      data: {
-        userId: authId,
-        postId: postId,
-      },
-    });
-    if (like) {
-      revalidatePath("/");
-    }
-  } catch (error) {
-    console.error("Error updating user information:", error);
-    throw new Error("An error occurred while updating user information.");
-  }
-};
-
 export const unlikePost = async (postId: string, authorId: string) => {
   let like: Like | null = null;
   try {

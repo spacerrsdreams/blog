@@ -23,3 +23,17 @@ export const handleError = (error: unknown) => {
     { status: 500 },
   );
 };
+
+export const ERROR_CODES = {
+  USER_IS_NOT_AUTHENTICATED: "USER_IS_NOT_AUTHENTICATED",
+  AUTHOR_NOT_FOUND: "AUTHOR_NOT_FOUND",
+  POST_AUTHOR_NOT_FOUND: "POST_AUTHOR_NOT_FOUND",
+  POST_NOT_FOUND: "POST_NOT_FOUND",
+};
+
+export const ERROR_MESSAGES = {
+  [ERROR_CODES.AUTHOR_NOT_FOUND]: "Author not found",
+  [ERROR_CODES.POST_AUTHOR_NOT_FOUND]: "Post author not found",
+  [ERROR_CODES.POST_NOT_FOUND]: "Post not found",
+  [ERROR_CODES.USER_IS_NOT_AUTHENTICATED]: "Please sign in to like this post",
+};

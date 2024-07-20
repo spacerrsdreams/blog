@@ -1,67 +1,98 @@
 "use client";
 
-import { getLike } from "@/server/post";
-
+import { RedirectToSignIn } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
-import { useLikePost, useUnLikePost } from "@/app/client/post";
+import { ERROR_CODES, ERROR_MESSAGES } from "@/lib/error";
+import { useGetLike, useLikePost, useUnlikePost } from "@/services/post/like";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 import { Icons } from "./Icons";
 
-type propsType = {
-  data: {
-    count: number;
-    authorId: string;
-    postId: string;
-  };
+type Props = {
+  count: number;
+  postId: string;
+  userId: string | null | undefined;
 };
 
-export default function LikeButton(postInfo: propsType) {
-  const [likes, setLikes] = useState(postInfo.data.count);
+export default function LikeButton({ count, postId, userId }: Props) {
+  const { toast } = useToast();
+  const [likes, setLikes] = useState(count);
   const [isLiked, setIsLiked] = useState(false);
   const { mutateAsync: likePostAsync } = useLikePost();
-  const { mutateAsync: unlikePostAsync } = useUnLikePost();
+  const { mutateAsync: unlikePostAsync } = useUnlikePost();
+  const { mutateAsync: getLikeAsync } = useGetLike();
 
   useEffect(() => {
-    getLike(postInfo.data.postId, postInfo.data.authorId).then((data) => {
-      if (data) setIsLiked(true);
-    });
-  }, []);
+    setLikes(count);
+  }, [count]);
 
-  const handleClick = async () => {
-    if (isLiked) {
+  useEffect(() => {
+    if (!userId) return;
+
+    getLikeAsync({ userId, postId }).then(({ data }) => {
+      data && setIsLiked(true);
+    });
+  }, [userId, getLikeAsync, postId]);
+
+  const like = () => {
+    if (!userId) {
+      toast({
+        variant: "destructive",
+        title: "Unauthorized",
+        description: ERROR_MESSAGES[ERROR_CODES.USER_IS_NOT_AUTHENTICATED],
+        action: <RedirectToSignIn />,
+      });
+
+      return;
+    }
+
+    setLikes(likes + 1);
+    setIsLiked(true);
+
+    try {
+      likePostAsync({
+        postId,
+        userId,
+      });
+    } catch (error) {
       setLikes(likes - 1);
       setIsLiked(false);
+    }
+  };
 
-      try {
-        await unlikePostAsync({
-          postId: postInfo.data.postId,
-          authId: postInfo.data.authorId,
-        });
-      } catch (error) {
-        setLikes(likes + 1);
-        setIsLiked(true);
-      }
-    } else {
+  const unLike = () => {
+    if (!userId) {
+      toast({
+        variant: "destructive",
+        title: "Unauthorized",
+        description: ERROR_MESSAGES[ERROR_CODES.USER_IS_NOT_AUTHENTICATED],
+        action: <RedirectToSignIn />,
+      });
+
+      return;
+    }
+
+    console.log("trigger");
+
+    setLikes(likes - 1);
+    setIsLiked(false);
+
+    try {
+      unlikePostAsync({
+        postId,
+        userId,
+      });
+    } catch (error) {
       setLikes(likes + 1);
       setIsLiked(true);
-
-      try {
-        await likePostAsync({
-          postId: postInfo.data.postId,
-          authId: postInfo.data.authorId,
-        });
-      } catch (error) {
-        setLikes(likes - 1);
-        setIsLiked(false);
-      }
     }
   };
 
   return (
-    <Button variant="ghost" onClick={handleClick}>
+    <Button variant="ghost" onClick={isLiked ? unLike : like}>
       {isLiked ? <Icons.clapDark /> : <Icons.clap />}
       <span>{formatNumberWithK(likes)}</span>
     </Button>

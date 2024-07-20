@@ -6,7 +6,7 @@ import { handleError } from "@/lib/error";
 import prismaClient from "@/lib/prisma";
 import { LikeRequestSchema } from "@/services/types";
 
-export const POST = async (req: NextRequest) => {
+export const DELETE = async (req: NextRequest) => {
   try {
     const body = await req.json();
     const { postId, userId } = LikeRequestSchema.parse(body);

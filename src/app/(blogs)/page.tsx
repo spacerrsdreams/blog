@@ -14,6 +14,8 @@ export default async function Home() {
     },
   });
 
+  console.log("HIT");
+
   return (
     <div className="mt-8 flex flex-col gap-12">
       {posts?.map((post) => <Post key={post.slug} post={post} />)}

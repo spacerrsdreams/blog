@@ -8,6 +8,7 @@ import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import Header from "@/components/shared/header/Header";
+import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
           <body className={cn("bg-background font-sans antialiased", fontSans.variable)}>
             <Header />
             <main className="m-auto block max-w-[1336px]">{children}</main>
+            <Toaster />
           </body>
         </ReactQueryProvider>
       </ClerkProvider>

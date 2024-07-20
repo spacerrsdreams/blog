@@ -2,6 +2,7 @@ import { getUserByUserName } from "@/server/user";
 
 import Image from "next/image";
 
+import { ERROR_CODES } from "@/lib/error";
 import { TABS } from "@/data/links";
 import AuthorDetails from "@/components/author/AuthorDetails";
 import AuthorDetailsMobile from "@/components/author/AuthorDetailsMobile";
@@ -17,7 +18,7 @@ export default async function Layout({
   const author = await getUserByUserName(params.username);
 
   if (!author) {
-    return <div>Author not found</div>;
+    throw new Error(ERROR_CODES.AUTHOR_NOT_FOUND);
   }
 
   return (

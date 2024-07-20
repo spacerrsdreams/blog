@@ -1,32 +1,28 @@
-import { getUserByUserName } from "@/server/user";
-
 import prisma from "@/lib/prisma";
 import Post from "@/components/shared/Post";
 
 export default async function Page({ params }: { params: { username: string } }) {
-  const user = await getUserByUserName(params.username);
-
-  if (!user) {
-    return <div>User not found</div>;
-  }
-
-  const posts = await prisma.posts.findMany({
+  const userData = await prisma.users.findUnique({
+    where: {
+      username: params.username,
+    },
     include: {
-      _count: {
-        select: {
-          likes: true,
-          comments: true,
+      posts: {
+        include: {
+          _count: {
+            select: {
+              likes: true,
+              comments: true,
+            },
+          },
         },
       },
-    },
-    where: {
-      authorId: user.id,
     },
   });
 
   return (
     <div className="mt-8 flex flex-col gap-12">
-      {posts?.map((post) => <Post key={post.slug} post={post} />)}
+      {userData?.posts?.map((post) => <Post key={post.slug} post={post} />)}
     </div>
   );
 }
