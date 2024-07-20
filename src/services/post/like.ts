@@ -8,6 +8,9 @@ export const useGetLike = () => {
     mutationFn: async (payload: LikeRequestPayload) => {
       const res = await fetch(ROUTES.api.post.getLike, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
@@ -26,8 +29,11 @@ export const useGetLike = () => {
 export const useLikePost = () => {
   return useMutation({
     mutationFn: async (payload: LikeRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.like, {
+      const res = await fetch(ROUTES.api.post.createLike, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
@@ -48,6 +54,9 @@ export const useUnlikePost = () => {
     mutationFn: async (payload: LikeRequestPayload) => {
       const res = await fetch(ROUTES.api.post.deleteLike, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
