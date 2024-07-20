@@ -16,6 +16,10 @@ export default async function Layout({
 }) {
   const author = await getUserByUserName(params.username);
 
+  if (!author) {
+    return <div>Author not found</div>;
+  }
+
   return (
     <div className="flex flex-row justify-evenly">
       <div className="block w-full max-w-[728px] flex-auto">
@@ -30,12 +34,12 @@ export default async function Layout({
           <div className="pt-6" />
           <div className="mb-4 block md:hidden">
             <AuthorDetailsMobile
-              authorName={author.fullName || ""}
-              profileImageSrc={author.imageUrl}
+              authorName={`${author.firstName} ${author.lastName}.`}
+              profileImageSrc={author.profileImageUrl}
             />
           </div>
           <h1 className="hidden py-5 text-2xl font-bold md:block md:text-6xl">
-            {author?.fullName}
+            {`${author.firstName} ${author.lastName}.`}
           </h1>
           <TabMenu tabList={TABS} />
           <div className="pt-6">{children}</div>
@@ -46,7 +50,7 @@ export default async function Layout({
           <div className="pt-10" />
           <AuthorDetails
             authorId={author.id}
-            authorName={author.fullName || ""}
+            authorName={`${author.firstName} ${author.lastName}.`}
             profileImageSrc={author.imageUrl}
           />
         </div>

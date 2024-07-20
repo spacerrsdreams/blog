@@ -88,7 +88,7 @@ model Users {
   id                     String       @id
   firstName              String?      @map("first_name")
   lastName               String?      @map("last_name")
-  username               String?      @map("username")
+  username               String?      @unique @map("username")
   birthday               String?      @map("birthday") 
   externalId             String?      @map("external_id")
   gender                 String?      @map("gender")

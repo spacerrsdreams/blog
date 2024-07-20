@@ -1,25 +1,21 @@
 import type { User } from "@/types";
 
-import { clerkClient } from "@clerk/nextjs/server";
-
 import prismaClient from "@/lib/prisma";
 
 export const getUserByUserName = async (username: string) => {
-  const authors = await clerkClient.users.getUserList({
-    username: [username],
+  return await prismaClient.users.findUnique({
+    where: {
+      username,
+    },
   });
-
-  return authors.data[0];
 };
 
 export const getUserByUserId = async (userId: string) => {
-  const user = await prismaClient.users.findUnique({
+  return await prismaClient.users.findUnique({
     where: {
       id: userId,
     },
   });
-
-  return user;
 };
 
 export const createUser = async (data: User) => {

@@ -4,7 +4,12 @@ import prisma from "@/lib/prisma";
 import Post from "@/components/shared/Post";
 
 export default async function Page({ params }: { params: { username: string } }) {
-  const { id: authorid } = await getUserByUserName(params.username);
+  const user = await getUserByUserName(params.username);
+
+  if (!user) {
+    return <div>User not found</div>;
+  }
+
   const posts = await prisma.posts.findMany({
     include: {
       _count: {
@@ -15,7 +20,7 @@ export default async function Page({ params }: { params: { username: string } })
       },
     },
     where: {
-      authorId: authorid,
+      authorId: user.id,
     },
   });
 
