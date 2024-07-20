@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma";
 
 export const addComment = async (postId: string, authId: string, content: string) => {
   try {
-    await prisma.comment.create({
+    await prisma.comments.create({
       data: {
         content,
         userId: authId,
@@ -22,7 +22,7 @@ export const addComment = async (postId: string, authId: string, content: string
 export const deleteComment = async (postId: string, authorId: string) => {
   let comment: CommentT | null = null;
   try {
-    comment = await prisma.comment.findFirst({
+    comment = await prisma.comments.findFirst({
       where: {
         userId: authorId,
         postId: postId,
@@ -33,7 +33,7 @@ export const deleteComment = async (postId: string, authorId: string) => {
     throw new Error("An error occurred while fetching user information.");
   }
   try {
-    await prisma.bookmark.delete({
+    await prisma.bookmarks.delete({
       where: {
         id: comment?.id,
       },
@@ -46,7 +46,7 @@ export const deleteComment = async (postId: string, authorId: string) => {
 
 export const getComment = async (postId: string, authorId: string) => {
   try {
-    const comment = await prisma.bookmark.findFirst({
+    const comment = await prisma.bookmarks.findFirst({
       where: {
         userId: authorId,
         postId: postId,

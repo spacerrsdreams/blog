@@ -8,7 +8,7 @@ import prisma from "@/lib/prisma";
 
 export const likePost = async (postId: string, authId: string) => {
   try {
-    const like = await prisma.like.create({
+    const like = await prisma.likes.create({
       data: {
         userId: authId,
         postId: postId,
@@ -26,7 +26,7 @@ export const likePost = async (postId: string, authId: string) => {
 export const unlikePost = async (postId: string, authorId: string) => {
   let like: Like | null = null;
   try {
-    like = await prisma.like.findFirst({
+    like = await prisma.likes.findFirst({
       where: {
         userId: authorId,
         postId: postId,
@@ -40,7 +40,7 @@ export const unlikePost = async (postId: string, authorId: string) => {
     throw new Error("An error occurred while fetching user information.");
   }
   try {
-    await prisma.like.delete({
+    await prisma.likes.delete({
       where: {
         id: like?.id,
       },
@@ -53,7 +53,7 @@ export const unlikePost = async (postId: string, authorId: string) => {
 
 export const getLike = async (postId: string, authorId: string) => {
   try {
-    const like = await prisma.like.findFirst({
+    const like = await prisma.likes.findFirst({
       where: {
         userId: authorId,
         postId: postId,

@@ -19,14 +19,14 @@ export default async function Comment({ data }: dataPropsType) {
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
           <Image
-            src={user.imageUrl}
-            alt={user.username || ""}
+            src={user?.imageUrl || ""}
+            alt={user?.username || ""}
             width={24}
             height={24}
             className="size-8 rounded-full"
           />
           <div className="flex flex-col">
-            <h4 className="text-sm capitalize">{user.username}</h4>
+            <h4 className="text-sm capitalize">{user?.username}</h4>
             <span className="text-sm text-gray-500">
               {formatCommentDate(data.comment.createdAt)}
             </span>

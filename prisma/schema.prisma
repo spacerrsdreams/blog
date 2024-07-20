@@ -6,7 +6,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-model Post {
+model Posts {
   id            String    @id @default(uuid())
   slug          String    @unique
   tag           String
@@ -17,54 +17,51 @@ model Post {
   createdAt     DateTime  @default(now())
   modifiedAt    DateTime  @updatedAt
   authorId      String
-  author        User      @relation("userPosts", fields: [authorId], references: [id])
-  likes         Like[]    @relation("postLikes")
-  comments      Comment[] @relation("postComments")
-  bookmarks     Bookmark[] @relation("postBookmarks")
+  author        Users      @relation("userPosts", fields: [authorId], references: [id])
+  likes         Likes[]    @relation("postLikes")
+  comments      Comments[] @relation("postComments")
+  bookmarks     Bookmarks[] @relation("postBookmarks")
+
+  @@map("posts")
 }
 
-model Like {
+model Likes {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   modifiedAt DateTime @updatedAt
   userId    String
   postId    String
-  user      User     @relation("userLikes", fields: [userId], references: [id])
-  post      Post     @relation("postLikes", fields: [postId], references: [id])
+  user      Users     @relation("userLikes", fields: [userId], references: [id])
+  post      Posts     @relation("postLikes", fields: [postId], references: [id])
+
+  @@map("likes")
 }
 
 
-model Comment {
+model Comments {
   id        String   @id @default(uuid())
   content   String
   userId    String
   postId    String
   createdAt DateTime @default(now())
   modifiedAt DateTime @updatedAt
-  user      User     @relation("userComments", fields: [userId], references: [id])
-  post      Post     @relation("postComments", fields: [postId], references: [id])
+  user      Users     @relation("userComments", fields: [userId], references: [id])
+  post      Posts     @relation("postComments", fields: [postId], references: [id])
+
+  @@map("comments")
 }
 
-model Bookmark {
+model Bookmarks {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   modifiedAt DateTime @updatedAt
   userId    String
   postId    String
-  user      User     @relation("userBookmarks", fields: [userId], references: [id])
-  post      Post     @relation("postBookmarks", fields: [postId], references: [id])
+  user      Users     @relation("userBookmarks", fields: [userId], references: [id])
+  post      Posts     @relation("postBookmarks", fields: [postId], references: [id])
+
+  @@map("bookmarks")
 }
-
-
-
-// model User {
-//   id        String     @id @default(uuid())
-//   createdAt DateTime   @default(now())
-//   posts     Post[]     @relation("userPosts")  
-//   likes     Like[]     @relation("userLikes")  
-//   comments  Comment[]  @relation("userComments")
-//   bookmarks Bookmark[] @relation("userBookmarks")
-// }
 
 model EmailAddress {
   id                     String       @id
@@ -72,44 +69,26 @@ model EmailAddress {
   verificationStatus     String       @map("verification_status")
   verificationStrategy   String       @map("verification_strategy")
   userId                 String
-  user                   User         @relation(fields: [userId], references: [id])
+  user                   Users         @relation(fields: [userId], references: [id])
 
   @@map("email_addresses")
-}
-
-model Web3Wallet {
-  id                     String       @id
-  userId                 String
-  user                   User         @relation(fields: [userId], references: [id])
-
-  @@map("web3_wallets")
 }
 
 model PhoneNumber {
   id                     String       @id
   number                 String?
   userId                 String
-  user                   User         @relation(fields: [userId], references: [id])
+  user                   Users         @relation(fields: [userId], references: [id])
 
   @@map("phone_numbers")
 }
 
-model ExternalAccount {
-  id                     String       @id
-  userId                 String
-  user                   User         @relation(fields: [userId], references: [id])
 
-  @@map("external_accounts")
-}
-
-
-
-
-model User {
+model Users {
   id                     String       @id
   firstName              String?      @map("first_name")
   lastName               String?      @map("last_name")
-  username               String       @map("username")
+  username               String?      @map("username")
   birthday               String?      @map("birthday") 
   externalId             String?      @map("external_id")
   gender                 String?      @map("gender")
@@ -118,7 +97,6 @@ model User {
   passwordEnabled        Boolean      @map("password_enabled")
   primaryEmailAddressId  String?      @map("primary_email_address_id")
   primaryPhoneNumberId   String?      @map("primary_phone_number_id")
-  primaryWeb3WalletId    String?      @map("primary_web3_wallet_id")
   profileImageUrl        String       @map("profile_image_url")
   twoFactorEnabled       Boolean      @map("two_factor_enabled")
   updatedAt              BigInt       @map("updated_at")
@@ -127,13 +105,11 @@ model User {
   publicMetadata         Json         @map("public_metadata")
   unsafeMetadata         Json         @map("unsafe_metadata")
   emailAddresses         EmailAddress[]
-  web3Wallets            Web3Wallet[]
   phoneNumbers           PhoneNumber[]
-  externalAccounts       ExternalAccount[]
-  posts                  Post[]       @relation("userPosts")
-  likes                  Like[]       @relation("userLikes")
-  comments               Comment[]    @relation("userComments")
-  bookmarks              Bookmark[]   @relation("userBookmarks")
+  posts                  Posts[]       @relation("userPosts")
+  likes                  Likes[]       @relation("userLikes")
+  comments               Comments[]    @relation("userComments")
+  bookmarks              Bookmarks[]   @relation("userBookmarks")
 
   @@map("users")
 }

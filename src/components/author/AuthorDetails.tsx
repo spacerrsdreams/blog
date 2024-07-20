@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default async function AuthorDetails({ profileImageSrc, authorName, authorId }: Props) {
-  const posts = await prisma.post.findMany({
+  const posts = await prisma.posts.findMany({
     where: {
       authorId,
     },

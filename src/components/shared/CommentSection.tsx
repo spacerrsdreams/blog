@@ -1,5 +1,3 @@
-import type { CommentT } from "@/types";
-
 import prisma from "@/lib/prisma";
 
 import Comment from "./Comment";
@@ -10,7 +8,7 @@ type propsType = {
   };
 };
 export default async function CommentSection({ data }: propsType) {
-  const comments: CommentT[] = await prisma.comment.findMany({
+  const comments = await prisma.comments.findMany({
     where: {
       postId: data.postId,
     },

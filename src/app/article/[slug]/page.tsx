@@ -7,7 +7,7 @@ import CommentSheet from "@/components/shared/CommentSheet";
 import LikeButton from "@/components/shared/LikeButton";
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const post = await prisma.post.findUnique({
+  const post = await prisma.posts.findUnique({
     where: {
       slug: params.slug,
     },

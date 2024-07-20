@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma";
 
 export const makeBookmark = async (postId: string, authId: string) => {
   try {
-    await prisma.bookmark.create({
+    await prisma.bookmarks.create({
       data: {
         createdAt: new Date(),
         modifiedAt: new Date(),
@@ -23,7 +23,7 @@ export const makeBookmark = async (postId: string, authId: string) => {
 export const removeBookmark = async (postId: string, authorId: string) => {
   let bookmark: Bookmark | null = null;
   try {
-    bookmark = await prisma.bookmark.findFirst({
+    bookmark = await prisma.bookmarks.findFirst({
       where: {
         userId: authorId,
         postId: postId,
@@ -34,7 +34,7 @@ export const removeBookmark = async (postId: string, authorId: string) => {
     throw new Error("An error occurred while fetching user information.");
   }
   try {
-    await prisma.bookmark.delete({
+    await prisma.bookmarks.delete({
       where: {
         id: bookmark?.id,
       },
@@ -47,7 +47,7 @@ export const removeBookmark = async (postId: string, authorId: string) => {
 
 export const getBookmark = async (postId: string, authorId: string) => {
   try {
-    const bookmark = await prisma.bookmark.findFirst({
+    const bookmark = await prisma.bookmarks.findFirst({
       where: {
         userId: authorId,
         postId: postId,

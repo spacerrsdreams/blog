@@ -1,5 +1,5 @@
-import { createUser } from "@/server/user";
-import type { CreateUser } from "@/types";
+import { createUser, updateUser } from "@/server/user";
+import type { User } from "@/types";
 import { Webhook } from "svix";
 
 import type { WebhookEvent } from "@clerk/nextjs/server";
@@ -48,16 +48,23 @@ export async function POST(req: Request) {
 
   const eventType = evt.type;
 
-  if (eventType === "user.created") {
-    try {
-      await createUser(payload as CreateUser);
-      return new Response("", { status: 200 });
-    } catch (err) {
-      console.error("Error creating user:", err);
-      return new Response("Error occured", {
-        status: 400,
-      });
+  try {
+    switch (eventType) {
+      case "user.created":
+        await createUser(payload as User);
+        break;
+      case "user.updated":
+        console.log("trigger", payload.data.id);
+        await updateUser(payload as User);
+        break;
+      default:
+        break;
     }
+  } catch (err) {
+    console.error(err);
+    return new Response("Error occured", {
+      status: 400,
+    });
   }
 
   return new Response("", { status: 200 });

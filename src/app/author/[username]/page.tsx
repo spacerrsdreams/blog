@@ -5,7 +5,7 @@ import Post from "@/components/shared/Post";
 
 export default async function Page({ params }: { params: { username: string } }) {
   const { id: authorid } = await getUserByUserName(params.username);
-  const posts = await prisma.post.findMany({
+  const posts = await prisma.posts.findMany({
     include: {
       _count: {
         select: {
