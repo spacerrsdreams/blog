@@ -3,11 +3,13 @@ export const ROUTES = {
   createArticle: "/create-article",
   api: {
     post: {
-      createLike: "/api/post/like",
+      createLike: "/api/post/create-like",
       getLike: "/api/post/get-like",
-      deleteLike: "/api/post/delete-like",
+      removeLike: "/api/post/remove-like",
       createComment: "/api/post/comment",
-      deleteComment: "/api/post/delete-comment",
+      removeComment: "/api/post/remove-comment",
+      createBookmark: "/api/post/create-bookmark",
+      removeBookmark: "/api/post/remove-bookmark",
     },
   },
 };

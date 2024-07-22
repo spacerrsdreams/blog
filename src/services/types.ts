@@ -51,3 +51,26 @@ export const CommentResponseSchema = z
 
 export type CommentRequestPayload = z.infer<typeof CommentRequestSchema>;
 export type CommentResponsePayload = z.infer<typeof CommentResponseSchema>;
+
+export const BookmarkRequestSchema = z
+  .object({
+    postId: z.string().min(1, "Post ID must be at least 1 character long."),
+    userId: z.string().min(1, "User ID must be at least 1 character long."),
+  })
+  .strict();
+
+export const BookmarkResponseSchema = z.object({
+  data: z
+    .object({
+      id: z.string(),
+      createdAt: z.string().transform((val) => new Date(val)),
+      modifiedAt: z.string().transform((val) => new Date(val)),
+      userId: z.string(),
+      postId: z.string(),
+    })
+    .nullable(),
+  message: z.string().optional(),
+});
+
+export type BookmarkRequestPayload = z.infer<typeof BookmarkRequestSchema>;
+export type BookmarkResponsePayload = z.infer<typeof BookmarkResponseSchema>;

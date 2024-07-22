@@ -52,7 +52,7 @@ export const useLikePost = () => {
 export const useUnlikePost = () => {
   return useMutation({
     mutationFn: async (payload: LikeRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.deleteLike, {
+      const res = await fetch(ROUTES.api.post.removeLike, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

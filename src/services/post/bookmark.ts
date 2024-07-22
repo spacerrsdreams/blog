@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { ROUTES } from "@/utils/routes";
-import { CommentResponseSchema, type CommentRequestPayload } from "@/services/types";
+import { BookmarkResponseSchema, type BookmarkRequestPayload } from "@/services/types";
 
-export const useCreateComment = () => {
+export const useCreateBookmark = () => {
   return useMutation({
-    mutationFn: async (payload: CommentRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.createComment, {
+    mutationFn: async (payload: BookmarkRequestPayload) => {
+      const res = await fetch(ROUTES.api.post.createBookmark, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -18,7 +18,7 @@ export const useCreateComment = () => {
         throw new Error("Failed to create comment.");
       }
 
-      return CommentResponseSchema.parse(await res.json());
+      return BookmarkResponseSchema.parse(await res.json());
     },
     onError: (error) => {
       console.error("Error updating user comment information:", error);
@@ -26,10 +26,10 @@ export const useCreateComment = () => {
   });
 };
 
-export const useDeleteComment = () => {
+export const useRemoveBookmark = () => {
   return useMutation({
     mutationFn: async (id: string) => {
-      const res = await fetch(`${ROUTES.api.post.removeComment}?id=${id}`, {
+      const res = await fetch(`${ROUTES.api.post.removeBookmark}?id=${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -37,13 +37,13 @@ export const useDeleteComment = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to delete comment.");
+        throw new Error("Failed to remove comment.");
       }
 
       return null;
     },
     onError: (error) => {
-      console.error("Error deleting user comment:", error);
+      console.error("Error updating user comment information:", error);
     },
   });
 };

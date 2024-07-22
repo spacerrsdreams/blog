@@ -1,5 +1,6 @@
 import type { Post } from "@/types";
 
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,6 +18,8 @@ export default async function Post({
 }: {
   post: Post;
 }) {
+  const { userId } = auth();
+
   const author = await prismaClient.users.findUnique({
     where: {
       id: authorId,
@@ -67,7 +70,7 @@ export default async function Post({
                   <span>{formatNumberWithK(_count.comments)}</span>
                 </span>
               </div>
-              <BookmarkButton data={{ authorId: authorId, postId: id }} />
+              <BookmarkButton userId={userId} postId={id} />
             </div>
           </Link>
         </div>

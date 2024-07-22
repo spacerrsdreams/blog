@@ -4,24 +4,27 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ROUTES } from "@/utils/routes";
 import { handleError } from "@/lib/error";
 import prismaClient from "@/lib/prisma";
-import { LikeRequestSchema } from "@/services/types";
+import { BookmarkRequestSchema } from "@/services/types";
 
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
-    const { postId, userId } = LikeRequestSchema.parse(body);
-    const like = await prismaClient.likes.create({
+    const { postId, userId } = BookmarkRequestSchema.parse(body);
+    const bookmark = await prismaClient.bookmarks.create({
       data: {
         userId,
         postId,
       },
     });
-    if (like) {
+    if (bookmark) {
       revalidatePath(ROUTES.root);
-      return NextResponse.json({ message: "Post liked successfully." });
+      return NextResponse.json(
+        { data: bookmark, message: "Post bookmarked successfully." },
+        { status: 201 },
+      );
     } else {
       return NextResponse.json(
-        { error: "An error occurred while liking the post." },
+        { error: "An error occurred while bookmarking the post." },
         { status: 500 },
       );
     }

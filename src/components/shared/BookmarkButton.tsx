@@ -1,65 +1,81 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { getBookmark } from "@/server/bookmark";
+import { RedirectToSignIn } from "@clerk/nextjs";
+import { useState } from "react";
 
-import { useEffect, useState } from "react";
-
-import { useMakeBookmark, useRemoveBookmark } from "@/app/client/bookmark";
+import { ERROR_CODES, ERROR_MESSAGES } from "@/lib/error";
+import { useCreateBookmark, useRemoveBookmark } from "@/services/post/bookmark";
+import { useToast } from "@/components/ui/use-toast";
 
 import { Icons } from "./Icons";
 
-type propsType = {
-  data: {
-    authorId: string;
-    postId: string;
-  };
+type Props = {
+  userId: string | null | undefined;
+  postId: string;
 };
 
-export default function BookmarkButton(postInfo: propsType) {
+export default function BookmarkButton({ userId, postId }: Props) {
+  const { toast } = useToast();
   const [isChecked, setIsChecked] = useState(false);
-  const makeBookmarkData = useMakeBookmark();
-  const removeBookmarkData = useRemoveBookmark();
+  const [bookmarkId, _] = useState("");
+  const { mutateAsync: createBookmarkAsync } = useCreateBookmark();
+  const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark();
 
-  useEffect(() => {
-    getBookmark(postInfo.data.postId, postInfo.data.authorId).then((data) => {
-      if (data) setIsChecked(true);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getBookmark(postInfo.data.postId, postInfo.data.authorId).then((data) => {
+  //     if (data) setIsChecked(true);
+  //   });
+  // }, []);
 
-  const handleClick = async (event: React.MouseEvent<SVGSVGElement>) => {
-    event.preventDefault();
-    if (isChecked) {
-      setIsChecked(false);
+  const createBookmark = () => {
+    if (!userId) {
+      toast({
+        variant: "destructive",
+        title: "Unauthorized",
+        description: ERROR_MESSAGES[ERROR_CODES.USER_IS_NOT_AUTHENTICATED],
+        action: <RedirectToSignIn />,
+      });
 
-      try {
-        await removeBookmarkData.mutateAsync({
-          postId: postInfo.data.postId,
-          authId: postInfo.data.authorId,
-        });
-      } catch (error) {
-        setIsChecked(true);
-      }
-    } else {
-      setIsChecked(true);
-
-      try {
-        await makeBookmarkData.mutateAsync({
-          postId: postInfo.data.postId,
-          authId: postInfo.data.authorId,
-        });
-      } catch (error) {
-        setIsChecked(false);
-      }
+      return;
     }
+
+    setIsChecked(true);
+
+    createBookmarkAsync({
+      postId,
+      userId,
+    }).catch(() => {
+      setIsChecked(false);
+    });
+  };
+
+  const removeBookmark = () => {
+    if (!userId) return;
+
+    if (!userId) {
+      toast({
+        variant: "destructive",
+        title: "Unauthorized",
+        description: ERROR_MESSAGES[ERROR_CODES.USER_IS_NOT_AUTHENTICATED],
+        action: <RedirectToSignIn />,
+      });
+
+      return;
+    }
+
+    setIsChecked(false);
+
+    removeBookmarkAsync(bookmarkId).catch(() => {
+      setIsChecked(true);
+    });
   };
 
   return (
     <span className="flex items-center">
       {isChecked ? (
-        <Icons.bookmarkDark onClick={handleClick} />
+        <Icons.bookmarkDark onClick={removeBookmark} />
       ) : (
-        <Icons.bookmark onClick={handleClick} />
+        <Icons.bookmark onClick={createBookmark} />
       )}
     </span>
   );

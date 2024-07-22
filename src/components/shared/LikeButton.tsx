@@ -37,7 +37,7 @@ export default function LikeButton({ count, postId, userId }: Props) {
     });
   }, [userId, getLikeAsync, postId]);
 
-  const like = () => {
+  const like = async () => {
     if (!userId) {
       toast({
         variant: "destructive",
@@ -53,7 +53,7 @@ export default function LikeButton({ count, postId, userId }: Props) {
     setIsLiked(true);
 
     try {
-      likePostAsync({
+      await likePostAsync({
         postId,
         userId,
       });
@@ -63,7 +63,7 @@ export default function LikeButton({ count, postId, userId }: Props) {
     }
   };
 
-  const unLike = () => {
+  const unLike = async () => {
     if (!userId) {
       toast({
         variant: "destructive",
@@ -75,13 +75,11 @@ export default function LikeButton({ count, postId, userId }: Props) {
       return;
     }
 
-    console.log("trigger");
-
     setLikes(likes - 1);
     setIsLiked(false);
 
     try {
-      unlikePostAsync({
+      await unlikePostAsync({
         postId,
         userId,
       });
