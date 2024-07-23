@@ -2,18 +2,17 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { handleError } from "@/lib/error";
 import prismaClient from "@/lib/prisma";
+import { BookmarkRequestSchema } from "@/services/types";
 
 export const DELETE = async (req: NextRequest) => {
   try {
-    const id = req.nextUrl.searchParams.get("id");
+    const body = await req.json();
+    const { postId, userId } = BookmarkRequestSchema.parse(body);
 
-    if (!id) {
-      return NextResponse.json({ message: "id is required" }, { status: 400 });
-    }
-
-    await prismaClient.bookmarks.delete({
+    await prismaClient.bookmarks.deleteMany({
       where: {
-        id,
+        userId,
+        postId,
       },
     });
 
