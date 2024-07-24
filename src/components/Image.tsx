@@ -1,33 +1,59 @@
 "use client";
 
-import { type ChangeEvent } from "react";
+import Image from "next/image";
+import { useState, type ChangeEvent } from "react";
 
 import { useUploadImage } from "@/lib/aws";
+import { useToast } from "@/components/ui/use-toast";
 
-export default function Image() {
+export default function Cool() {
+  const { toast } = useToast();
   const { mutateAsync } = useUploadImage();
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-  const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
 
-    const buffer = await file.arrayBuffer();
-    const params = {
-      fileName: file.name,
-      type: file.type,
-      width: "800",
-      height: "800",
-      buffer: Buffer.from(buffer),
-    };
+    const file = e.target.files?.[0];
 
-    try {
-      await mutateAsync(params);
-      alert("Image uploaded successfully!");
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      alert("Error uploading image.");
+    if (!file) {
+      alert("Please select a file to upload.");
+      return;
     }
+    mutateAsync({
+      file,
+      filename: file.name,
+      contentType: file.type,
+    })
+      .then((imageUrl) => {
+        console.log(imageUrl);
+        setImageUrl(imageUrl);
+        toast({
+          title: "Image uploaded successfully",
+          duration: 5000,
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+        toast({
+          title: "Failed to upload image",
+          description: e.message,
+          duration: 5000,
+        });
+      });
   };
 
-  return <input type="file" accept="image/*" onChange={handleImageChange} />;
+  return (
+    <div>
+      <input type="file" accept="image/*" onChange={handleImageChange} />
+      {imageUrl && (
+        <Image
+          src={imageUrl}
+          alt="Uploaded Image"
+          width={500} // Adjust width as necessary
+          height={500} // Adjust height as necessary
+        />
+      )}
+    </div>
+  );
 }

@@ -12,5 +12,8 @@ export const ROUTES = {
       createBookmark: "/api/post/create-bookmark",
       removeBookmark: "/api/post/remove-bookmark",
     },
+    image: {
+      upload: "/api/upload",
+    },
   },
 };
