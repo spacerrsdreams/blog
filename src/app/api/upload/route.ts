@@ -8,12 +8,6 @@ const ACCESS_KEY = process.env.AWS_ACCESS_KEY;
 const SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 
 if (!REGION || !BUCKET || !ACCESS_KEY || !SECRET_ACCESS_KEY) {
-  console.log({
-    REGION,
-    BUCKET,
-    ACCESS_KEY,
-    SECRET_ACCESS_KEY,
-  });
   throw new Error("Environment variables for AWS S3 is not set.");
 }
 
