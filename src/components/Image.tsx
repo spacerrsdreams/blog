@@ -26,7 +26,6 @@ export default function Cool() {
       contentType: file.type,
     })
       .then((imageUrl) => {
-        console.log(imageUrl);
         setImageUrl(imageUrl);
         toast({
           title: "Image uploaded successfully",

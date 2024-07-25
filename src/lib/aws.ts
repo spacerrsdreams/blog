@@ -34,14 +34,13 @@ export const useUploadImage = () => {
           body: formData,
         });
 
-        const imageUrl = `${url}/${fields.key}`;
-
-        console.log(imageUrl);
+        const imageUrl = `${url}${fields.key}`;
 
         if (!uploadResponse.ok) {
           throw new Error("Upload failed.");
         }
 
+        console.log(imageUrl);
         // Step 4: Check if the response has content before parsing as JSON
         return imageUrl;
       } else {
