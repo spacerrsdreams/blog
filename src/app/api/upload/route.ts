@@ -38,6 +38,7 @@ export async function POST(request: Request) {
       ],
       Fields: {
         "Content-Type": contentType,
+        acl: "public-read",
       },
       Expires: 600, // Seconds before the presigned post expires. 3600 by default.
     });

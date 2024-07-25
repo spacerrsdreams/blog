@@ -1,3 +1,5 @@
+import { Tester } from "@/TestButton";
+
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
@@ -44,6 +46,7 @@ export default function Header() {
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
+            <Tester />
             <div className="ml-2 flex items-center">
               <SignedOut>
                 <SignInButton>
