@@ -1,34 +1,48 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-export function CommentOption() {
+import { useCommentProvider } from "./CommentProvider";
+import { Icons } from "./Icons";
+
+type Props = {
+  commentId: string;
+};
+
+export function CommentOption({ commentId }: Props) {
+  const [position, setPosition] = useState("bottom");
+  const { setShowModal, setCommentId, setInEdit } = useCommentProvider();
+
+  const handleChange = (value: string) => {
+    setPosition;
+    setCommentId(commentId);
+    value === "delete" ? setShowModal(true) : setInEdit(true);
+  };
   return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <div>...</div>
-        <SelectValue placeholder="Select a fruit" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="apple">Apple</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <div className="cursor-pointer">
+          <Icons.commentOption />
+        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuRadioGroup value={position} onValueChange={handleChange}>
+          <DropdownMenuRadioItem className="cursor-pointer" value="edit">
+            Edit this comment
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem className="cursor-pointer" value="delete">
+            Delete
+          </DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

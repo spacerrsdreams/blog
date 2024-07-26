@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <div className="flex size-full flex-col gap-10 px-20">
+    <div className="z-100 flex size-full flex-col gap-10 px-20">
       <div className="mt-10 flex w-full flex-col items-center justify-center gap-2">
         <Image
           src={post.coverImageSrc}
@@ -62,9 +62,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           </div>
           <div className="mt-6 flex items-center border-b border-t border-border/60 py-1">
             <LikeButton count={post?.likes?.length} postId={post?.id} userId={userId} />
-            <CommentSheet
-              {...{ authorId: post.authorId, postId: post.id, commentsCount: post.comments.length }}
-            />
+            <CommentSheet {...{ postId: post.id, commentsCount: post.comments.length }} />
           </div>
         </div>
         <div className="mb-20">blablalbbal</div>

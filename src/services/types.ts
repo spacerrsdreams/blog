@@ -28,8 +28,13 @@ export type LikeResponsePayload = z.infer<typeof LikeResponseSchema>;
 export const CommentRequestSchema = z
   .object({
     postId: z.string().min(1, "Post ID must be at least 1 character long."),
-    userId: z.string().min(1, "User ID must be at least 1 character long."),
     content: z.string().min(1, "Comment content must be at least 1 character long."),
+  })
+  .strict();
+
+export const DeleteCommentRequestSchema = z
+  .object({
+    commentId: z.string().min(1, "Comment ID must be at least 1 character long"),
   })
   .strict();
 
@@ -50,6 +55,7 @@ export const CommentResponseSchema = z
   .strict();
 
 export type CommentRequestPayload = z.infer<typeof CommentRequestSchema>;
+export type DeleteCommentRequestPayload = z.infer<typeof DeleteCommentRequestSchema>;
 export type CommentResponsePayload = z.infer<typeof CommentResponseSchema>;
 
 export const BookmarkRequestSchema = z

@@ -16,10 +16,10 @@ export default async function CommentSection({ data }: propsType) {
   return (
     <div className="mt-8 flex flex-col gap-6 overflow-y-auto">
       {comments.map((comment) => (
-        <>
-          <Comment key={comment.id} data={{ comment }} />
-          <div className="w-full border-[0.5px] border-gray-300"></div>
-        </>
+        <div key={comment.id}>
+          <Comment data={{ comment }} />
+          <div className="mt-4 w-full border-[0.5px] border-gray-300"></div>
+        </div>
       ))}
     </div>
   );
