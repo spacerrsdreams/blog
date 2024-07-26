@@ -1,11 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
-import dynamic from "next/dynamic";
-import React, { useMemo, useState } from "react";
-import { type UnprivilegedEditor } from "react-quill";
+import { useState } from "react";
 
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -16,8 +13,13 @@ import { TAGS } from "@/constants/tags";
 
 import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
+import type { Value } from "react-quill";
 
+import { useCreateArticle } from "@/services/post/article";
+import { CreateArticleRequestSchema, type CreateArticleRequestPayload } from "@/services/types";
 import Article from "@/components/shared/article/Article";
+import ArticleEditor from "@/components/shared/article/ArticleEditor";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -26,26 +28,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 
-const formSchema = z.object({
-  title: z.string().max(40).min(2, {
-    message: "title must be at least 2 characters.",
-  }),
-  subTitle: z.string().max(120).min(2, {
-    message: "subTitle must be at least 2 characters.",
-  }),
-  tag: z.enum(TAGS, {
-    errorMap: () => ({ message: "Tag must be one of: AI, Finances, Crypto, Startups." }),
-  }),
-  postContent: z.any(),
-});
-
-export default function Editor() {
-  const [value, setValue] = useState("");
+export default function CreateArticle() {
+  const [editorValue, setEditorValue] = useState<Value>("");
+  const { mutateAsync: createArticleAsync } = useCreateArticle();
   const { user } = useUser();
-  const ReactQuill = useMemo(() => dynamic(() => import("react-quill"), { ssr: false }), []);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { toast } = useToast();
+
+  const form = useForm<CreateArticleRequestPayload>({
+    resolver: zodResolver(CreateArticleRequestSchema),
     defaultValues: {
       title: "How I Hunt Down My Nemesis",
       subTitle:
@@ -55,34 +47,27 @@ export default function Editor() {
     },
   });
 
-  function handleChange(content: string, _: never, __: never, editor: UnprivilegedEditor) {
-    setValue(content);
-    console.log(editor.getContents());
-    form.setValue("postContent", editor.getContents());
-  }
-
-  const modules = useMemo(
-    () => ({
-      toolbar: [
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        ["bold", "italic", "underline", "strike"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        [{ indent: "-1" }, { indent: "+1" }],
-        [{ align: [] }],
-        ["blockquote", "code-block"],
-        ["link", "image"],
-      ],
-    }),
-    [],
-  );
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: CreateArticleRequestPayload) => {
+    createArticleAsync(values)
+      .then(() => {
+        toast({
+          title: "Success",
+          description: "Article published successfully.",
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+        toast({
+          title: "Error",
+          variant: "destructive",
+          description: "Failed to publish post",
+        });
+      });
   };
 
   return (
-    <div className="h-full">
-      <div className="flex w-full py-2">
+    <div className="h-screen">
+      <div className="flex h-full w-full py-2">
         <div className="flex h-full flex-col gap-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="h-full space-y-2">
@@ -134,13 +119,19 @@ export default function Editor() {
                   </FormItem>
                 )}
               />
-              <ReactQuill
-                className="h-[350px] w-[680px]"
-                modules={modules}
-                theme="snow"
-                value={value}
-                onChange={handleChange}
+              <ArticleEditor
+                form={form}
+                onEditorChange={(e: Value) => {
+                  setEditorValue(e);
+                }}
+                editorValue={editorValue}
               />
+              <Button
+                type="submit"
+                className="transfrom absolute bottom-12 left-1/2 z-10 -translate-x-1/2"
+              >
+                Publish Article
+              </Button>
             </form>
           </Form>
         </div>
@@ -149,7 +140,7 @@ export default function Editor() {
             authorFullName={user?.fullName || ""}
             authorImageUrl={user?.imageUrl || ""}
             postTag={form.watch("tag")}
-            postContent={value}
+            postContent={editorValue}
             subTitle={form.watch("subTitle")}
             title={form.watch("title")}
           />

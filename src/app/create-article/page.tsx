@@ -1,5 +1,5 @@
-import Editor from "@/components/shared/editor/Editor";
+import CreateArticle from "@/components/shared/article/CreateArticle";
 
 export default function page() {
-  return <Editor />;
+  return <CreateArticle />;
 }

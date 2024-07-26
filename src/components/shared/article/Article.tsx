@@ -1,8 +1,9 @@
 import Image from "next/image";
-import ReactQuill from "react-quill";
+import { type Value } from "react-quill";
 
 import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
+import ArticleContent from "@/components/shared/article/ArticleContent";
 import { Icons } from "@/components/shared/Icons";
 
 type Props = {
@@ -11,7 +12,7 @@ type Props = {
   authorImageUrl: string;
   authorFullName: string;
   postTag: string;
-  postContent: string;
+  postContent: Value;
 };
 
 export default function Article({
@@ -31,7 +32,7 @@ export default function Article({
       <div className="flex flex-col">
         <div className="mx-3 flex gap-4">
           <Image
-            src={authorImageUrl}
+            src={authorImageUrl || "https://github.com/shadcn.png"}
             alt={authorFullName || ""}
             width={48}
             height={48}
@@ -57,12 +58,7 @@ export default function Article({
         </div>
       </div>
       <div className="mb-10">
-        <ReactQuill
-          theme="bubble"
-          className="w-[680px] text-lg text-muted-foreground"
-          value={postContent}
-          readOnly={true}
-        />
+        <ArticleContent postContent={postContent} />
       </div>
     </div>
   );

@@ -17,11 +17,7 @@ export const handleError = (error: unknown) => {
     );
   }
 
-  console.error("An error occurred while fetching the like data.", error);
-  return NextResponse.json(
-    { error: "An error occurred while fetching the like data." },
-    { status: 500 },
-  );
+  return NextResponse.json({ error: "Something went wrong..." }, { status: 500 });
 };
 
 export const ERROR_CODES = {
