@@ -11,6 +11,7 @@ import { Icons } from "./Icons";
 type Props = {
   postId: string;
   commentsCount: number;
+  disabled?: boolean;
 };
 
 export default async function CommentSheet({ postId, commentsCount }: Props) {

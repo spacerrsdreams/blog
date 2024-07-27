@@ -2,13 +2,13 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { uuid } from "uuidv4";
 
-const REGION = process.env.AWS_BUCKET_REGION;
-const BUCKET = process.env.AWS_BUCKET_NAME;
-const ACCESS_KEY = process.env.AWS_ACCESS_KEY;
-const SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
+const REGION = process.env.AWS_S3_BUCKET_REGION;
+const BUCKET = process.env.AWS_S3_BUCKET_NAME;
+const ACCESS_KEY = process.env.AWS_S3_ACCESS_KEY;
+const SECRET_ACCESS_KEY = process.env.AWS_S3_SECRET_ACCESS_KEY;
 
 if (!REGION || !BUCKET || !ACCESS_KEY || !SECRET_ACCESS_KEY) {
-  throw new Error("Environment variables for AWS S3 is not set.");
+  throw new Error("Environment variables for AWS Bucket is not set.");
 }
 
 const client = new S3Client({

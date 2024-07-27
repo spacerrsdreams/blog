@@ -1,7 +1,7 @@
 export const ROUTES = {
   root: "/",
   createArticle: "/create-article",
-  postSlug: "/article/[slug]",
+  articleSlug: "/article/[slug]",
   api: {
     post: {
       create: "api/post/create",

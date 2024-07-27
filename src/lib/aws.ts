@@ -40,7 +40,6 @@ export const useUploadImage = () => {
           throw new Error("Upload failed.");
         }
 
-        console.log(imageUrl);
         // Step 4: Check if the response has content before parsing as JSON
         return imageUrl;
       } else {

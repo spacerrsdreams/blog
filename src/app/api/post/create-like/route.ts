@@ -24,7 +24,8 @@ export const POST = async (req: NextRequest) => {
       },
     });
     if (like) {
-      revalidatePath(ROUTES.root);
+      revalidatePath(ROUTES.root, "page");
+      revalidatePath(ROUTES.articleSlug, "page");
       return NextResponse.json({ message: "Post liked successfully." }, { status: 201 });
     } else {
       return NextResponse.json(

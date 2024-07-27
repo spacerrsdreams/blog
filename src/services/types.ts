@@ -95,6 +95,7 @@ export const CreateArticleRequestSchema = z
     tag: z.enum(TAGS, {
       errorMap: () => ({ message: "Tag must be one of: AI, Finances, Crypto, Startups." }),
     }),
+    coverImageSrc: z.string().optional(),
     postContent: z.record(z.any()),
   })
   .strict();

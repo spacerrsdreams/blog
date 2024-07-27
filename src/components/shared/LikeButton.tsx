@@ -15,9 +15,10 @@ type Props = {
   count: number;
   postId: string;
   userId: string | null | undefined;
+  disabled?: boolean;
 };
 
-export default function LikeButton({ count, postId, userId }: Props) {
+export default function LikeButton({ count, postId, disabled, userId }: Props) {
   const { toast } = useToast();
   const [likes, setLikes] = useState(count);
   const [isLiked, setIsLiked] = useState(false);
@@ -30,7 +31,7 @@ export default function LikeButton({ count, postId, userId }: Props) {
   }, [count]);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || disabled) return;
 
     getLikeAsync({ userId, postId }).then(({ data }) => {
       data && setIsLiked(true);
@@ -90,7 +91,7 @@ export default function LikeButton({ count, postId, userId }: Props) {
   };
 
   return (
-    <Button variant="ghost" onClick={isLiked ? unLike : like}>
+    <Button disabled={disabled} variant="ghost" onClick={isLiked ? unLike : like}>
       {isLiked ? <Icons.clapDark /> : <Icons.clap />}
       <span>{formatNumberWithK(likes)}</span>
     </Button>

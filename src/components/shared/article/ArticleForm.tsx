@@ -24,7 +24,7 @@ type Props = {
   >;
 };
 
-export default function ArticleEditor({ form, editorValue, onEditorChange }: Props) {
+export default function ArticleForm({ form, editorValue, onEditorChange }: Props) {
   const quillRef = useRef<ReactQuill | null>(null);
   const { mutateAsync: uploadImageAsync } = useUploadImage();
 

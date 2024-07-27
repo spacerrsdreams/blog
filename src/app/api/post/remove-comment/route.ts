@@ -24,7 +24,7 @@ export const DELETE = async (req: NextRequest) => {
       },
     });
 
-    revalidatePath(ROUTES.postSlug, "page");
+    revalidatePath(ROUTES.articleSlug, "page");
     return NextResponse.json({ message: "Comment removed successfully." }, { status: 200 });
   } catch (error) {
     return handleError(error);
