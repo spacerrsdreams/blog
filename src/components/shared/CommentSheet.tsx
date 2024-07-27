@@ -1,3 +1,5 @@
+"use client";
+
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -7,16 +9,22 @@ import CommentSection from "./CommentSection";
 import { Icons } from "./Icons";
 
 type PropsType = {
-  authorId: string;
+  userId: string;
   postId: string;
   commentsCount: number;
+  disabled?: boolean;
 };
 
-export default async function CommentSheet({ authorId, postId, commentsCount }: PropsType) {
+export default function CommentSheet({
+  userId,
+  postId,
+  commentsCount,
+  disabled = false,
+}: PropsType) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="flex items-center">
+        <Button disabled={disabled} variant="ghost" className="flex items-center">
           <Icons.message />
           <span>{formatNumberWithK(commentsCount)}</span>
         </Button>
@@ -25,7 +33,7 @@ export default async function CommentSheet({ authorId, postId, commentsCount }: 
         <SheetHeader>
           <SheetTitle>{`Comments(${commentsCount})`}</SheetTitle>
         </SheetHeader>
-        <CommentEditor data={{ authId: authorId, postId: postId }} />
+        <CommentEditor data={{ authId: userId, postId: postId }} />
         <CommentSection data={{ postId: postId }} />
       </SheetContent>
     </Sheet>
