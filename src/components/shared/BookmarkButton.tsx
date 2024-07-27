@@ -1,10 +1,11 @@
 "use client";
 
 import { RedirectToSignIn } from "@clerk/nextjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { MouseEvent } from "react";
 
 import { ERROR_CODES, ERROR_MESSAGES } from "@/lib/error";
-import { useCreateBookmark, useRemoveBookmark } from "@/services/post/bookmark";
+import { useCreateBookmark, useGetBookmark, useRemoveBookmark } from "@/services/post/bookmark";
 import { useToast } from "@/components/ui/use-toast";
 
 import { Icons } from "./Icons";
@@ -17,17 +18,21 @@ type Props = {
 export default function BookmarkButton({ userId, postId }: Props) {
   const { toast } = useToast();
   const [isChecked, setIsChecked] = useState(false);
-  const [bookmarkId, _] = useState("");
   const { mutateAsync: createBookmarkAsync } = useCreateBookmark();
   const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark();
+  const { mutateAsync: getBookmarkAsync } = useGetBookmark();
 
-  // useEffect(() => {
-  //   getBookmark(postInfo.data.postId, postInfo.data.authorId).then((data) => {
-  //     if (data) setIsChecked(true);
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (!userId) return;
+    getBookmarkAsync({ userId, postId }).then((data) => {
+      if (data.data) {
+        setIsChecked(true);
+      }
+    });
+  }, [getBookmarkAsync, userId, postId]);
 
-  const createBookmark = () => {
+  const createBookmark = (event: MouseEvent<SVGElement>) => {
+    event.preventDefault();
     if (!userId) {
       toast({
         variant: "destructive",
@@ -49,7 +54,9 @@ export default function BookmarkButton({ userId, postId }: Props) {
     });
   };
 
-  const removeBookmark = () => {
+  const removeBookmark = (event: MouseEvent<SVGElement>) => {
+    event.preventDefault();
+
     if (!userId) return;
 
     if (!userId) {
@@ -65,7 +72,7 @@ export default function BookmarkButton({ userId, postId }: Props) {
 
     setIsChecked(false);
 
-    removeBookmarkAsync(bookmarkId).catch(() => {
+    removeBookmarkAsync({ userId, postId }).catch(() => {
       setIsChecked(true);
     });
   };

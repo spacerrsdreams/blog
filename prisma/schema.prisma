@@ -6,12 +6,21 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Tags {
+  AI
+  Finances
+  Crypto
+  Startups
+}
+
 model Posts {
   id            String    @id @default(uuid())
   slug          String    @unique
-  tag           String
+  tag           Tags
   title         String
   subTitle      String
+  content       Json      
   isSaved       Boolean   @default(false)
   coverImageSrc String
   createdAt     DateTime  @default(now())

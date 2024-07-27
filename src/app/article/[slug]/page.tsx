@@ -1,9 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
+import { type Value } from "react-quill";
 
 import { formatDate } from "@/utils/formatDate";
 import { ERROR_CODES } from "@/lib/error";
 import prisma from "@/lib/prisma";
+import ArticleContent from "@/components/shared/article/ArticleContent";
 import CommentSheet from "@/components/shared/CommentSheet";
 import LikeButton from "@/components/shared/LikeButton";
 
@@ -28,7 +30,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <div className="z-100 flex size-full flex-col gap-10 px-20">
       <div className="mt-10 flex w-full flex-col items-center justify-center gap-2">
         <Image
-          src={post.coverImageSrc}
+          src={post.coverImageSrc || "/images/rick-and-morty.jpg"}
           alt={post.title}
           className="h-[600px] w-full bg-cover"
           width={800}
@@ -65,7 +67,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <CommentSheet {...{ postId: post.id, commentsCount: post.comments.length }} />
           </div>
         </div>
-        <div className="mb-20">blablalbbal</div>
+        <ArticleContent postContent={post.content as Value} />
       </div>
     </div>
   );

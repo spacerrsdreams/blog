@@ -1,3 +1,4 @@
+import { TAGS } from "@/constants/tags";
 import { z } from "zod";
 
 export const LikeRequestSchema = z
@@ -80,3 +81,22 @@ export const BookmarkResponseSchema = z.object({
 
 export type BookmarkRequestPayload = z.infer<typeof BookmarkRequestSchema>;
 export type BookmarkResponsePayload = z.infer<typeof BookmarkResponseSchema>;
+
+export const CreateArticleRequestSchema = z
+  .object({
+    title: z
+      .string()
+      .min(1, "Title must be at least 1 character long.")
+      .max(60, "Title must be at most 60 characters long."),
+    subTitle: z
+      .string()
+      .min(1, "SubTitle must be at least 1 character long.")
+      .max(220, "SubTitle must be at most 220 characters long."),
+    tag: z.enum(TAGS, {
+      errorMap: () => ({ message: "Tag must be one of: AI, Finances, Crypto, Startups." }),
+    }),
+    postContent: z.record(z.any()),
+  })
+  .strict();
+
+export type CreateArticleRequestPayload = z.infer<typeof CreateArticleRequestSchema>;
