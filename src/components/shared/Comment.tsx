@@ -1,3 +1,5 @@
+"use server";
+
 import { getUserByUserId } from "@/server/user";
 import type { CommentT } from "@/types";
 
