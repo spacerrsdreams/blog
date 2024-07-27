@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import type { UseFormReturn } from "react-hook-form";
 import ReactQuill, { type UnprivilegedEditor, type Value } from "react-quill";
 
 import { useUploadImage } from "@/lib/aws";
@@ -9,21 +8,9 @@ import { useUploadImage } from "@/lib/aws";
 type Props = {
   editorValue: Value;
   onEditorChange: (e: Value) => void;
-  form: UseFormReturn<
-    {
-      title: string;
-      subTitle: string;
-      tag: "AI" | "Finances" | "Crypto" | "Startups";
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      postContent: Record<string, any>;
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    any,
-    undefined
-  >;
 };
 
-export default function ArticleForm({ form, editorValue, onEditorChange }: Props) {
+export default function QuillEditor({ editorValue, onEditorChange }: Props) {
   const quillRef = useRef<ReactQuill | null>(null);
   const { mutateAsync: uploadImageAsync } = useUploadImage();
 
@@ -58,7 +45,6 @@ export default function ArticleForm({ form, editorValue, onEditorChange }: Props
 
   const handleChange = (_: string, __: never, ___: never, editor: UnprivilegedEditor) => {
     onEditorChange(editor.getContents());
-    form.setValue("postContent", editor.getContents());
   };
 
   const modules = useMemo(

@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { useRouter } from "next/navigation";
 import { ImagePlus } from "lucide-react";
 import { useState } from "react";
 
@@ -16,11 +17,12 @@ import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import type { Value } from "react-quill";
 
+import { ROUTES } from "@/utils/routes";
 import { useUploadImage } from "@/lib/aws";
 import { useCreateArticle } from "@/services/post/article";
 import { CreateArticleRequestSchema, type CreateArticleRequestPayload } from "@/services/types";
 import Article from "@/components/shared/article/Article";
-import ArticleForm from "@/components/shared/article/ArticleForm";
+import QuillEditor from "@/components/shared/article/QuillEditor";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -34,10 +36,13 @@ import { useToast } from "@/components/ui/use-toast";
 
 export default function CreateArticle() {
   const [editorValue, setEditorValue] = useState<Value>("");
-  const { mutateAsync: uploadImageAsync } = useUploadImage();
-  const { mutateAsync: createArticleAsync } = useCreateArticle();
+  const { mutateAsync: uploadImageAsync, isPending: uploadImageIsPending } = useUploadImage();
+  const { mutateAsync: createArticleAsync, isPending: createArticleIsPending } = useCreateArticle();
   const { user } = useUser();
   const { toast } = useToast();
+  const navigate = useRouter();
+  const [publishText, setPublishText] = useState("Publish Article");
+  const [published, setPublished] = useState(false);
 
   const form = useForm<CreateArticleRequestPayload>({
     resolver: zodResolver(CreateArticleRequestSchema),
@@ -58,6 +63,12 @@ export default function CreateArticle() {
           title: "Success",
           description: "Article published successfully.",
         });
+
+        setPublishText("Article has published!");
+        setPublished(true);
+        setTimeout(() => {
+          navigate.push(ROUTES.root);
+        }, 2000);
       })
       .catch((e) => {
         console.error(e);
@@ -130,20 +141,33 @@ export default function CreateArticle() {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="postContent"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <QuillEditor
+                          onEditorChange={(e: Value) => {
+                            field.onChange(e);
+                            setEditorValue(e);
+                          }}
+                          editorValue={editorValue}
+                        />
+                      </FormControl>
 
-                <ArticleForm
-                  form={form}
-                  onEditorChange={(e: Value) => {
-                    setEditorValue(e);
-                  }}
-                  editorValue={editorValue}
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
                 <Button
+                  disabled={published}
                   type="submit"
                   size="lg"
-                  className="fixed bottom-8 left-1/2 z-50 -translate-x-1/2 transform rounded-xl bg-purple-500 font-semibold text-white transition-all duration-300 hover:bg-purple-600"
+                  className="fixed bottom-8 left-1/2 z-50 min-w-[161px] -translate-x-1/2 transform rounded-xl bg-purple-500 font-semibold text-white transition-all duration-300 hover:bg-purple-600"
+                  loading={createArticleIsPending}
                 >
-                  Publish Article
+                  {publishText}
                 </Button>
               </form>
             </Form>
@@ -153,7 +177,7 @@ export default function CreateArticle() {
               <div className="flex size-full items-center justify-center gap-4">
                 <ImagePlus />
                 <span className="text-xl font-semibold">
-                  {coverImageSrc ? "Image uploaded" : "Upload cover image"}
+                  {uploadImageIsPending ? "Uploading..." : "Upload cover image"}
                 </span>
               </div>
 
@@ -184,6 +208,7 @@ export default function CreateArticle() {
               />
             </div>
           )}
+
           <Article
             authorFullName={user?.fullName || ""}
             authorImageUrl={user?.imageUrl}
