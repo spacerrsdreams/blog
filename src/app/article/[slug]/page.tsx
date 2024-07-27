@@ -27,21 +27,23 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <div className="max-w-[680px] py-2">
-      <Article
-        userId={userId}
-        articleId={post.id}
-        title={post.title}
-        subTitle={post.subTitle}
-        authorImageUrl={post.author.imageUrl}
-        authorFullName={`${post.author.firstName} ${post.author.lastName}`}
-        tag={post.tag}
-        content={post.content as Value}
-        coverImageSrc={post.coverImageSrc}
-        createdAt={post.createdAt}
-        likesLength={post.likes.length}
-        commentsLength={post.comments.length}
-      />
+    <div className="flex w-full justify-center py-2">
+      <div className="max-w-[680px] py-2">
+        <Article
+          userId={userId}
+          articleId={post.id}
+          title={post.title}
+          subTitle={post.subTitle}
+          authorImageUrl={post.author.imageUrl}
+          authorFullName={`${post.author.firstName} ${post.author.lastName}`}
+          tag={post.tag}
+          content={post.content as Value}
+          coverImageSrc={post.coverImageSrc}
+          createdAt={post.createdAt}
+          likesLength={post.likes.length}
+          commentsLength={post.comments.length}
+        />
+      </div>
     </div>
   );
 }

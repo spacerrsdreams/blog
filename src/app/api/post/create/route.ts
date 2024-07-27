@@ -20,12 +20,12 @@ export const POST = async (req: NextRequest) => {
     const post = await prismaClient.posts.create({
       data: {
         authorId: userId,
-        slug: data.title.toLowerCase().replace(/ /g, "-"),
+        slug: data.title.toLowerCase().replace(/ /g, "-") + "-" + Date.now(),
         title: data.title,
         subTitle: data.subTitle,
         tag: data.tag,
         content: data.postContent,
-        coverImageSrc: "",
+        coverImageSrc: data.coverImageSrc || "",
       },
     });
 
@@ -42,6 +42,7 @@ export const POST = async (req: NextRequest) => {
       );
     }
   } catch (err) {
+    console.error(err);
     return handleError(err);
   }
 };

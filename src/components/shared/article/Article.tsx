@@ -3,6 +3,7 @@ import { type Value } from "react-quill";
 
 import { formatDate } from "@/utils/formatDate";
 import ArticleContent from "@/components/shared/article/ArticleContent";
+import ArticleCover from "@/components/shared/article/ArticleCover";
 import CommentSheet from "@/components/shared/CommentSheet";
 import LikeButton from "@/components/shared/LikeButton";
 
@@ -20,6 +21,7 @@ type Props = {
   likesLength: number;
   commentsLength: number;
   disableActions?: boolean;
+  handleRemoveImage?: () => void;
 };
 
 export default function Article({
@@ -36,24 +38,18 @@ export default function Article({
   likesLength,
   commentsLength,
   disableActions = false,
+  handleRemoveImage,
 }: Props) {
   return (
     <article className="flex size-full flex-col gap-10 px-20">
       {coverImageSrc && (
-        <div className="relative mt-10 flex w-full flex-col items-center justify-center gap-2">
-          <Image
-            src={coverImageSrc}
-            alt={title}
-            className="h-[600px] w-full bg-cover"
-            width={800}
-            height={800}
-          />
-          <p className="text-xs text-muted-foreground">
-            სურათი შეიქმნა <span className="font-bold text-black">Adult Swim</span> -ის მიერ.
-          </p>
-        </div>
+        <ArticleCover
+          src={coverImageSrc}
+          alt={title}
+          isEditing={disableActions}
+          handleRemoveImage={handleRemoveImage}
+        />
       )}
-
       <div className="mx-6 flex flex-col justify-center gap-8 self-center">
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-5xl font-bold">{title}</h1>
