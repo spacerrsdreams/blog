@@ -61,7 +61,7 @@ export type Post = {
   title: string;
   subTitle: string;
   isSaved: boolean;
-  coverImageSrc: string;
+  coverImageSrc: string | undefined;
   createdAt: Date;
   modifiedAt: Date;
   authorId: string;

@@ -11,6 +11,10 @@ export default async function Home() {
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 20,
   });
 
   return (

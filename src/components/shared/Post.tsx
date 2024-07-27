@@ -74,15 +74,17 @@ export default async function Post({
             </div>
           </Link>
         </div>
-        <Link href={`/article/${slug}`}>
-          <Image
-            src={coverImageSrc}
-            width={800}
-            height={600}
-            className="block h-20 w-28 rounded-[2px] bg-cover sm:h-[110px] md:w-40"
-            alt="morty's mind blowers"
-          />
-        </Link>
+        {coverImageSrc && (
+          <Link href={`/article/${slug}`}>
+            <Image
+              src={coverImageSrc}
+              width={800}
+              height={600}
+              className="block h-20 w-28 rounded-[2px] bg-cover sm:h-[110px] md:w-40"
+              alt="morty's mind blowers"
+            />
+          </Link>
+        )}
       </div>
     </div>
   );

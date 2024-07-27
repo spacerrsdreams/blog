@@ -69,6 +69,10 @@ export default function CreateArticle() {
       });
   };
 
+  const handleImageRemove = () => {
+    form.setValue("coverImageSrc", undefined);
+  };
+
   const coverImageSrc = form.watch("coverImageSrc");
 
   return (
@@ -194,6 +198,7 @@ export default function CreateArticle() {
             userId={user?.id || ""}
             articleId=""
             disableActions={true}
+            handleRemoveImage={handleImageRemove}
           />
         </div>
       </div>
