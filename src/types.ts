@@ -1,3 +1,6 @@
+import type { Prisma } from "@prisma/client";
+import type { JsonValue } from "@prisma/client/runtime/library";
+
 interface EmailAddress {
   email_address: string;
   id: string;
@@ -46,6 +49,27 @@ export interface User {
   object: string;
   type: string;
 }
+export type UserPayload = {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  username: string | null;
+  birthday: string | null;
+  externalId: string | null;
+  gender: string | null;
+  imageUrl: string;
+  lastSignInAt: Date | null;
+  passwordEnabled: boolean;
+  primaryEmailAddressId: string | null;
+  primaryPhoneNumberId: string | null;
+  profileImageUrl: string;
+  twoFactorEnabled: boolean;
+  updatedAt: Date;
+  createdAt: Date;
+  privateMetadata: JsonValue;
+  publicMetadata: JsonValue;
+  unsafeMetadata: Prisma.JsonValue;
+} | null;
 
 export type Contributor = {
   authorSlug: string;

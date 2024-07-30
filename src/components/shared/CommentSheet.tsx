@@ -4,38 +4,39 @@ import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
-import CommentEditor from "./CommentEditor";
+import CommentCreator from "./CommentCreator";
+import { CommentModal } from "./CommentModal";
+import { CommentProvider } from "./CommentProvider";
 import CommentSection from "./CommentSection";
 import { Icons } from "./Icons";
 
-type PropsType = {
-  userId: string;
+type Props = {
   postId: string;
   commentsCount: number;
   disabled?: boolean;
 };
 
-export default function CommentSheet({
-  userId,
-  postId,
-  commentsCount,
-  disabled = false,
-}: PropsType) {
+export default function CommentSheet({ postId, commentsCount }: Props) {
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button disabled={disabled} variant="ghost" className="flex items-center">
-          <Icons.message />
-          <span>{formatNumberWithK(commentsCount)}</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="overflow-x-scroll">
-        <SheetHeader>
-          <SheetTitle>{`Comments(${commentsCount})`}</SheetTitle>
-        </SheetHeader>
-        <CommentEditor data={{ authId: userId, postId: postId }} />
-        <CommentSection data={{ postId: postId }} />
-      </SheetContent>
-    </Sheet>
+    <CommentProvider>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="ghost" className="flex items-center">
+            <Icons.message />
+            <span>{formatNumberWithK(commentsCount)}</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent className="w-full overflow-x-scroll md:w-[24rem]">
+          <SheetHeader>
+            <SheetTitle>{`Comments(${commentsCount})`}</SheetTitle>
+          </SheetHeader>
+          <CommentCreator postId={postId} />
+          <CommentSection postId={postId} />
+          <div className="flex w-full justify-center text-center">
+            <CommentModal />
+          </div>
+        </SheetContent>
+      </Sheet>
+    </CommentProvider>
   );
 }

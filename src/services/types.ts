@@ -29,10 +29,22 @@ export type LikeResponsePayload = z.infer<typeof LikeResponseSchema>;
 export const CommentRequestSchema = z
   .object({
     postId: z.string().min(1, "Post ID must be at least 1 character long."),
-    userId: z.string().min(1, "User ID must be at least 1 character long."),
     content: z.string().min(1, "Comment content must be at least 1 character long."),
   })
   .strict();
+
+export const DeleteCommentRequestSchema = z
+  .object({
+    commentId: z.string().min(1, "Comment ID must be at least 1 character long"),
+  })
+  .strict();
+export const GetCommentsRequestSchema = z.object({
+  postId: z.string().min(1, "Post ID must be at least 1 character long."),
+});
+export const EditCommentRequestSchema = z.object({
+  commentId: z.string().min(1, "Post ID must be at least 1 character long."),
+  content: z.string().min(1, "Post ID must be at least 1 character long."),
+});
 
 export const CommentResponseSchema = z
   .object({
@@ -49,8 +61,22 @@ export const CommentResponseSchema = z
     message: z.string().optional(),
   })
   .strict();
+export const GetCommentsResponseSchema = z
+  .object({
+    id: z.string(),
+    createdAt: z.string().transform((val) => new Date(val)),
+    modifiedAt: z.string().transform((val) => new Date(val)),
+    userId: z.string(),
+    postId: z.string(),
+    content: z.string(),
+  })
+  .array();
 
 export type CommentRequestPayload = z.infer<typeof CommentRequestSchema>;
+export type DeleteCommentRequestPayload = z.infer<typeof DeleteCommentRequestSchema>;
+export type EditCommentRequestPayload = z.infer<typeof EditCommentRequestSchema>;
+export type GetCommentRequestPayload = z.infer<typeof GetCommentsRequestSchema>;
+export type GetCommentsResponsePayload = z.infer<typeof GetCommentsResponseSchema>;
 export type CommentResponsePayload = z.infer<typeof CommentResponseSchema>;
 
 export const BookmarkRequestSchema = z
@@ -95,3 +121,11 @@ export const CreateArticleRequestSchema = z
   .strict();
 
 export type CreateArticleRequestPayload = z.infer<typeof CreateArticleRequestSchema>;
+
+export const GetUserByIdRequestSchema = z
+  .object({
+    userId: z.string().min(1, "User ID must be at least 1 character long."),
+  })
+  .strict();
+
+export type GetUserByIdRequestPayload = z.infer<typeof GetUserByIdRequestSchema>;

@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
 import prismaClient from "@/lib/prisma";
-import { CommentRequestSchema } from "@/services/types";
+import { EditCommentRequestSchema } from "@/services/types";
 
 export const POST = async (req: NextRequest) => {
   const user = auth();
@@ -13,18 +13,19 @@ export const POST = async (req: NextRequest) => {
   }
   try {
     const body = await req.json();
-    const { postId, content } = CommentRequestSchema.parse(body);
+    const { commentId, content } = EditCommentRequestSchema.parse(body);
 
-    const comment = await prismaClient.comments.create({
+    const comment = await prismaClient.comments.update({
+      where: {
+        id: commentId,
+      },
       data: {
         content,
-        userId: user.userId,
-        postId,
       },
     });
 
     return NextResponse.json(
-      { data: comment, message: "Comment added successfully." },
+      { data: comment, message: "Comment edited successfully." },
       { status: 201 },
     );
   } catch (error) {

@@ -83,7 +83,6 @@ export default function Article({
               userId={userId}
             />
             <CommentSheet
-              userId={userId}
               postId={articleId}
               commentsCount={commentsLength}
               disabled={disableActions}

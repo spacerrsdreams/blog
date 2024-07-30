@@ -1,57 +1,49 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import Image from "next/image";
 import { useState, type ChangeEvent } from "react";
 
-import { useAddComment } from "@/app/client/comment";
+import { useEditComment } from "@/services/post/comment";
 
 import { Button } from "../ui/button";
-import { SheetClose } from "../ui/sheet";
 import { Textarea } from "../ui/textarea";
+import { useCommentProvider } from "./CommentProvider";
 
-type propsType = {
-  data: {
-    authId: string;
-    postId: string;
-  };
+type Props = {
+  content: string;
 };
-export default function CommentEditor({ data: { authId, postId } }: propsType) {
-  const [content, setContent] = useState("");
-  const addCommentData = useAddComment();
-  const { isSignedIn, user } = useUser();
-  const handleClick = async () => {
-    await addCommentData.mutateAsync({ authId, postId, content });
+export default function CommentEditor({ content }: Props) {
+  const [newContent, setNewContent] = useState("");
+  const { setInEdit, commentId } = useCommentProvider();
+  const { mutateAsync: editCommentAsync, isPending } = useEditComment();
+
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setNewContent(event.target.value);
   };
+  const handleSubmit = () => {
+    editCommentAsync({ commentId, content: newContent });
+  };
+
   return (
-    <div className="mt-2 rounded-md p-4 shadow-lg">
-      <div className="mx-3 flex items-center gap-4">
-        <Image
-          src={user?.imageUrl as string}
-          alt={user?.username || ""}
-          width={48}
-          height={48}
-          className="size-12 rounded-full"
-        />
-        <div className="">
-          <h4 className="text-lg capitalize">{user?.username}</h4>
-        </div>
-      </div>
+    <div className="flex flex-col gap-4 rounded-md border-[1px] shadow-lg outline-none">
       <Textarea
-        onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-          setContent(e.target.value);
-        }}
-        placeholder="What are your thoughts?"
-        className="my-3 h-[150px] border-0"
+        className="border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        onChange={handleChange}
+        defaultValue={content}
       />
-      <div className="flex w-full justify-end gap-2">
-        <SheetClose asChild>
-          <Button variant="ghost">Cancel</Button>
-        </SheetClose>
+      <div className="flex justify-end gap-2 p-3">
         <Button
-          disabled={addCommentData.isPending || !isSignedIn}
-          loading={addCommentData.isPending}
-          onClick={handleClick}
+          onClick={() => {
+            setInEdit(false);
+          }}
+          variant="ghost"
+        >
+          Cancel
+        </Button>
+        <Button
+          className="rounded-2xl bg-purple-500"
+          disabled={isPending}
+          loading={isPending}
+          onClick={handleSubmit}
           variant="default"
         >
           Respond

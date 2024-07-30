@@ -47,7 +47,6 @@ export async function POST(req: Request) {
   }
 
   const eventType = evt.type;
-
   try {
     switch (eventType) {
       case "user.created":

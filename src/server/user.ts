@@ -29,7 +29,7 @@ export const createUser = async (data: User) => {
     data: {
       id: data.data.id,
       birthday: data.data.birthday,
-      createdAt: data.data.created_at,
+      createdAt: new Date(data.data.created_at),
       emailAddresses: {
         create: data.data.email_addresses.map((email) => ({
           id: email.id,
@@ -50,7 +50,7 @@ export const createUser = async (data: User) => {
       gender: data.data.gender,
       imageUrl: data.data.image_url,
       lastName: data.data.last_name,
-      lastSignInAt: data.data.last_sign_in_at,
+      lastSignInAt: new Date(data.data.last_sign_in_at),
       passwordEnabled: data.data.password_enabled,
       primaryEmailAddressId: data.data.primary_email_address_id,
       primaryPhoneNumberId: data.data.primary_phone_number_id,
@@ -59,7 +59,7 @@ export const createUser = async (data: User) => {
       publicMetadata: data.data.public_metadata,
       twoFactorEnabled: data.data.two_factor_enabled,
       unsafeMetadata: data.data.unsafe_metadata,
-      updatedAt: data.data.updated_at,
+      updatedAt: new Date(data.data.updated_at),
       username: data.data.username,
     },
   });
@@ -72,7 +72,7 @@ export const updateUser = async (data: User) => {
     },
     data: {
       birthday: data.data.birthday,
-      createdAt: data.data.created_at,
+      createdAt: new Date(data.data.created_at),
       emailAddresses: {
         upsert: data.data.email_addresses.map((email) => ({
           where: {
@@ -111,7 +111,7 @@ export const updateUser = async (data: User) => {
       gender: data.data.gender,
       imageUrl: data.data.image_url,
       lastName: data.data.last_name,
-      lastSignInAt: data.data.last_sign_in_at,
+      lastSignInAt: new Date(data.data.last_sign_in_at),
       passwordEnabled: data.data.password_enabled,
       primaryEmailAddressId: data.data.primary_email_address_id,
       primaryPhoneNumberId: data.data.primary_phone_number_id,
@@ -120,7 +120,7 @@ export const updateUser = async (data: User) => {
       publicMetadata: data.data.public_metadata,
       twoFactorEnabled: data.data.two_factor_enabled,
       unsafeMetadata: data.data.unsafe_metadata,
-      updatedAt: data.data.updated_at,
+      updatedAt: new Date(data.data.updated_at),
       username: data.data.username,
     },
   });
