@@ -9,6 +9,7 @@ import { useGetComments } from "@/services/post/comment";
 import Comment from "./Comment";
 import CommentEditor from "./CommentEditor";
 import { useCommentProvider } from "./CommentProvider";
+import { CommentSkeleton } from "./CommentSkeleton";
 
 type Props = {
   postId: string;
@@ -16,7 +17,7 @@ type Props = {
 export default function CommentSection({ postId }: Props) {
   const [comments, setComments] = useState<CommentT[] | null>(null);
   const { inEdit, commentId } = useCommentProvider();
-  const { mutateAsync: getCommentsAsync } = useGetComments();
+  const { mutateAsync: getCommentsAsync, isPending } = useGetComments();
 
   useEffect(() => {
     getCommentsAsync(postId).then((data) => {
@@ -30,6 +31,8 @@ export default function CommentSection({ postId }: Props) {
         <div key={comment.id}>
           {inEdit && comment.id === commentId ? (
             <CommentEditor content={comment.content} />
+          ) : isPending ? (
+            <CommentSkeleton />
           ) : (
             <Comment comment={comment} />
           )}

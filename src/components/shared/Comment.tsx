@@ -10,13 +10,14 @@ import { formatCommentDate } from "@/utils/formatCommentDate";
 import { useGetUserById } from "@/services/user/userById";
 
 import { CommentOption } from "./CommentOption";
+import { CommentSkeleton } from "./CommentSkeleton";
 
 type Props = {
   comment: CommentT;
 };
 export default function Comment({ comment }: Props) {
   const [user, setUser] = useState<UserPayload | null>(null);
-  const { mutateAsync: getUserByIdAsync } = useGetUserById();
+  const { mutateAsync: getUserByIdAsync, isPending } = useGetUserById();
   const loggedInUser = useUser();
 
   useEffect(() => {
@@ -25,7 +26,9 @@ export default function Comment({ comment }: Props) {
     });
   }, [getUserByIdAsync, comment.userId]);
 
-  return (
+  return isPending ? (
+    <CommentSkeleton />
+  ) : (
     <div className="mx-3 flex w-full items-center gap-4">
       <div className="flex w-full flex-col gap-3">
         <div className="flex items-center gap-3">
