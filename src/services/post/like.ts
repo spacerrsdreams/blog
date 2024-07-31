@@ -5,14 +5,8 @@ import { LikeResponseSchema, type LikeRequestPayload } from "@/services/types";
 
 export const useGetLike = () => {
   return useMutation({
-    mutationFn: async (payload: LikeRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.getLike, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+    mutationFn: async (postId: string) => {
+      const res = await fetch(`${ROUTES.api.post.like}/${postId}`);
 
       if (!res.ok) {
         throw new Error("Failed to fetch user like information");
@@ -29,7 +23,7 @@ export const useGetLike = () => {
 export const useLikePost = () => {
   return useMutation({
     mutationFn: async (payload: LikeRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.createLike, {
+      const res = await fetch(ROUTES.api.post.like, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,13 +45,9 @@ export const useLikePost = () => {
 
 export const useUnlikePost = () => {
   return useMutation({
-    mutationFn: async (payload: LikeRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.removeLike, {
+    mutationFn: async (postId: string) => {
+      const res = await fetch(`${ROUTES.api.post.like}/${postId}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {

@@ -19,7 +19,7 @@ export default function CommentSection({ postId }: Props) {
   const { mutateAsync: getCommentsAsync } = useGetComments();
 
   useEffect(() => {
-    getCommentsAsync({ postId }).then((data) => {
+    getCommentsAsync(postId).then((data) => {
       setComments(data);
     });
   }, [getCommentsAsync, postId]);

@@ -24,7 +24,7 @@ export default function BookmarkButton({ userId, postId }: Props) {
 
   useEffect(() => {
     if (!userId) return;
-    getBookmarkAsync({ userId, postId }).then((data) => {
+    getBookmarkAsync(postId).then((data) => {
       if (data.data) {
         setIsChecked(true);
       }
@@ -72,7 +72,7 @@ export default function BookmarkButton({ userId, postId }: Props) {
 
     setIsChecked(false);
 
-    removeBookmarkAsync({ userId, postId }).catch(() => {
+    removeBookmarkAsync(postId).catch(() => {
       setIsChecked(true);
     });
   };

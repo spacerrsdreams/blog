@@ -33,7 +33,7 @@ export default function LikeButton({ count, postId, disabled, userId }: Props) {
   useEffect(() => {
     if (!userId || disabled) return;
 
-    getLikeAsync({ userId, postId }).then(({ data }) => {
+    getLikeAsync(postId).then(({ data }) => {
       data && setIsLiked(true);
     });
   }, [userId, getLikeAsync, postId]);
@@ -54,10 +54,7 @@ export default function LikeButton({ count, postId, disabled, userId }: Props) {
     setIsLiked(true);
 
     try {
-      await likePostAsync({
-        postId,
-        userId,
-      });
+      await likePostAsync({ userId, postId });
     } catch (error) {
       setLikes(likes - 1);
       setIsLiked(false);
@@ -80,10 +77,7 @@ export default function LikeButton({ count, postId, disabled, userId }: Props) {
     setIsLiked(false);
 
     try {
-      await unlikePostAsync({
-        postId,
-        userId,
-      });
+      await unlikePostAsync(postId);
     } catch (error) {
       setLikes(likes + 1);
       setIsLiked(true);

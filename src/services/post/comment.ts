@@ -7,14 +7,13 @@ import {
   type CommentRequestPayload,
   type DeleteCommentRequestPayload,
   type EditCommentRequestPayload,
-  type GetCommentRequestPayload,
 } from "@/services/types";
 import { toast } from "@/components/ui/use-toast";
 
 export const useCreateComment = () => {
   return useMutation({
     mutationFn: async (payload: CommentRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.createComment, {
+      const res = await fetch(ROUTES.api.post.comment, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,12 +36,8 @@ export const useCreateComment = () => {
 export const useDeleteComment = () => {
   return useMutation({
     mutationFn: async (payload: DeleteCommentRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.removeComment, {
+      const res = await fetch(`${ROUTES.api.post.comment}/${payload.commentId}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -72,12 +67,12 @@ export const useDeleteComment = () => {
 export const useEditComment = () => {
   return useMutation({
     mutationFn: async (payload: EditCommentRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.editComment, {
-        method: "POST",
+      const res = await fetch(`${ROUTES.api.post.comment}/${payload.commentId}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ content: payload.content }),
       });
 
       if (!res.ok) {
@@ -106,14 +101,8 @@ export const useEditComment = () => {
 
 export const useGetComments = () => {
   return useMutation({
-    mutationFn: async (payload: GetCommentRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.getComments, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+    mutationFn: async (userId: string) => {
+      const res = await fetch(`${ROUTES.api.post.comment}/${userId}`);
 
       if (!res.ok) {
         throw new Error("Failed to fetch user bookmark information");
