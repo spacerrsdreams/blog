@@ -22,15 +22,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
     throw new Error(ERROR_CODES.POST_NOT_FOUND);
   }
 
-  if (!userId) {
-    throw new Error(ERROR_CODES.AUTHOR_NOT_FOUND);
-  }
-
   return (
     <div className="flex w-full justify-center py-2">
       <div className="max-w-[680px] py-2">
         <Article
-          userId={userId}
+          userId={userId as string}
           articleId={post.id}
           title={post.title}
           subTitle={post.subTitle}
