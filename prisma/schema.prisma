@@ -21,7 +21,6 @@ model Posts {
   title         String
   subTitle      String
   content       Json      
-  isSaved       Boolean   @default(false)
   coverImageSrc String
   createdAt     DateTime  @default(now())
   modifiedAt    DateTime  @updatedAt
@@ -97,7 +96,7 @@ model Users {
   id                     String       @id
   firstName              String?      @map("first_name")
   lastName               String?      @map("last_name")
-  username               String?      @unique @map("username")
+  username               String       @unique @map("username")
   birthday               String?      @map("birthday") 
   externalId             String?      @map("external_id")
   gender                 String?      @map("gender")

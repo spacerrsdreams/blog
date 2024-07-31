@@ -1,39 +1,31 @@
 "use client";
 
-import { RedirectToSignIn } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { RedirectToSignIn, useUser } from "@clerk/nextjs";
+import { useState } from "react";
 import type { MouseEvent } from "react";
 
 import { ERROR_CODES, ERROR_MESSAGES } from "@/lib/error";
-import { useCreateBookmark, useGetBookmark, useRemoveBookmark } from "@/services/post/bookmark";
+import { useCreateBookmark, useRemoveBookmark } from "@/services/post/bookmark";
 import { useToast } from "@/components/ui/use-toast";
 
 import { Icons } from "./Icons";
 
 type Props = {
-  userId: string | null | undefined;
   postId: string;
+  isBookmarked: boolean;
 };
 
-export default function BookmarkButton({ userId, postId }: Props) {
+export default function BookmarkButton({ postId, isBookmarked }: Props) {
   const { toast } = useToast();
-  const [isChecked, setIsChecked] = useState(false);
+
+  const [isChecked, setIsChecked] = useState(isBookmarked);
+  const { user } = useUser();
   const { mutateAsync: createBookmarkAsync } = useCreateBookmark();
   const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark();
-  const { mutateAsync: getBookmarkAsync } = useGetBookmark();
-
-  useEffect(() => {
-    if (!userId) return;
-    getBookmarkAsync(postId).then((data) => {
-      if (data.data) {
-        setIsChecked(true);
-      }
-    });
-  }, [getBookmarkAsync, userId, postId]);
 
   const createBookmark = (event: MouseEvent<SVGElement>) => {
     event.preventDefault();
-    if (!userId) {
+    if (!user) {
       toast({
         variant: "destructive",
         title: "Unauthorized",
@@ -48,7 +40,6 @@ export default function BookmarkButton({ userId, postId }: Props) {
 
     createBookmarkAsync({
       postId,
-      userId,
     }).catch(() => {
       setIsChecked(false);
     });
@@ -57,9 +48,9 @@ export default function BookmarkButton({ userId, postId }: Props) {
   const removeBookmark = (event: MouseEvent<SVGElement>) => {
     event.preventDefault();
 
-    if (!userId) return;
+    if (!user) return;
 
-    if (!userId) {
+    if (!user) {
       toast({
         variant: "destructive",
         title: "Unauthorized",

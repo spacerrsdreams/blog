@@ -1,31 +1,28 @@
 import type { Post } from "@/types";
 
-import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 
 import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { ERROR_CODES } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import BookmarkButton from "./BookmarkButton";
 
 export default async function Post({
-  post: { id, tag, title, slug, subTitle, _count, authorId, createdAt, coverImageSrc },
-}: {
-  post: Post;
-}) {
-  const { userId } = auth();
-
-  const author = await prismaClient.users.findUnique({
-    where: {
-      id: authorId,
-    },
-  });
-
+  id,
+  tag,
+  title,
+  slug,
+  subTitle,
+  _count,
+  author,
+  createdAt,
+  coverImageSrc,
+  isBookmarked,
+}: Post) {
   if (!author) {
     throw new Error(ERROR_CODES.POST_AUTHOR_NOT_FOUND);
   }
@@ -70,7 +67,7 @@ export default async function Post({
                   <span>{formatNumberWithK(_count.comments)}</span>
                 </span>
               </div>
-              <BookmarkButton userId={userId} postId={id} />
+              <BookmarkButton isBookmarked={isBookmarked} postId={id} />
             </div>
           </Link>
         </div>

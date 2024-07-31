@@ -3,23 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import { ROUTES } from "@/utils/routes";
 import { BookmarkResponseSchema, type BookmarkRequestPayload } from "@/services/types";
 
-export const useGetBookmark = () => {
-  return useMutation({
-    mutationFn: async (postId: string) => {
-      const res = await fetch(`${ROUTES.api.post.bookmark}/${postId}`);
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch user bookmark information");
-      }
-
-      return BookmarkResponseSchema.parse(await res.json());
-    },
-    onError: (error) => {
-      console.error("Error fetching user bookmark information:", error);
-    },
-  });
-};
-
 export const useCreateBookmark = () => {
   return useMutation({
     mutationFn: async (payload: BookmarkRequestPayload) => {

@@ -21,7 +21,7 @@ interface Metadata {
   // Define properties as needed
 }
 
-export interface User {
+export interface ClerkUser {
   data: {
     birthday: string;
     created_at: number; // Timestamp in milliseconds
@@ -44,16 +44,42 @@ export interface User {
     two_factor_enabled: boolean;
     unsafe_metadata: Metadata;
     updated_at: number; // Timestamp in milliseconds
-    username: string | null;
+    username: string;
   };
   object: string;
   type: string;
 }
+
+export type User = {
+  birthday: string | null;
+  createdAt: Date; // Timestamp in milliseconds
+  emailAddresses: EmailAddress[];
+  externalId: string | null;
+  firstName: string | null;
+  gender: string | null;
+  id: string;
+  imageUrl: string;
+  lastName: string | null;
+  lastSignInAt: Date | null; // Timestamp in milliseconds
+  object: string;
+  passwordEnabled: boolean;
+  phoneNumbers: PhoneNumber[];
+  primaryEmailAddressId: string | null;
+  primaryPhoneNumberId: string | null;
+  privateMetadata: Metadata;
+  profileImageUrl: string;
+  publicMetadata: Metadata;
+  twoFactorEnabled: boolean;
+  unsafeMetadata: Metadata;
+  updatedAt: Date; // Timestamp in milliseconds
+  username: string;
+};
+
 export type UserPayload = {
   id: string;
   firstName: string | null;
   lastName: string | null;
-  username: string | null;
+  username: string;
   birthday: string | null;
   externalId: string | null;
   gender: string | null;
@@ -84,15 +110,22 @@ export type Post = {
   tag: string;
   title: string;
   subTitle: string;
-  isSaved: boolean;
   coverImageSrc: string | undefined;
   createdAt: Date;
-  modifiedAt: Date;
-  authorId: string;
   _count: {
     likes: number;
     comments: number;
   };
+  author: Omit<
+    User,
+    | "emailAddresses"
+    | "object"
+    | "phoneNumbers"
+    | "privateMetadata"
+    | "publicMetadata"
+    | "unsafeMetadata"
+  >;
+  isBookmarked: boolean;
 };
 export type Like = {
   id: string;
