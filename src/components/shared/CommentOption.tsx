@@ -36,10 +36,16 @@ export function CommentOption({ commentId }: Props) {
       <DropdownMenuContent className="w-56">
         <DropdownMenuRadioGroup value={position} onValueChange={handleChange}>
           <DropdownMenuRadioItem className="cursor-pointer" value="edit">
-            Edit this comment
+            <div className="flex items-center gap-2">
+              <Icons.edit />
+              <span>Edit this comment</span>
+            </div>
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem className="cursor-pointer" value="delete">
-            Delete
+            <div className="flex items-center gap-2">
+              <Icons.trash />
+              <span>Delete</span>
+            </div>
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
