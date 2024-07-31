@@ -60,7 +60,7 @@ export default function CommentCreator({ postId }: Props) {
         </SheetClose>
 
         <Button
-          className="rounded-2xl bg-purple-500"
+          className="w-[90px] rounded-2xl bg-purple-500 hover:bg-purple-600"
           disabled={addCommentData.isPending}
           loading={addCommentData.isPending}
           onClick={handleClick}

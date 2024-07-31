@@ -40,7 +40,7 @@ export default function CommentEditor({ content }: Props) {
           Cancel
         </Button>
         <Button
-          className="rounded-2xl bg-purple-500"
+          className="w-[90px] rounded-2xl bg-purple-500 hover:bg-purple-600"
           disabled={isPending}
           loading={isPending}
           onClick={handleSubmit}

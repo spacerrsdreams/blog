@@ -35,11 +35,19 @@ export function CommentOption({ commentId }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuRadioGroup value={position} onValueChange={handleChange}>
-          <DropdownMenuRadioItem className="cursor-pointer" value="edit">
-            Edit this comment
+          <DropdownMenuRadioItem className="cursor-pointer p-4" value="edit">
+            <div className="flex items-center gap-5 font-medium">
+              <Icons.edit />
+              <span className="text-[13px] opacity-60">Edit this comment</span>
+            </div>
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem className="cursor-pointer" value="delete">
-            Delete
+          <div className="w-full border-[0.5px] border-gray-300"></div>
+
+          <DropdownMenuRadioItem className="cursor-pointer p-4" value="delete">
+            <div className="flex items-center gap-5">
+              <Icons.trash />
+              <span className="text-[13px] font-medium opacity-60">Delete</span>
+            </div>
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
