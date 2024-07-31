@@ -5,16 +5,9 @@ export const ROUTES = {
   api: {
     post: {
       create: "api/post/create",
-      createLike: "/api/post/create-like",
-      getLike: "/api/post/get-like",
-      removeLike: "/api/post/remove-like",
-      createComment: "/api/post/create-comment",
-      removeComment: "/api/post/remove-comment",
-      editComment: "/api/post/edit-comment",
-      getComments: "/api/post/get-comments",
-      getBookmark: "/api/post/get-bookmark",
-      createBookmark: "/api/post/create-bookmark",
-      removeBookmark: "/api/post/remove-bookmark",
+      like: "/api/post/like",
+      comment: "/api/post/comment",
+      bookmark: "/api/post/bookmark",
     },
     user: {
       getUserById: "/api/user/get-user-by-id",
