@@ -31,15 +31,7 @@
   },
   "settings": {
     "workbench.colorTheme": "Default Dark Modern",
-    "terminal.integrated.defaultProfile.linux": "fish",
-    "terminal.integrated.defaultProfile.osx": "fish",
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "terminal.integrated.profiles.osx": {
-      "fish": {
-        "path": "/bin/zsh",
-        "args": ["-c", "fish"],
-      },
-    },
+    "typescript.tsdk": "node_modules/typescript/lib",   
     "npm.packageManager": "npm",
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
