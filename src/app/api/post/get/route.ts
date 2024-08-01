@@ -24,14 +24,16 @@ export const GET = async (req: NextRequest) => {
           },
         },
         author: true,
-        bookmarks: {
-          where: {
-            userId: userId || "",
+        ...(userId && {
+          bookmarks: {
+            where: {
+              userId: userId || "",
+            },
+            select: {
+              id: true,
+            },
           },
-          select: {
-            id: true,
-          },
-        },
+        }),
       },
       orderBy: {
         createdAt: "desc",
@@ -40,7 +42,7 @@ export const GET = async (req: NextRequest) => {
 
     const postsWithBookmarkStatus = posts.map((post) => ({
       ...post,
-      isBookmarked: post.bookmarks.length > 0,
+      isBookmarked: post?.bookmarks?.length > 0,
     }));
 
     return NextResponse.json(

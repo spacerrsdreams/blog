@@ -3,6 +3,7 @@ import { z } from "zod";
 import { NextResponse } from "next/server";
 
 export const handleError = (error: unknown) => {
+  console.error(error);
   if (error instanceof z.ZodError) {
     const formattedErrors = error.errors
       .map((e) => {

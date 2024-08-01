@@ -1,6 +1,7 @@
 "use client";
 
 import type { PostT } from "@/types";
+import { uuid } from "uuidv4";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -51,7 +52,7 @@ export default function Home() {
     <div className="mt-8 flex flex-col gap-12">
       {allPosts.map((post) => (
         <Post
-          key={post.slug}
+          key={uuid()}
           id={post.id}
           slug={post.slug}
           tag={post.tag}
