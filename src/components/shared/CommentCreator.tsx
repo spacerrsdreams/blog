@@ -1,29 +1,30 @@
 "use client";
 
+import { usePopupProvider } from "@/context/PopupProvider";
+
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useState, type ChangeEvent } from "react";
 
 import { useCreateComment } from "@/services/post/comment";
-
-import SignInPopup from "../popup/SignInPopup";
-import { Button } from "../ui/button";
-import { SheetClose } from "../ui/sheet";
-import { Textarea } from "../ui/textarea";
+import { Button } from "@/components/ui/button";
+import { SheetClose } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 
 type Props = {
   postId: string;
 };
 export default function CommentCreator({ postId }: Props) {
   const [content, setContent] = useState("");
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const addCommentData = useCreateComment();
   const { isSignedIn, user } = useUser();
+  const { open } = usePopupProvider();
 
   const handleClick = async () => {
     setContent("");
+
     if (!isSignedIn) {
-      setIsPopupOpen(true);
+      open(true);
       return;
     }
 
@@ -68,9 +69,6 @@ export default function CommentCreator({ postId }: Props) {
         >
           Respond
         </Button>
-      </div>
-      <div className="h-full">
-        <SignInPopup open={isPopupOpen} setOpen={setIsPopupOpen} />
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 "use client";
 
+import { usePopupProvider } from "@/context/PopupProvider";
 import debounce from "debounce";
 
-import { RedirectToSignIn, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { useCallback, useEffect, useState } from "react";
 
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
-import { ERROR_CODES, ERROR_MESSAGES } from "@/lib/error";
 import { useGetLike, useLikePost } from "@/services/post/like";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -26,6 +26,7 @@ export default function LikeButton({ count, postId, disabled }: Props) {
   const [isLiked, setIsLiked] = useState(false);
   const { mutateAsync: likePostAsync } = useLikePost();
   const { mutateAsync: getLikeAsync } = useGetLike();
+  const { open } = usePopupProvider();
   const userId = user?.id;
 
   useEffect(() => {
@@ -42,17 +43,6 @@ export default function LikeButton({ count, postId, disabled }: Props) {
 
   const like = useCallback(
     debounce(() => {
-      if (!userId) {
-        toast({
-          variant: "destructive",
-          title: "Unauthorized",
-          description: ERROR_MESSAGES[ERROR_CODES.USER_IS_NOT_AUTHENTICATED],
-          action: <RedirectToSignIn />,
-        });
-
-        return;
-      }
-
       likePostAsync({ postId }).catch(() => {
         toast({
           variant: "destructive",
@@ -64,16 +54,18 @@ export default function LikeButton({ count, postId, disabled }: Props) {
     [userId, postId],
   );
 
+  const handleClick = () => {
+    if (!userId) {
+      open(true);
+      return;
+    }
+    setLikes((prevLikes) => prevLikes + 1);
+    setIsLiked(true);
+    like();
+  };
+
   return (
-    <Button
-      disabled={disabled}
-      variant="ghost"
-      onClick={() => {
-        setLikes((prevLikes) => prevLikes + 1);
-        setIsLiked(true);
-        like();
-      }}
-    >
+    <Button disabled={disabled} variant="ghost" onClick={handleClick}>
       {isLiked ? <Icons.clapDark /> : <Icons.clap />}
       <span>{formatNumberWithK(likes)}</span>
     </Button>

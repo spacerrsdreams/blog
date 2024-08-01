@@ -61,7 +61,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex w-full justify-center py-2">
-      <div className="max-w-[680px] py-2">
+      <div className="w-full max-w-full py-2 md:max-w-[860px]">
         <Article
           articleId={post.id}
           title={post.title}
