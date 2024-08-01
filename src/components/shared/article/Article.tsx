@@ -8,7 +8,6 @@ import CommentSheet from "@/components/shared/CommentSheet";
 import LikeButton from "@/components/shared/LikeButton";
 
 type Props = {
-  userId: string;
   articleId: string;
   title: string;
   subTitle: string;
@@ -25,7 +24,6 @@ type Props = {
 };
 
 export default function Article({
-  userId,
   articleId,
   title,
   subTitle,
@@ -76,12 +74,7 @@ export default function Article({
             </div>
           </div>
           <div className="mt-6 flex items-center border-b border-t border-border/60 py-1">
-            <LikeButton
-              disabled={disableActions}
-              count={likesLength}
-              postId={articleId}
-              userId={userId}
-            />
+            <LikeButton disabled={disableActions} count={likesLength} postId={articleId} />
             <CommentSheet
               postId={articleId}
               commentsCount={commentsLength}

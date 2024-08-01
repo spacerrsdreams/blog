@@ -220,7 +220,6 @@ export default function CreateArticle() {
             createdAt={new Date()}
             likesLength={0}
             commentsLength={0}
-            userId={user?.id || ""}
             articleId=""
             disableActions={true}
             handleRemoveImage={handleImageRemove}

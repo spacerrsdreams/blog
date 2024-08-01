@@ -1,6 +1,6 @@
 "use client";
 
-import { RedirectToSignIn } from "@clerk/nextjs";
+import { RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
@@ -14,17 +14,18 @@ import { Icons } from "./Icons";
 type Props = {
   count: number;
   postId: string;
-  userId: string | null | undefined;
   disabled?: boolean;
 };
 
-export default function LikeButton({ count, postId, disabled, userId }: Props) {
+export default function LikeButton({ count, postId, disabled }: Props) {
+  const { user } = useUser();
   const { toast } = useToast();
   const [likes, setLikes] = useState(count);
   const [isLiked, setIsLiked] = useState(false);
   const { mutateAsync: likePostAsync } = useLikePost();
   const { mutateAsync: unlikePostAsync } = useUnlikePost();
   const { mutateAsync: getLikeAsync } = useGetLike();
+  const userId = user?.id;
 
   useEffect(() => {
     setLikes(count);
