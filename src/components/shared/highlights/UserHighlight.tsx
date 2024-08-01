@@ -1,9 +1,9 @@
-import type { Post } from "@/types";
+import type { PostT } from "@/types";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 type Props = {
-  post: Post;
+  post: PostT;
 };
 
 export default function UserHighlight({ post }: Props) {

@@ -104,7 +104,7 @@ export type Contributor = {
   avatarFallback: string;
 };
 
-export type Post = {
+export type PostT = {
   id: string;
   slug: string;
   tag: string;

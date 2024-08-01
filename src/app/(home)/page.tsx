@@ -1,43 +1,55 @@
-import { auth } from "@clerk/nextjs/server";
+"use client";
 
-import prismaClient from "@/lib/prisma";
+import type { PostT } from "@/types";
+
+import { useEffect, useRef, useState } from "react";
+
+import { useGetArticles } from "@/services/post/article";
 import Post from "@/components/shared/Post";
 
-export default async function Home() {
-  const { userId } = auth();
+export default function Home() {
+  const { isPending, mutateAsync: fetchArticles } = useGetArticles();
+  const [pagination, setPagination] = useState({ from: 0, to: 10 });
+  const [allPosts, setAllPosts] = useState<PostT[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const loader = useRef(null);
 
-  const posts = await prismaClient.posts.findMany({
-    include: {
-      _count: {
-        select: {
-          likes: true,
-          comments: true,
-        },
-      },
-      author: true,
-      bookmarks: {
-        where: {
-          userId: userId || "",
-        },
-        select: {
-          id: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: 20,
-  });
+  useEffect(() => {
+    if (hasMore && !isPending) {
+      fetchArticles(pagination).then((newPosts) => {
+        setAllPosts((prevPosts) => [...prevPosts, ...newPosts.data]);
+        setHasMore(newPosts.data.length > 0);
+      });
+    }
+  }, [pagination]);
 
-  const postsWithBookmarkStatus = posts.map((post) => ({
-    ...post,
-    isBookmarked: post.bookmarks.length > 0,
-  }));
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isPending && hasMore) {
+          setPagination((prev) => ({
+            from: prev.to,
+            to: prev.to + 10,
+          }));
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
+
+    return () => {
+      if (loader.current) {
+        observer.unobserve(loader.current);
+      }
+    };
+  }, [loader, isPending, hasMore]);
 
   return (
     <div className="mt-8 flex flex-col gap-12">
-      {postsWithBookmarkStatus?.map((post) => (
+      {allPosts.map((post) => (
         <Post
           key={post.slug}
           id={post.id}
@@ -52,6 +64,7 @@ export default async function Home() {
           isBookmarked={post.isBookmarked}
         />
       ))}
+      <div ref={loader} />
     </div>
   );
 }

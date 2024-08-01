@@ -1,4 +1,4 @@
-import type { Post } from "@/types";
+import type { PostT } from "@/types";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import BookmarkButton from "./BookmarkButton";
 
-export default async function Post({
+export default function Post({
   id,
   tag,
   title,
@@ -22,7 +22,7 @@ export default async function Post({
   createdAt,
   coverImageSrc,
   isBookmarked,
-}: Post) {
+}: PostT) {
   if (!author) {
     throw new Error(ERROR_CODES.POST_AUTHOR_NOT_FOUND);
   }
@@ -57,7 +57,7 @@ export default async function Post({
             </div>
             <div className="flex w-full justify-between">
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-muted-foreground">{formatDate(createdAt)}</span>
+                <span className="text-muted-foreground">{formatDate(new Date(createdAt))}</span>
                 <span className="ml-4 flex items-center">
                   <Icons.clap />
                   <span>{formatNumberWithK(_count.likes)}</span>
