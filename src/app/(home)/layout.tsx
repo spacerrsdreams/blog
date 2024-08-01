@@ -8,7 +8,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="block w-full max-w-[728px] flex-auto">
         <div className="block px-4 xl:px-0">
           <div className="pt-6" />
-          <div className=""></div>
           <TabMenu tabList={TABS} />
           <div className="pt-6">{children}</div>
         </div>

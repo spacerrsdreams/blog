@@ -42,22 +42,3 @@ export const useLikePost = () => {
     },
   });
 };
-
-export const useUnlikePost = () => {
-  return useMutation({
-    mutationFn: async (postId: string) => {
-      const res = await fetch(`${ROUTES.api.post.like}/${postId}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to unlike post");
-      }
-
-      return res;
-    },
-    onError: (error) => {
-      console.error("Error updating user like information:", error);
-    },
-  });
-};
