@@ -1,31 +1,28 @@
-import type { Post } from "@/types";
+import type { PostT } from "@/types";
 
-import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 
 import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { ERROR_CODES } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import BookmarkButton from "./BookmarkButton";
 
-export default async function Post({
-  post: { id, tag, title, slug, subTitle, _count, authorId, createdAt, coverImageSrc },
-}: {
-  post: Post;
-}) {
-  const { userId } = auth();
-
-  const author = await prismaClient.users.findUnique({
-    where: {
-      id: authorId,
-    },
-  });
-
+export default function Post({
+  id,
+  tag,
+  title,
+  slug,
+  subTitle,
+  _count,
+  author,
+  createdAt,
+  coverImageSrc,
+  isBookmarked,
+}: PostT) {
   if (!author) {
     throw new Error(ERROR_CODES.POST_AUTHOR_NOT_FOUND);
   }
@@ -60,7 +57,7 @@ export default async function Post({
             </div>
             <div className="flex w-full justify-between">
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-muted-foreground">{formatDate(createdAt)}</span>
+                <span className="text-muted-foreground">{formatDate(new Date(createdAt))}</span>
                 <span className="ml-4 flex items-center">
                   <Icons.clap />
                   <span>{formatNumberWithK(_count.likes)}</span>
@@ -70,7 +67,7 @@ export default async function Post({
                   <span>{formatNumberWithK(_count.comments)}</span>
                 </span>
               </div>
-              <BookmarkButton userId={userId} postId={id} />
+              <BookmarkButton isBookmarked={isBookmarked} postId={id} />
             </div>
           </Link>
         </div>

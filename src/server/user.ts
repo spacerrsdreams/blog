@@ -1,4 +1,4 @@
-import type { User } from "@/types";
+import type { ClerkUser } from "@/types";
 
 import prismaClient from "@/lib/prisma";
 
@@ -18,7 +18,7 @@ export const getUserByUserId = async (userId: string) => {
   });
 };
 
-export const createUser = async (data: User) => {
+export const createUser = async (data: ClerkUser) => {
   const user = await getUserByUserId(data.data.id);
 
   if (user) {
@@ -65,7 +65,7 @@ export const createUser = async (data: User) => {
   });
 };
 
-export const updateUser = async (data: User) => {
+export const updateUser = async (data: ClerkUser) => {
   return prismaClient.users.update({
     where: {
       id: data.data.id,

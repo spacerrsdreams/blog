@@ -82,7 +82,6 @@ export type CommentResponsePayload = z.infer<typeof CommentResponseSchema>;
 export const BookmarkRequestSchema = z
   .object({
     postId: z.string().min(1, "Post ID must be at least 1 character long."),
-    userId: z.string().min(1, "User ID must be at least 1 character long."),
   })
   .strict();
 

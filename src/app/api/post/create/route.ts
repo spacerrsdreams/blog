@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { ROUTES } from "@/utils/routes";
-import { handleError } from "@/lib/error";
+import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
 import prismaClient from "@/lib/prisma";
 import { CreateArticleRequestSchema } from "@/services/types";
 
@@ -11,7 +11,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const { userId } = auth();
     if (!userId) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return handleError(ERROR_MESSAGES[ERROR_CODES.USER_IS_NOT_AUTHENTICATED]);
     }
 
     const body = await req.json();

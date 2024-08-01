@@ -1,32 +1,68 @@
-import { auth } from "@clerk/nextjs/server";
-import { type Value } from "react-quill";
+import type { Metadata } from "next";
+import type { Value } from "react-quill";
 
-import { ERROR_CODES } from "@/lib/error";
-import prisma from "@/lib/prisma";
+import { siteConfig } from "@/config/siteConfig";
+import prismaClient from "@/lib/prisma";
 import Article from "@/components/shared/article/Article";
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const { userId } = auth();
-  const post = await prisma.posts.findUnique({
+export const dynamicParams = true;
+
+type Props = {
+  params: {
+    slug: string;
+  };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const slug = params.slug;
+
+  const post = await prismaClient.posts.findUnique({
     where: {
-      slug: params.slug,
+      slug: slug,
+    },
+  });
+
+  return {
+    title: post?.title || siteConfig.name,
+    openGraph: {
+      images: [post?.coverImageSrc || "/images/rick-and-morty.jpg"],
+    },
+  };
+}
+
+export async function generateStaticParams() {
+  const posts = await prismaClient.posts.findMany({
+    select: {
+      slug: true,
+    },
+  });
+
+  return posts;
+}
+
+export default async function Page({ params }: { params: { slug: string } }) {
+  const { slug } = params;
+
+  const post = await prismaClient.posts.findUnique({
+    where: {
+      slug: slug,
     },
     include: {
+      author: true,
       likes: true,
       comments: true,
-      author: true,
+      bookmarks: true,
     },
   });
 
   if (!post) {
-    throw new Error(ERROR_CODES.POST_NOT_FOUND);
+    return <div>Post not found</div>;
   }
 
   return (
     <div className="flex w-full justify-center py-2">
       <div className="max-w-[680px] py-2">
         <Article
-          userId={userId as string}
           articleId={post.id}
           title={post.title}
           subTitle={post.subTitle}

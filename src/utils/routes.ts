@@ -4,6 +4,7 @@ export const ROUTES = {
   articleSlug: "/article/[slug]",
   api: {
     post: {
+      get: "/api/post/get",
       create: "api/post/create",
       like: "/api/post/like",
       comment: "/api/post/comment",

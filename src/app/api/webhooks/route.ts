@@ -1,5 +1,5 @@
 import { createUser, updateUser } from "@/server/user";
-import type { User } from "@/types";
+import type { ClerkUser } from "@/types";
 import { Webhook } from "svix";
 
 import type { WebhookEvent } from "@clerk/nextjs/server";
@@ -50,11 +50,10 @@ export async function POST(req: Request) {
   try {
     switch (eventType) {
       case "user.created":
-        await createUser(payload as User);
+        await createUser(payload as ClerkUser);
         break;
       case "user.updated":
-        console.log("trigger", payload.data.id);
-        await updateUser(payload as User);
+        await updateUser(payload as ClerkUser);
         break;
       default:
         break;
