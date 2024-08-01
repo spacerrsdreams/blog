@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "Bloggers",
+  name: "uBloggers",
   url: "https://ui.shadcn.com",
   ogImage: "https://ui.shadcn.com/og.jpg",
-  description: "Blogsgers Blog ",
+  description: "uBloggers is a platform for sharing your thoughts and ideas with the world.",
   links: {
     twitter: "https://twitter.com/shadcn",
     github: "https://github.com/shadcn-ui/ui",
