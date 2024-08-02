@@ -1,6 +1,7 @@
 "use client";
 
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
+import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
@@ -8,7 +9,6 @@ import CommentCreator from "./CommentCreator";
 import { CommentModal } from "./CommentModal";
 import { CommentProvider } from "./CommentProvider";
 import CommentSection from "./CommentSection";
-import { Icons } from "./Icons";
 
 type Props = {
   postId: string;

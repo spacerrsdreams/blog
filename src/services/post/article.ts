@@ -32,8 +32,11 @@ export const useGetArticles = () => {
     mutationFn: async (payload: {
       from: number;
       to: number;
+      feed: string;
     }): Promise<{ data: PostT[]; totalPosts: string }> => {
-      const res = await fetch(`${ROUTES.api.post.get}?from=${payload.from}&to=${payload.to}`);
+      const res = await fetch(
+        `${ROUTES.api.post.get}?from=${payload.from}&to=${payload.to}&feed=${payload.feed}`,
+      );
 
       if (!res.ok) {
         console.error(res);

@@ -4,10 +4,12 @@ import { DM_Sans as FontSans } from "next/font/google";
 
 import "./globals.css";
 
+import { PopupProvider } from "@/context/PopupProvider";
+
 import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import Header from "@/components/shared/header/Header";
+import Header from "@/components/header/Header";
 import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({
@@ -30,9 +32,11 @@ export default function RootLayout({
       <ClerkProvider>
         <ReactQueryProvider>
           <body className={cn("bg-background font-sans antialiased", fontSans.variable)}>
-            <Header />
-            <main className="m-auto block max-w-[1336px]">{children}</main>
-            <Toaster />
+            <PopupProvider>
+              <Header />
+              <main className="m-auto block max-w-[1336px]">{children}</main>
+              <Toaster />
+            </PopupProvider>
           </body>
         </ReactQueryProvider>
       </ClerkProvider>

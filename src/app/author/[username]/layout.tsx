@@ -3,10 +3,9 @@ import { getUserByUserName } from "@/server/user";
 import Image from "next/image";
 
 import { ERROR_CODES } from "@/lib/error";
-import { TABS } from "@/data/links";
 import AuthorDetails from "@/components/author/AuthorDetails";
 import AuthorDetailsMobile from "@/components/author/AuthorDetailsMobile";
-import TabMenu from "@/components/shared/Tab";
+import FeedMenu from "@/components/shared/FeedMenu";
 
 export default async function Layout({
   children,
@@ -42,7 +41,7 @@ export default async function Layout({
           <h1 className="hidden py-5 text-2xl font-bold md:block md:text-6xl">
             {`${author.firstName} ${author.lastName}.`}
           </h1>
-          <TabMenu tabList={TABS} />
+          <FeedMenu />
           <div className="pt-6">{children}</div>
         </div>
       </div>

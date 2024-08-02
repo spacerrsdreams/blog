@@ -6,9 +6,8 @@ import type { MouseEvent } from "react";
 
 import { ERROR_CODES, ERROR_MESSAGES } from "@/lib/error";
 import { useCreateBookmark, useRemoveBookmark } from "@/services/post/bookmark";
+import { Icons } from "@/components/shared/Icons";
 import { useToast } from "@/components/ui/use-toast";
-
-import { Icons } from "./Icons";
 
 type Props = {
   postId: string;

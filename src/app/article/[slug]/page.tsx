@@ -3,7 +3,7 @@ import type { Value } from "react-quill";
 
 import { siteConfig } from "@/config/siteConfig";
 import prismaClient from "@/lib/prisma";
-import Article from "@/components/shared/article/Article";
+import Article from "@/components/post/article/Article";
 
 export const dynamicParams = true;
 
@@ -61,7 +61,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex w-full justify-center py-2">
-      <div className="max-w-[680px] py-2">
+      <div className="w-full max-w-full py-2 md:max-w-[860px]">
         <Article
           articleId={post.id}
           title={post.title}

@@ -2,10 +2,10 @@ import Image from "next/image";
 import { type Value } from "react-quill";
 
 import { formatDate } from "@/utils/formatDate";
-import ArticleContent from "@/components/shared/article/ArticleContent";
-import ArticleCover from "@/components/shared/article/ArticleCover";
-import CommentSheet from "@/components/shared/CommentSheet";
-import LikeButton from "@/components/shared/LikeButton";
+import ArticleContent from "@/components/post/article/ArticleContent";
+import ArticleCover from "@/components/post/article/ArticleCover";
+import LikeButton from "@/components/post/article/LikeButton";
+import CommentSheet from "@/components/post/comment/CommentSheet";
 
 type Props = {
   articleId: string;
@@ -39,7 +39,7 @@ export default function Article({
   handleRemoveImage,
 }: Props) {
   return (
-    <article className="flex size-full flex-col gap-10 px-20">
+    <article className="flex size-full flex-col gap-10 px-4 md:px-20">
       {coverImageSrc && (
         <ArticleCover
           src={coverImageSrc}
@@ -48,7 +48,7 @@ export default function Article({
           handleRemoveImage={handleRemoveImage}
         />
       )}
-      <div className="mx-6 flex flex-col justify-center gap-8 self-center">
+      <div className="mx-2 flex flex-col justify-center gap-8 self-center md:mx-6">
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-5xl font-bold">{title}</h1>
           <h3 className="text-xl text-muted-foreground">{subTitle}</h3>

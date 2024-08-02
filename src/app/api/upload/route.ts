@@ -1,6 +1,7 @@
 import { S3Client } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
-import { uuid } from "uuidv4";
+// eslint-disable-next-line import/named
+import { v4 as uuidv4 } from "uuid";
 
 const REGION = process.env.AWS_S3_BUCKET_REGION;
 const BUCKET = process.env.AWS_S3_BUCKET_NAME;
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
   try {
     const { url, fields } = await createPresignedPost(client, {
       Bucket: BUCKET!,
-      Key: uuid(),
+      Key: uuidv4(),
       Conditions: [
         ["content-length-range", 0, 10485760], // up to 10 MB
         ["starts-with", "$Content-Type", contentType],

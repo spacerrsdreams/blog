@@ -1,37 +1,57 @@
 "use client";
 
+import { TAGS, type TagsT } from "@/constants/tags";
 import type { PostT } from "@/types";
-import { uuid } from "uuidv4";
+// eslint-disable-next-line import/named
+import { v4 as uuidv4 } from "uuid";
 
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { useGetArticles } from "@/services/post/article";
-import Post from "@/components/shared/Post";
+import Post from "@/components/post/Post";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const POST_LOADING_LIMIT = 10;
 
 export default function Home() {
-  const { isPending, mutateAsync: fetchArticles } = useGetArticles();
-  const [pagination, setPagination] = useState({ from: 0, to: POST_LOADING_LIMIT });
+  const { isPending, mutateAsync: fetchArticles, error } = useGetArticles();
+  const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
   const [allPosts, setAllPosts] = useState<PostT[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const loader = useRef(null);
+  const searchParams = useSearchParams();
+  const feed = searchParams.get("feed");
+  const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
+
+  const feedToFetch = TAGS.includes(feed as TagsT) ? feed : "all";
 
   useEffect(() => {
-    if (hasMore && !isPending) {
-      fetchArticles(pagination).then((newPosts) => {
+    setAllPosts([]);
+    setHasMore(true);
+    fetchArticles({ from: 0, to: POST_LOADING_LIMIT, feed: feedToFetch || "all" }).then(
+      (newPosts) => {
+        setAllPosts(newPosts.data);
+        setHasMore(newPosts.data.length > 0);
+        setInitialCallIsLoading(false);
+      },
+    );
+  }, [feed]);
+
+  useEffect(() => {
+    if (hasMore && !isPending && !initialCallIsLoading) {
+      fetchArticles({ ...dynamicScroll, feed: feedToFetch || "all" }).then((newPosts) => {
         setAllPosts((prevPosts) => [...prevPosts, ...newPosts.data]);
         setHasMore(newPosts.data.length > 0);
       });
     }
-  }, [pagination]);
+  }, [dynamicScroll]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !isPending && hasMore) {
-          setPagination((prev) => ({
+          setDynamicScroll((prev) => ({
             from: prev.to,
             to: prev.to + POST_LOADING_LIMIT,
           }));
@@ -56,7 +76,7 @@ export default function Home() {
       <div className="flex flex-col gap-12">
         {allPosts.map((post) => (
           <Post
-            key={uuid()}
+            key={uuidv4()}
             id={post.id}
             slug={post.slug}
             tag={post.tag}
@@ -71,12 +91,12 @@ export default function Home() {
         ))}
       </div>
 
-      <div ref={loader} />
+      {!error && allPosts.length > 0 && <div ref={loader} />}
 
       {isPending && (
         <div className="flex flex-col gap-12">
           {Array.from({ length: POST_LOADING_LIMIT }).map((_, idx) => (
-            <Skeleton key={idx} className="flex h-[193px] w-full" />
+            <Skeleton key={idx} className="flex h-[161px] w-full border-b border-border/50 pb-8" />
           ))}
         </div>
       )}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Icons } from "@/components/shared/Icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { useCommentProvider } from "./CommentProvider";
-import { Icons } from "./Icons";
 
 type Props = {
   commentId: string;

@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/named
+import { v4 as uuidv4 } from "uuid";
+
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
@@ -20,7 +23,7 @@ export const POST = async (req: NextRequest) => {
     const post = await prismaClient.posts.create({
       data: {
         authorId: userId,
-        slug: data.title.toLowerCase().replace(/ /g, "-") + "-" + Date.now(),
+        slug: data.title.toLowerCase().replace(/ /g, "-") + "-" + uuidv4(),
         title: data.title,
         subTitle: data.subTitle,
         tag: data.tag,
