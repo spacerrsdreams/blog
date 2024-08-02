@@ -2,8 +2,12 @@ import type { Tab } from "@/types";
 
 export const TABS: Tab[] = [
   {
-    title: "AI",
+    title: "ALL",
     slug: "",
+  },
+  {
+    title: "AI",
+    slug: "ai",
   },
   { title: "Crypto", slug: "settings" },
   {

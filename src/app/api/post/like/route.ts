@@ -15,14 +15,19 @@ export const POST = async (req: NextRequest) => {
     }
 
     const body = await req.json();
-    const { postId } = LikeRequestSchema.parse(body);
-    const like = await prismaClient.likes.create({
+    const { postId, totalLikes } = LikeRequestSchema.parse(body);
+    const likeUpdated = await prismaClient.posts.update({
+      where: { id: postId },
       data: {
-        postId,
-        userId,
+        likes: {
+          createMany: {
+            data: Array.from({ length: totalLikes }, () => ({ userId })),
+          },
+        },
       },
     });
-    if (like) {
+
+    if (likeUpdated) {
       revalidatePath(ROUTES.root, "page");
       revalidatePath(ROUTES.articleSlug, "page");
       return NextResponse.json({ message: "Post liked successfully." }, { status: 201 });
