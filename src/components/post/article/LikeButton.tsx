@@ -12,8 +12,6 @@ import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
-import styles from "./likeButton.module.css";
-
 type Props = {
   count: number;
   postId: string;
@@ -63,23 +61,10 @@ export default function LikeButton({ count, postId, disabled }: Props) {
     setLikes((prevLikes) => prevLikes + 1);
     setIsLiked(true);
     like();
-
-    // Add animation class
-    const likeButton = document.getElementById(`like-button-${postId}`);
-    likeButton!.classList.add(styles.animate);
-    setTimeout(() => {
-      likeButton!.classList.remove(styles.animate);
-    }, 1000);
   };
 
   return (
-    <Button
-      id={`like-button-${postId}`}
-      className={styles.likeButton} // Add the CSS module class
-      disabled={disabled}
-      variant="ghost"
-      onClick={handleClick}
-    >
+    <Button disabled={disabled} variant="ghost" onClick={handleClick}>
       {isLiked ? <Icons.clapDark /> : <Icons.clap />}
       <span>{formatNumberWithK(likes)}</span>
     </Button>
