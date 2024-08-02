@@ -1,7 +1,8 @@
 "use client";
 
 import type { PostT } from "@/types";
-import { uuid } from "uuidv4";
+// eslint-disable-next-line import/named
+import { v4 as uuidv4 } from "uuid";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -56,7 +57,7 @@ export default function Home() {
       <div className="flex flex-col gap-12">
         {allPosts.map((post) => (
           <Post
-            key={uuid()}
+            key={uuidv4()}
             id={post.id}
             slug={post.slug}
             tag={post.tag}
