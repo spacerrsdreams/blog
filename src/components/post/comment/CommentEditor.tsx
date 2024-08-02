@@ -3,9 +3,9 @@
 import { useState, type ChangeEvent } from "react";
 
 import { useEditComment } from "@/services/post/comment";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
 import { useCommentProvider } from "./CommentProvider";
 
 type Props = {

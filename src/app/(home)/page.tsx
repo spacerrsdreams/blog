@@ -6,7 +6,7 @@ import { uuid } from "uuidv4";
 import { useEffect, useRef, useState } from "react";
 
 import { useGetArticles } from "@/services/post/article";
-import Post from "@/components/shared/Post";
+import Post from "@/components/post/Post";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const POST_LOADING_LIMIT = 10;
@@ -76,7 +76,7 @@ export default function Home() {
       {isPending && (
         <div className="flex flex-col gap-12">
           {Array.from({ length: POST_LOADING_LIMIT }).map((_, idx) => (
-            <Skeleton key={idx} className="flex h-[193px] w-full" />
+            <Skeleton key={idx} className="flex h-[161px] w-full border-b border-border/50 pb-8" />
           ))}
         </div>
       )}

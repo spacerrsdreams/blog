@@ -9,7 +9,7 @@ import { PopupProvider } from "@/context/PopupProvider";
 import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import Header from "@/components/shared/header/Header";
+import Header from "@/components/header/Header";
 import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({

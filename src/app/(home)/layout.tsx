@@ -1,5 +1,5 @@
 import { TABS } from "@/data/links";
-import Highlights from "@/components/shared/highlights/Highlights";
+import Highlights from "@/components/highlights/Highlights";
 import TabMenu from "@/components/shared/Tab";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

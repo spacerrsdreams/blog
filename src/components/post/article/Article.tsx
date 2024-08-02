@@ -2,10 +2,10 @@ import Image from "next/image";
 import { type Value } from "react-quill";
 
 import { formatDate } from "@/utils/formatDate";
-import ArticleContent from "@/components/shared/article/ArticleContent";
-import ArticleCover from "@/components/shared/article/ArticleCover";
-import CommentSheet from "@/components/shared/CommentSheet";
-import LikeButton from "@/components/shared/LikeButton";
+import ArticleContent from "@/components/post/article/ArticleContent";
+import ArticleCover from "@/components/post/article/ArticleCover";
+import LikeButton from "@/components/post/article/LikeButton";
+import CommentSheet from "@/components/post/comment/CommentSheet";
 
 type Props = {
   articleId: string;

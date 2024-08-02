@@ -1,11 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import React, { useEffect, useRef } from "react";
 
 import { useDeleteComment } from "@/services/post/comment";
+import { Button } from "@/components/ui/button";
 
-import { Button } from "../ui/button";
 import { useCommentProvider } from "./CommentProvider";
 
 export function CommentModal() {

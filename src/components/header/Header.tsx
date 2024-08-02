@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ROUTES } from "@/utils/routes";
 import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
-import { MainNavigation } from "@/components/shared/header/MainvNavigation";
-import { MobileNavigation } from "@/components/shared/header/MobileNavigation";
+import { MainNavigation } from "@/components/header/MainvNavigation";
+import { MobileNavigation } from "@/components/header/MobileNavigation";
 import { Icons } from "@/components/shared/Icons";
 import { buttonVariants } from "@/components/ui/button";
 

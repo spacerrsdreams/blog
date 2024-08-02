@@ -6,10 +6,9 @@ import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { ERROR_CODES } from "@/lib/error";
+import BookmarkButton from "@/components/post/article/BookmarkButton";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-import BookmarkButton from "./BookmarkButton";
 
 export default function Post({
   id,

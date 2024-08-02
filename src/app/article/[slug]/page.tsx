@@ -3,7 +3,7 @@ import type { Value } from "react-quill";
 
 import { siteConfig } from "@/config/siteConfig";
 import prismaClient from "@/lib/prisma";
-import Article from "@/components/shared/article/Article";
+import Article from "@/components/post/article/Article";
 
 export const dynamicParams = true;
 

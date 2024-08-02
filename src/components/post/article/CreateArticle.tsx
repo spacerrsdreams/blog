@@ -21,8 +21,8 @@ import { ROUTES } from "@/utils/routes";
 import { useUploadImage } from "@/lib/aws";
 import { useCreateArticle } from "@/services/post/article";
 import { CreateArticleRequestSchema, type CreateArticleRequestPayload } from "@/services/types";
-import Article from "@/components/shared/article/Article";
-import QuillEditor from "@/components/shared/article/QuillEditor";
+import Article from "@/components/post/article/Article";
+import QuillEditor from "@/components/shared/QuillEditor";
 import { Button } from "@/components/ui/button";
 import {
   Select,
