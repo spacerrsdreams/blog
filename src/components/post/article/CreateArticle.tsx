@@ -50,7 +50,7 @@ export default function CreateArticle() {
       title: "How I Hunt Down My Nemesis",
       subTitle:
         "So I'm out here, jumping through dimensions, chasing down this pain-in-the-ass nemesis of mine. Portal gun's acting up, Morty's whining—typical Tuesday. But hey, who doesn't love a good multiverse showdown?",
-      tag: "AI",
+      tag: "ai",
       coverImageSrc: undefined,
       postContent: undefined,
     },
@@ -131,7 +131,7 @@ export default function CreateArticle() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {TAGS.map((tag) => (
+                          {TAGS.filter((f) => f !== "all").map((tag) => (
                             <SelectItem key={tag} value={tag}>
                               {tag}
                             </SelectItem>

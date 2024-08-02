@@ -8,11 +8,11 @@ datasource db {
 }
 
 enum Tags {
-  ALL
-  AI
-  Finances
-  Crypto
-  Startups
+  ai
+  all
+  finances
+  crypto
+  startups
 }
 
 model Posts {

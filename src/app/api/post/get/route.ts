@@ -1,3 +1,5 @@
+import type { TagsT } from "@/constants/tags";
+
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -11,6 +13,7 @@ export const GET = async (req: NextRequest) => {
     const searchParams = req.nextUrl.searchParams;
     const from = parseInt(searchParams.get("from") || "0");
     const to = parseInt(searchParams.get("to") || "20");
+    const tag = searchParams.get("feed") as TagsT;
 
     const totalPosts = await prismaClient.posts.count();
     const posts = await prismaClient.posts.findMany({
@@ -38,6 +41,11 @@ export const GET = async (req: NextRequest) => {
       orderBy: {
         createdAt: "desc",
       },
+      ...(tag !== "all" && {
+        where: {
+          tag: tag,
+        },
+      }),
     });
 
     const postsWithBookmarkStatus = posts.map((post) => ({

@@ -1,3 +1,3 @@
-export const TAGS = ["ALL", "AI", "Finances", "Crypto", "Startups"] as const;
+export const TAGS = ["all", "ai", "finances", "crypto", "startups"] as const;
 
-export type Tags = (typeof TAGS)[number];
+export type TagsT = (typeof TAGS)[number];

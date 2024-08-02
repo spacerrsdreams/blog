@@ -1,10 +1,12 @@
 "use client";
 
+import { TAGS } from "@/constants/tags";
 import type { Tab } from "@/types";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
+import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { cn } from "@/lib/utils";
 
 type TabProps = {
@@ -13,24 +15,32 @@ type TabProps = {
   onClick: () => void;
 };
 
-type Props = {
-  tabList: Tab[];
-};
+const TabList: Tab[] = TAGS.map((tag) => ({
+  title: capitalizeFirstLetter(tag),
+  slug: tag,
+}));
 
-export default function TabMenu({ tabList }: Props) {
+export default function FeedMenu() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState(tabList[0].title);
+  const [activeTab, setActiveTab] = useState(TabList[0].title);
+  const searchParams = useSearchParams();
+  const feed = searchParams.get("feed");
+
+  useEffect(() => {
+    const activeTab = TabList.find((tab) => tab.slug === feed)?.title || "all";
+    setActiveTab(capitalizeFirstLetter(activeTab));
+  }, [feed]);
 
   const handleClick = (tab: Tab) => {
     setActiveTab(tab.title);
 
-    tab.slug === "" ? router.push("/") : router.push(`/?tag=${tab.slug}`);
+    tab.slug === "all" ? router.push("/") : router.push(`/?feed=${tab.slug}`);
   };
 
   return (
     <div className="sticky top-0 z-20 mb-4 border-b border-border/40 bg-white">
       <ul className="-mb-px flex overflow-x-auto text-center text-sm font-medium">
-        {tabList.map((tab) => (
+        {TabList.map((tab) => (
           <Tab
             key={tab.title}
             title={tab.title}
