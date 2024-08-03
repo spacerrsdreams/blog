@@ -41,7 +41,7 @@ model Likes {
   userId    String
   postId    String
   user      Users     @relation("userLikes", fields: [userId], references: [id])
-  post      Posts     @relation("postLikes", fields: [postId], references: [id])
+  post      Posts     @relation("postLikes", fields: [postId], references: [id], onDelete: Cascade)
 
   @@map("likes")
 }
@@ -55,7 +55,7 @@ model Comments {
   createdAt DateTime @default(now())
   modifiedAt DateTime @updatedAt
   user      Users     @relation("userComments", fields: [userId], references: [id])
-  post      Posts     @relation("postComments", fields: [postId], references: [id])
+  post      Posts     @relation("postComments", fields: [postId], references: [id], onDelete: Cascade)
 
   @@map("comments")
 }
@@ -67,7 +67,7 @@ model Bookmarks {
   userId    String
   postId    String
   user      Users     @relation("userBookmarks", fields: [userId], references: [id])
-  post      Posts     @relation("postBookmarks", fields: [postId], references: [id])
+  post      Posts     @relation("postBookmarks", fields: [postId], references: [id], onDelete: Cascade)
 
   @@map("bookmarks")
 }
