@@ -26,6 +26,23 @@ export const useCreateBookmark = () => {
   });
 };
 
+export const useGetBookmark = () => {
+  return useMutation({
+    mutationFn: async (postId: string): Promise<{ data: object | null }> => {
+      const res = await fetch(`${ROUTES.api.post.bookmark}/${postId}`);
+
+      if (!res.ok) {
+        throw new Error("Failed to get bookmark.");
+      }
+
+      return BookmarkResponseSchema.parse(await res.json());
+    },
+    onError: (error) => {
+      console.error("Error updating user comment information:", error);
+    },
+  });
+};
+
 export const useRemoveBookmark = () => {
   return useMutation({
     mutationFn: async (postId: string) => {
