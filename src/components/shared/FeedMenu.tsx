@@ -20,7 +20,7 @@ const TabList: Tab[] = TAGS.map((tag) => ({
   slug: tag,
 }));
 
-export default function FeedMenu() {
+export default function FeedMenu({ baseUrl = "/" }: { baseUrl?: string }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(TabList[0].title);
   const searchParams = useSearchParams();
@@ -34,7 +34,7 @@ export default function FeedMenu() {
   const handleClick = (tab: Tab) => {
     setActiveTab(tab.title);
 
-    tab.slug === "all" ? router.push("/") : router.push(`/?feed=${tab.slug}`);
+    tab.slug === "all" ? router.push(baseUrl) : router.push(`${baseUrl}?feed=${tab.slug}`);
   };
 
   return (

@@ -78,6 +78,7 @@ export default function Home() {
           <Post
             key={uuidv4()}
             id={post.id}
+            currentFeed={feedToFetch || ""}
             slug={post.slug}
             tag={post.tag}
             title={post.title}

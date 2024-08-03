@@ -112,6 +112,7 @@ export type PostT = {
   subTitle: string;
   coverImageSrc: string | undefined;
   createdAt: Date;
+  currentFeed: string;
   _count: {
     likes: number;
     comments: number;

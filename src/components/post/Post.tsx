@@ -20,6 +20,7 @@ export default function Post({
   author,
   createdAt,
   coverImageSrc,
+  currentFeed,
   isBookmarked,
 }: PostT) {
   if (!author) {
@@ -43,7 +44,13 @@ export default function Post({
           </span>
         </Link>
         <span className="text-muted-foreground">in</span>
-        <h5 className="font-semibold">{tag}</h5>
+        {currentFeed !== tag ? (
+          <Link href={`/?feed=${tag}`}>
+            <h5 className="font-semibold underline">{tag}</h5>
+          </Link>
+        ) : (
+          <h5 className="font-semibold">{tag}</h5>
+        )}
       </div>
       <div className="flex items-center gap-4 sm:gap-8 md:gap-12">
         <div className="flex flex-1 flex-col gap-4">

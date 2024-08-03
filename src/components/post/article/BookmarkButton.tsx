@@ -13,12 +13,14 @@ import { Button } from "@/components/ui/button";
 type Props = {
   postId: string;
   isBookmarked?: boolean;
+  inEditMode?: boolean;
   fetchBookmarkState?: boolean;
 };
 
 export default function BookmarkButton({
   postId,
   isBookmarked,
+  inEditMode = false,
   fetchBookmarkState = false,
 }: Props) {
   const [isChecked, setIsChecked] = useState(isBookmarked);
@@ -29,7 +31,7 @@ export default function BookmarkButton({
   const { mutateAsync: getBookmarkAsync } = useGetBookmark();
 
   useEffect(() => {
-    if (!fetchBookmarkState) return;
+    if (!fetchBookmarkState || inEditMode) return;
 
     getBookmarkAsync(postId).then((data) => {
       data.data ? setIsChecked(true) : setIsChecked(false);

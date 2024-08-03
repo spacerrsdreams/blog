@@ -33,10 +33,19 @@ export const useGetArticles = () => {
       from: number;
       to: number;
       feed: string;
+      username?: string;
     }): Promise<{ data: PostT[]; totalPosts: string }> => {
-      const res = await fetch(
-        `${ROUTES.api.post.get}?from=${payload.from}&to=${payload.to}&feed=${payload.feed}`,
-      );
+      const queryParams = new URLSearchParams({
+        from: payload.from.toString(),
+        to: payload.to.toString(),
+        feed: payload.feed,
+      });
+
+      if (payload.username) {
+        queryParams.append("username", payload.username);
+      }
+
+      const res = await fetch(`${ROUTES.api.post.get}?${queryParams.toString()}`);
 
       if (!res.ok) {
         console.error(res);

@@ -1,4 +1,5 @@
 import type { TagsT } from "@/constants/tags";
+import type { Prisma } from "@prisma/client";
 
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse, type NextRequest } from "next/server";
@@ -14,8 +15,26 @@ export const GET = async (req: NextRequest) => {
     const from = parseInt(searchParams.get("from") || "0");
     const to = parseInt(searchParams.get("to") || "20");
     const tag = searchParams.get("feed") as TagsT;
+    const username = searchParams.get("username");
 
-    const totalPosts = await prismaClient.posts.count();
+    // Define the base filter criteria
+    const filter: Prisma.PostsWhereInput = {
+      ...(username && {
+        author: {
+          username: username,
+        },
+      }),
+      ...(tag !== "all" && {
+        tag: tag,
+      }),
+    };
+
+    // Count posts with the applied filter
+    const totalPosts = await prismaClient.posts.count({
+      where: filter,
+    });
+
+    // Fetch posts with the applied filter and pagination
     const posts = await prismaClient.posts.findMany({
       skip: from,
       take: to - from,
@@ -41,11 +60,7 @@ export const GET = async (req: NextRequest) => {
       orderBy: {
         createdAt: "desc",
       },
-      ...(tag !== "all" && {
-        where: {
-          tag: tag,
-        },
-      }),
+      where: filter,
     });
 
     const postsWithBookmarkStatus = posts.map((post) => ({

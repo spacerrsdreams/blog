@@ -83,7 +83,11 @@ export default function Article({
                 disabled={disableActions}
               />
             </div>
-            <BookmarkButton postId={articleId} fetchBookmarkState={true} />
+            <BookmarkButton
+              postId={articleId}
+              fetchBookmarkState={true}
+              inEditMode={disableActions}
+            />
           </div>
         </div>
         <ArticleContent postContent={content} />
