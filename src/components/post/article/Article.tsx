@@ -4,6 +4,7 @@ import { type Value } from "react-quill";
 import { formatDate } from "@/utils/formatDate";
 import ArticleContent from "@/components/post/article/ArticleContent";
 import ArticleCover from "@/components/post/article/ArticleCover";
+import BookmarkButton from "@/components/post/article/BookmarkButton";
 import LikeButton from "@/components/post/article/LikeButton";
 import CommentSheet from "@/components/post/comment/CommentSheet";
 
@@ -73,13 +74,16 @@ export default function Article({
               </div>
             </div>
           </div>
-          <div className="mt-6 flex items-center border-b border-t border-border/60 py-1">
-            <LikeButton disabled={disableActions} count={likesLength} postId={articleId} />
-            <CommentSheet
-              postId={articleId}
-              commentsCount={commentsLength}
-              disabled={disableActions}
-            />
+          <div className="mt-6 flex items-center justify-between border-b border-t border-border/60 py-1">
+            <div className="flex items-center">
+              <LikeButton disabled={disableActions} count={likesLength} postId={articleId} />
+              <CommentSheet
+                postId={articleId}
+                commentsCount={commentsLength}
+                disabled={disableActions}
+              />
+            </div>
+            <BookmarkButton postId={articleId} isBookmarked={false} />
           </div>
         </div>
         <ArticleContent postContent={content} />
