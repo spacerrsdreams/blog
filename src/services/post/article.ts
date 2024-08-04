@@ -35,17 +35,7 @@ export const useGetArticles = () => {
       feed: string;
       username?: string;
     }): Promise<{ data: PostT[]; totalPosts: string }> => {
-      const queryParams = new URLSearchParams({
-        from: payload.from.toString(),
-        to: payload.to.toString(),
-        feed: payload.feed,
-      });
-
-      if (payload.username) {
-        queryParams.append("username", payload.username);
-      }
-
-      const res = await fetch(`${ROUTES.api.post.get}?${queryParams.toString()}`);
+      const res = await fetch(ROUTES.api.post.getMany(payload));
 
       if (!res.ok) {
         console.error(res);
