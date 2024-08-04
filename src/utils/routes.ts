@@ -5,6 +5,8 @@ type GetMany = {
   username?: string;
 };
 
+const appendIfExists = (arg?: string) => (arg ? "/" + arg : "");
+
 export const ROUTES = {
   root: "/",
   createArticle: "/create-article",
@@ -27,9 +29,9 @@ export const ROUTES = {
 
         return `/api/post/get?${queryParams.toString()}`;
       },
-      like: "/api/post/like",
-      comment: "/api/post/comment",
-      bookmark: (postId?: string) => `/api/post/bookmark/${postId || ""}`,
+      like: (postId?: string) => `/api/post/like${appendIfExists(postId)}`,
+      comment: (postId?: string) => `/api/post/comment${appendIfExists(postId)}`,
+      bookmark: (postId?: string) => `/api/post/bookmark${appendIfExists(postId)}`,
     },
     user: {
       getUserById: "/api/user/get-user-by-id",
