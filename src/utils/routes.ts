@@ -35,7 +35,7 @@ export const ROUTES = {
       getUserById: "/api/user/get-user-by-id",
     },
     image: {
-      upload: "/api/upload",
+      upload: "/api/image/upload",
     },
   },
 };
