@@ -5,6 +5,7 @@ export const ROUTES = {
   api: {
     post: {
       get: "/api/post/get",
+      delete: (id: string) => `/api/post/${id}`,
       create: "api/post/create",
       like: "/api/post/like",
       comment: "/api/post/comment",

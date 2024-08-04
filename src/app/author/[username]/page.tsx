@@ -83,6 +83,10 @@ export default function Home({ params }: { params: { username: string } }) {
     return <div>Invalid username</div>;
   }
 
+  const onPostDelete = (postId: string) => {
+    setAllPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
@@ -100,6 +104,7 @@ export default function Home({ params }: { params: { username: string } }) {
             createdAt={post.createdAt}
             coverImageSrc={post.coverImageSrc}
             isBookmarked={post.isBookmarked}
+            onPostDelete={onPostDelete}
           />
         ))}
       </div>

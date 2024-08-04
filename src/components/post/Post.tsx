@@ -8,7 +8,7 @@ import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { ERROR_CODES } from "@/lib/error";
 import BookmarkButton from "@/components/post/article/BookmarkButton";
-import MoreButton from "@/components/post/article/MoreButton";
+import MoreActionsButton from "@/components/post/article/MoreActionsButton";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -24,6 +24,7 @@ export default function Post({
   coverImageSrc,
   currentFeed,
   isBookmarked,
+  onPostDelete,
 }: PostT) {
   const { user } = useUser();
 
@@ -80,7 +81,14 @@ export default function Post({
               <div className="flex items-center">
                 <BookmarkButton isBookmarked={isBookmarked} postId={id} />
 
-                {user?.id === author?.id && <MoreButton />}
+                {user?.id === author?.id && (
+                  <MoreActionsButton
+                    userId={user.id}
+                    authorId={author.id}
+                    postId={id}
+                    onPostDelete={onPostDelete}
+                  />
+                )}
               </div>
             </div>
           </Link>

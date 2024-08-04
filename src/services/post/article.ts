@@ -56,3 +56,20 @@ export const useGetArticles = () => {
     },
   });
 };
+
+export const useDeleteArticle = () => {
+  return useMutation({
+    mutationFn: async (payload: { id: string }) => {
+      const res = await fetch(ROUTES.api.post.delete(payload.id), {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        console.error(res);
+        throw new Error("Failed to delete article");
+      }
+
+      return res.json();
+    },
+  });
+};
