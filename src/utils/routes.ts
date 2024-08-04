@@ -13,10 +13,8 @@ export const ROUTES = {
   articleSlug: "/article/[slug]",
   api: {
     post: {
-      get: "/api/post/get",
-      create: "api/post/create",
-      delete: (id: string) => `/api/post/${id}`,
-      getMany: ({ from, to, feed, username }: GetMany) => {
+      article: (id?: string) => `/api/post${appendIfExists(id)}`,
+      getManyArticle: ({ from, to, feed, username }: GetMany) => {
         const queryParams = new URLSearchParams({
           from: from.toString(),
           to: to.toString(),
@@ -27,7 +25,7 @@ export const ROUTES = {
           queryParams.append("username", username);
         }
 
-        return `/api/post/get?${queryParams.toString()}`;
+        return `/api/post?${queryParams.toString()}`;
       },
       like: (postId?: string) => `/api/post/like${appendIfExists(postId)}`,
       comment: (postId?: string) => `/api/post/comment${appendIfExists(postId)}`,
