@@ -32,7 +32,7 @@ export const ROUTES = {
       bookmark: (postId?: string) => `/api/post/bookmark${appendIfExists(postId)}`,
     },
     user: {
-      getUserById: "/api/user/get-user-by-id",
+      getUserById: (userId: string) => `/api/user/${userId}`,
     },
     image: {
       upload: "/api/image/upload",

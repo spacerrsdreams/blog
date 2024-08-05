@@ -16,15 +16,17 @@ type Props = {
   comment: CommentT;
 };
 export default function Comment({ comment }: Props) {
-  const [user, setUser] = useState<UserPayload | null>(null);
-  const { mutateAsync: getUserByIdAsync, isPending } = useGetUserById();
   const loggedInUser = useUser();
+  const { mutateAsync: getUserByIdAsync, isPending } = useGetUserById();
+  const [user, setUser] = useState<UserPayload | null>(null);
 
   useEffect(() => {
     getUserByIdAsync({ userId: comment.userId }).then((data) => {
       setUser(data);
     });
   }, [getUserByIdAsync, comment.userId]);
+
+  const isCommentCreator = loggedInUser?.user?.id === comment.userId;
 
   return isPending ? (
     <CommentSkeleton />
@@ -47,7 +49,7 @@ export default function Comment({ comment }: Props) {
               <span className="text-sm text-gray-500">{formatCommentDate(comment.createdAt)}</span>
             </div>
             <div className="-translate-x-6">
-              {loggedInUser.user?.id === user?.id && <CommentOption commentId={comment.id} />}
+              {isCommentCreator && <CommentOption commentId={comment.id} />}
             </div>
           </div>
         </div>

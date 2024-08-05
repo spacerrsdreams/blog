@@ -16,8 +16,8 @@ type Props = {
 };
 export default function CommentSection({ postId }: Props) {
   const [comments, setComments] = useState<CommentT[] | null>(null);
-  const { inEdit, commentId } = useCommentProvider();
   const { mutateAsync: getCommentsAsync, isPending } = useGetComments();
+  const { inEdit, commentId } = useCommentProvider();
 
   useEffect(() => {
     getCommentsAsync(postId).then((data) => {
@@ -29,10 +29,10 @@ export default function CommentSection({ postId }: Props) {
     <div className="mt-8 flex flex-col gap-6 overflow-y-auto">
       {comments?.map((comment) => (
         <div key={comment.id}>
-          {inEdit && comment.id === commentId ? (
-            <CommentEditor content={comment.content} />
-          ) : isPending ? (
+          {isPending ? (
             <CommentSkeleton />
+          ) : inEdit && comment.id === commentId ? (
+            <CommentEditor content={comment.content} />
           ) : (
             <Comment comment={comment} />
           )}
