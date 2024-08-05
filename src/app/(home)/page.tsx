@@ -71,6 +71,10 @@ export default function Home() {
     };
   }, [loader, isPending, hasMore]);
 
+  const onPostDelete = (postId: string) => {
+    setAllPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
@@ -78,6 +82,7 @@ export default function Home() {
           <Post
             key={uuidv4()}
             id={post.id}
+            currentFeed={feedToFetch || ""}
             slug={post.slug}
             tag={post.tag}
             title={post.title}
@@ -87,6 +92,7 @@ export default function Home() {
             createdAt={post.createdAt}
             coverImageSrc={post.coverImageSrc}
             isBookmarked={post.isBookmarked}
+            onPostDelete={onPostDelete}
           />
         ))}
       </div>

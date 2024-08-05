@@ -107,11 +107,13 @@ export type Contributor = {
 export type PostT = {
   id: string;
   slug: string;
+  onPostDelete: (postId: string) => void;
   tag: string;
   title: string;
   subTitle: string;
   coverImageSrc: string | undefined;
   createdAt: Date;
+  currentFeed: string;
   _count: {
     likes: number;
     comments: number;

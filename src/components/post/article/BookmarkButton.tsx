@@ -1,37 +1,46 @@
 "use client";
 
-import { RedirectToSignIn, useUser } from "@clerk/nextjs";
-import { useState } from "react";
+import { usePopupProvider } from "@/context/PopupProvider";
+
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
 
-import { ERROR_CODES, ERROR_MESSAGES } from "@/lib/error";
-import { useCreateBookmark, useRemoveBookmark } from "@/services/post/bookmark";
+import { useCreateBookmark, useGetBookmark, useRemoveBookmark } from "@/services/post/bookmark";
 import { Icons } from "@/components/shared/Icons";
-import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   postId: string;
-  isBookmarked: boolean;
+  isBookmarked?: boolean;
+  inEditMode?: boolean;
+  fetchBookmarkState?: boolean;
 };
 
-export default function BookmarkButton({ postId, isBookmarked }: Props) {
-  const { toast } = useToast();
-
+export default function BookmarkButton({
+  postId,
+  isBookmarked,
+  inEditMode = false,
+  fetchBookmarkState = false,
+}: Props) {
   const [isChecked, setIsChecked] = useState(isBookmarked);
   const { user } = useUser();
+  const { open } = usePopupProvider();
   const { mutateAsync: createBookmarkAsync } = useCreateBookmark();
   const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark();
+  const { mutateAsync: getBookmarkAsync } = useGetBookmark();
 
-  const createBookmark = (event: MouseEvent<SVGElement>) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (!fetchBookmarkState || inEditMode) return;
+
+    getBookmarkAsync(postId).then((data) => {
+      data.data ? setIsChecked(true) : setIsChecked(false);
+    });
+  }, [fetchBookmarkState]);
+
+  const createBookmark = () => {
     if (!user) {
-      toast({
-        variant: "destructive",
-        title: "Unauthorized",
-        description: ERROR_MESSAGES[ERROR_CODES.USER_IS_NOT_AUTHENTICATED],
-        action: <RedirectToSignIn />,
-      });
-
+      open(true);
       return;
     }
 
@@ -39,41 +48,34 @@ export default function BookmarkButton({ postId, isBookmarked }: Props) {
 
     createBookmarkAsync({
       postId,
-    }).catch(() => {
+    }).catch((err) => {
+      console.error(err);
       setIsChecked(false);
     });
   };
 
-  const removeBookmark = (event: MouseEvent<SVGElement>) => {
-    event.preventDefault();
-
-    if (!user) return;
-
+  const removeBookmark = () => {
     if (!user) {
-      toast({
-        variant: "destructive",
-        title: "Unauthorized",
-        description: ERROR_MESSAGES[ERROR_CODES.USER_IS_NOT_AUTHENTICATED],
-        action: <RedirectToSignIn />,
-      });
-
+      open(true);
       return;
     }
 
     setIsChecked(false);
 
-    removeBookmarkAsync(postId).catch(() => {
+    removeBookmarkAsync(postId).catch((err) => {
+      console.error(err);
       setIsChecked(true);
     });
   };
 
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    isChecked ? removeBookmark() : createBookmark();
+  };
+
   return (
-    <span className="flex items-center">
-      {isChecked ? (
-        <Icons.bookmarkDark onClick={removeBookmark} />
-      ) : (
-        <Icons.bookmark onClick={createBookmark} />
-      )}
-    </span>
+    <Button variant="ghost" onClick={handleClick}>
+      {isChecked ? <Icons.bookmarkDark /> : <Icons.bookmark />}
+    </Button>
   );
 }

@@ -6,7 +6,7 @@ import { BookmarkResponseSchema, type BookmarkRequestPayload } from "@/services/
 export const useCreateBookmark = () => {
   return useMutation({
     mutationFn: async (payload: BookmarkRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.bookmark, {
+      const res = await fetch(ROUTES.api.post.bookmark(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -20,8 +20,19 @@ export const useCreateBookmark = () => {
 
       return BookmarkResponseSchema.parse(await res.json());
     },
-    onError: (error) => {
-      console.error("Error updating user comment information:", error);
+  });
+};
+
+export const useGetBookmark = () => {
+  return useMutation({
+    mutationFn: async (postId: string): Promise<{ data: object | null }> => {
+      const res = await fetch(ROUTES.api.post.bookmark(postId));
+
+      if (!res.ok) {
+        throw new Error("Failed to get bookmark.");
+      }
+
+      return BookmarkResponseSchema.parse(await res.json());
     },
   });
 };
@@ -29,7 +40,7 @@ export const useCreateBookmark = () => {
 export const useRemoveBookmark = () => {
   return useMutation({
     mutationFn: async (postId: string) => {
-      const res = await fetch(`${ROUTES.api.post.bookmark}/${postId}`, {
+      const res = await fetch(ROUTES.api.post.bookmark(postId), {
         method: "DELETE",
       });
 
@@ -38,9 +49,6 @@ export const useRemoveBookmark = () => {
       }
 
       return null;
-    },
-    onError: (error) => {
-      console.error("Error updating user comment information:", error);
     },
   });
 };

@@ -1,5 +1,6 @@
 import type { PostT } from "@/types";
 
+import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,6 +8,7 @@ import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { ERROR_CODES } from "@/lib/error";
 import BookmarkButton from "@/components/post/article/BookmarkButton";
+import MoreActionsButton from "@/components/post/article/MoreActionsButton";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -20,8 +22,12 @@ export default function Post({
   author,
   createdAt,
   coverImageSrc,
+  currentFeed,
   isBookmarked,
+  onPostDelete,
 }: PostT) {
+  const { user } = useUser();
+
   if (!author) {
     throw new Error(ERROR_CODES.POST_AUTHOR_NOT_FOUND);
   }
@@ -43,7 +49,13 @@ export default function Post({
           </span>
         </Link>
         <span className="text-muted-foreground">in</span>
-        <h5 className="font-semibold">{tag}</h5>
+        {currentFeed !== tag ? (
+          <Link href={`/?feed=${tag}`}>
+            <h5 className="font-semibold capitalize underline">{tag}</h5>
+          </Link>
+        ) : (
+          <h5 className="font-semibold capitalize">{tag}</h5>
+        )}
       </div>
       <div className="flex items-center gap-4 sm:gap-8 md:gap-12">
         <div className="flex flex-1 flex-col gap-4">
@@ -66,7 +78,18 @@ export default function Post({
                   <span>{formatNumberWithK(_count.comments)}</span>
                 </span>
               </div>
-              <BookmarkButton isBookmarked={isBookmarked} postId={id} />
+              <div className="flex items-center">
+                <BookmarkButton isBookmarked={isBookmarked} postId={id} />
+
+                {user?.id === author?.id && (
+                  <MoreActionsButton
+                    userId={user.id}
+                    authorId={author.id}
+                    postId={id}
+                    onPostDelete={onPostDelete}
+                  />
+                )}
+              </div>
             </div>
           </Link>
         </div>

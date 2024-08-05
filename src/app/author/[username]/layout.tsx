@@ -41,7 +41,7 @@ export default async function Layout({
           <h1 className="hidden py-5 text-2xl font-bold md:block md:text-6xl">
             {`${author.firstName} ${author.lastName}.`}
           </h1>
-          <FeedMenu />
+          <FeedMenu baseUrl={`/author/${params.username}`} />
           <div className="pt-6">{children}</div>
         </div>
       </div>

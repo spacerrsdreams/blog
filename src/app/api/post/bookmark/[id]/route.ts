@@ -4,6 +4,36 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
 import prismaClient from "@/lib/prisma";
 
+export const GET = async (_req: NextRequest, { params }: { params: { id: string } }) => {
+  const { id } = params;
+
+  if (!id) {
+    return NextResponse.json({ message: "id is required" }, { status: 400 });
+  }
+
+  const user = auth();
+
+  if (!user.userId) {
+    return NextResponse.json({ data: null }, { status: 200 });
+  }
+  try {
+    const isBookmarked = await prismaClient.bookmarks.findFirst({
+      where: {
+        userId: user.userId,
+        postId: id,
+      },
+    });
+
+    if (!isBookmarked) {
+      return NextResponse.json({ data: null }, { status: 200 });
+    }
+
+    return NextResponse.json({ data: isBookmarked }, { status: 200 });
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
 export const DELETE = async (_req: NextRequest, { params }: { params: { id: string } }) => {
   const user = auth();
 

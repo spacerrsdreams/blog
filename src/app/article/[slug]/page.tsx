@@ -50,8 +50,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
     include: {
       author: true,
       likes: true,
-      comments: true,
-      bookmarks: true,
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
     },
   });
 
@@ -73,7 +76,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           coverImageSrc={post.coverImageSrc}
           createdAt={post.createdAt}
           likesLength={post.likes.length}
-          commentsLength={post.comments.length}
+          commentsLength={post._count.comments}
         />
       </div>
     </div>
