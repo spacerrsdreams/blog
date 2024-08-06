@@ -1,9 +1,8 @@
 "use client";
 
-import { formatNumberWithK } from "@/utils/formatNumberWithK";
-import { Icons } from "@/components/shared/Icons";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import CommentSheetHeader from "@/components/post/comment/CommentSheetHeader";
+import CommentSheetTrigger from "@/components/post/comment/CommentSheetTrigger";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 import CommentCreator from "./CommentCreator";
 import { CommentModal } from "./CommentModal";
@@ -20,16 +19,9 @@ export default function CommentSheet({ postId, commentsCount }: Props) {
   return (
     <CommentProvider>
       <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="ghost" className="flex items-center">
-            <Icons.message />
-            <span>{formatNumberWithK(commentsCount)}</span>
-          </Button>
-        </SheetTrigger>
+        <CommentSheetTrigger initialCount={commentsCount} />
         <SheetContent className="w-full overflow-x-scroll md:w-[24rem]">
-          <SheetHeader>
-            <SheetTitle>{`Comments(${commentsCount})`}</SheetTitle>
-          </SheetHeader>
+          <CommentSheetHeader initialCount={commentsCount} />
           <CommentCreator postId={postId} />
           <CommentSection postId={postId} />
           <div className="flex w-full justify-center text-center">

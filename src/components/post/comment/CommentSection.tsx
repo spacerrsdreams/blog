@@ -1,8 +1,6 @@
 "use client";
 
-import { type CommentT } from "@/types";
-
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useGetComments } from "@/services/post/comment";
 
@@ -15,9 +13,8 @@ type Props = {
   postId: string;
 };
 export default function CommentSection({ postId }: Props) {
-  const [comments, setComments] = useState<CommentT[] | null>(null);
   const { mutateAsync: getCommentsAsync, isPending } = useGetComments();
-  const { inEdit, commentId } = useCommentProvider();
+  const { inEdit, commentId, comments, setComments } = useCommentProvider();
 
   useEffect(() => {
     getCommentsAsync(postId).then((data) => {
