@@ -78,7 +78,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: { id: string
   try {
     const body = await req.json();
     const { content } = body;
-    console.log(body);
+
     const comment = await prismaClient.comments.update({
       where: {
         id: id,
