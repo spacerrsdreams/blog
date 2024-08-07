@@ -5,36 +5,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ROUTES } from "@/utils/routes";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
 import prismaClient from "@/lib/prisma";
-import type { GetCommentsResponsePayload } from "@/services/types";
-
-export const GET = async (_req: NextRequest, { params }: { params: { id: string } }) => {
-  try {
-    const { id } = params;
-
-    if (!id) {
-      return NextResponse.json({ message: "id is required" }, { status: 400 });
-    }
-
-    const data = await prismaClient.comments.findMany({
-      where: {
-        postId: id,
-      },
-    });
-
-    if (data) {
-      const payload: GetCommentsResponsePayload = data;
-      return NextResponse.json(payload, { status: 200 });
-    } else {
-      return NextResponse.json(
-        { data: null, message: "No user found for the specified id." },
-        { status: 404 },
-      );
-    }
-  } catch (error) {
-    console.error(error);
-    return handleError(error);
-  }
-};
 
 export const DELETE = async (_req: NextRequest, { params }: { params: { id: string } }) => {
   const user = auth();
@@ -78,7 +48,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: { id: string
   try {
     const body = await req.json();
     const { content } = body;
-    console.log(body);
+
     const comment = await prismaClient.comments.update({
       where: {
         id: id,

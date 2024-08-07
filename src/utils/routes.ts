@@ -4,6 +4,11 @@ type GetMany = {
   feed: string;
   username?: string;
 };
+type GetManyComments = {
+  from: number;
+  to: number;
+  id: string;
+};
 
 const appendIfExists = (arg?: string) => (arg ? "/" + arg : "");
 
@@ -29,6 +34,14 @@ export const ROUTES = {
       },
       like: (postId?: string) => `/api/post/like${appendIfExists(postId)}`,
       comment: (postId?: string) => `/api/post/comment${appendIfExists(postId)}`,
+      getManyComments: ({ from, to, id }: GetManyComments) => {
+        const queryParams = new URLSearchParams({
+          from: from.toString(),
+          to: to.toString(),
+          id,
+        });
+        return `/api/post/comment?${queryParams.toString()}`;
+      },
       bookmark: (postId?: string) => `/api/post/bookmark${appendIfExists(postId)}`,
     },
     user: {

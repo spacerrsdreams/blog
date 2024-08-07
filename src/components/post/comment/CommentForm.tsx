@@ -1,12 +1,14 @@
 "use client";
 
 import { usePopupProvider } from "@/context/PopupProvider";
+import type { CommentT } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useState, type ChangeEvent } from "react";
 
 import { useCreateComment } from "@/services/post/comment";
+import { useCommentProvider } from "@/components/post/comment/CommentProvider";
 import { Button } from "@/components/ui/button";
 import { SheetClose } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +19,7 @@ type Props = {
 export default function CommentCreator({ postId }: Props) {
   const [content, setContent] = useState("");
   const addCommentData = useCreateComment();
+  const { setComments, setCommentsCount } = useCommentProvider();
   const { isSignedIn, user } = useUser();
   const { open } = usePopupProvider();
 
@@ -28,7 +31,10 @@ export default function CommentCreator({ postId }: Props) {
       return;
     }
 
-    await addCommentData.mutateAsync({ postId, content });
+    addCommentData.mutateAsync({ postId, content }).then((data) => {
+      setCommentsCount((prevCount) => prevCount + 1);
+      setComments((prevComments) => [...prevComments, data.data as CommentT]);
+    });
   };
 
   return (
@@ -53,7 +59,7 @@ export default function CommentCreator({ postId }: Props) {
           setContent(e.target.value);
         }}
         placeholder="What are your thoughts?"
-        className="my-3 h-[150px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="my-3 h-[150px] border-0 text-base focus-visible:ring-0 focus-visible:ring-offset-0 md:text-[14px]"
       />
       <div className="flex w-full justify-end gap-2">
         <SheetClose asChild>

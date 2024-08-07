@@ -1,6 +1,7 @@
 export const formatCommentDate = (date: Date) => {
   const currentTime = new Date();
-  const differenceInMilliseconds = currentTime.getTime() - date.getTime();
+  const createdAt = new Date(date);
+  const differenceInMilliseconds = currentTime.getTime() - createdAt.getTime();
   const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
   const differenceInHours = differenceInMinutes / 60;
   const differenceInDays = differenceInHours / 24;
