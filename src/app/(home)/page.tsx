@@ -12,7 +12,7 @@ import { useGetArticles } from "@/services/post/article";
 import Post from "@/components/post/Post";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const POST_LOADING_LIMIT = 10;
+const POST_LOADING_LIMIT = 2;
 
 export default function Home() {
   const { isPending, mutateAsync: fetchArticles, error } = useGetArticles();

@@ -27,7 +27,6 @@ export default function Comment({ comment }: Props) {
   }, [getUserByIdAsync, comment.userId]);
 
   const isCommentCreator = loggedInUser?.user?.id === comment.userId;
-
   return isPending ? (
     <CommentSkeleton />
   ) : (

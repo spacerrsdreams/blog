@@ -1,9 +1,10 @@
+import type { CommentT } from "@/types";
+
 import { useMutation } from "@tanstack/react-query";
 
 import { ROUTES } from "@/utils/routes";
 import {
   CommentResponseSchema,
-  GetCommentsResponseSchema,
   type CommentRequestPayload,
   type DeleteCommentRequestPayload,
   type EditCommentRequestPayload,
@@ -67,14 +68,16 @@ export const useEditComment = () => {
 
 export const useGetComments = () => {
   return useMutation({
-    mutationFn: async (postId: string) => {
-      const res = await fetch(ROUTES.api.post.comment(postId));
+    mutationKey: ["comments/get"],
+    mutationFn: async (payload: { from: number; to: number; id: string }): Promise<CommentT[]> => {
+      const res = await fetch(ROUTES.api.post.getManyComments(payload));
 
       if (!res.ok) {
-        throw new Error("Failed to fetch user bookmark information");
+        console.error(res);
+        throw new Error("Failed to fetch comments");
       }
 
-      return GetCommentsResponseSchema.parse(await res.json());
+      return res.json();
     },
   });
 };
