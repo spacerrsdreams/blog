@@ -59,7 +59,7 @@ export default function CommentCreator({ postId }: Props) {
           setContent(e.target.value);
         }}
         placeholder="What are your thoughts?"
-        className="my-3 h-[150px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="my-3 h-[150px] border-0 text-base focus-visible:ring-0 focus-visible:ring-offset-0 md:text-[14px]"
       />
       <div className="flex w-full justify-end gap-2">
         <SheetClose asChild>

@@ -4,7 +4,7 @@ import CommentSheetHeader from "@/components/post/comment/CommentSheetHeader";
 import CommentSheetTrigger from "@/components/post/comment/CommentSheetTrigger";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 
-import CommentCreator from "./CommentCreator";
+import CommentForm from "./CommentForm";
 import { CommentModal } from "./CommentModal";
 import { CommentProvider } from "./CommentProvider";
 import CommentSection from "./CommentSection";
@@ -22,7 +22,7 @@ export default function CommentSheet({ postId, commentsCount }: Props) {
         <CommentSheetTrigger initialCount={commentsCount} />
         <SheetContent className="w-full overflow-x-scroll md:w-[24rem]">
           <CommentSheetHeader initialCount={commentsCount} />
-          <CommentCreator postId={postId} />
+          <CommentForm postId={postId} />
           <CommentSection postId={postId} />
           <div className="flex w-full justify-center text-center">
             <CommentModal />
