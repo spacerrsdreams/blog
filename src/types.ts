@@ -150,6 +150,7 @@ export type CommentT = {
   modifiedAt: Date;
   userId: string;
   postId: string;
+  user: User;
 };
 
 export type Tab = {

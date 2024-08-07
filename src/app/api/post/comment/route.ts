@@ -26,7 +26,6 @@ export const GET = async (req: NextRequest) => {
         user: true,
       },
     });
-    console.log(data);
 
     if (data) {
       const payload: GetCommentsResponsePayload = data;

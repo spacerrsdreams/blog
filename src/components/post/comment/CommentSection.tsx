@@ -12,7 +12,7 @@ import { CommentSkeleton } from "./CommentSkeleton";
 type Props = {
   postId: string;
 };
-const POST_LOADING_LIMIT = 2;
+const POST_LOADING_LIMIT = 10;
 export default function CommentSection({ postId }: Props) {
   const { mutateAsync: fetchComments, isPending, error } = useGetComments();
   const { inEdit, commentId, comments, setComments } = useCommentProvider();
