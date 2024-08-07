@@ -1,7 +1,7 @@
 "use client";
 
 import { usePopupProvider } from "@/context/PopupProvider";
-import type { CommentT } from "@/types";
+import type { CommentWithUser } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
@@ -33,7 +33,16 @@ export default function CommentCreator({ postId }: Props) {
 
     addCommentData.mutateAsync({ postId, content }).then((data) => {
       setCommentsCount((prevCount) => prevCount + 1);
-      setComments((prevComments) => [...prevComments, data.data as CommentT]);
+      setComments((prevComments) => [
+        ...prevComments,
+        {
+          ...data.data,
+          user: {
+            imageUrl: user.imageUrl || "",
+            username: user.username || "",
+          },
+        } as CommentWithUser,
+      ]);
     });
   };
 

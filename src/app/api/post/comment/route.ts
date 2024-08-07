@@ -23,10 +23,14 @@ export const GET = async (req: NextRequest) => {
         postId: id,
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            imageUrl: true,
+            username: true,
+          },
+        },
       },
     });
-
     if (data) {
       const payload: GetCommentsResponsePayload = data;
       return NextResponse.json(payload, { status: 200 });
