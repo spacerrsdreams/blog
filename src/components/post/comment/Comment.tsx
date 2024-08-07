@@ -1,6 +1,6 @@
 "use client";
 
-import type { CommentT } from "@/types";
+import type { CommentWithUser } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
@@ -10,7 +10,7 @@ import { formatCommentDate } from "@/utils/formatCommentDate";
 import { CommentOption } from "./CommentOption";
 
 type Props = {
-  comment: CommentT;
+  comment: CommentWithUser;
 };
 export default function Comment({ comment }: Props) {
   const loggedInUser = useUser();

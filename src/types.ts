@@ -143,14 +143,18 @@ export type Bookmark = {
   userId: string;
   postId: string;
 };
-export type CommentT = {
+
+export type CommentWithUser = {
   id: string;
   content: string;
   createdAt: Date;
   modifiedAt: Date;
   userId: string;
   postId: string;
-  user: User;
+  user: {
+    imageUrl: string;
+    username: string;
+  };
 };
 
 export type Tab = {
