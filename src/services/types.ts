@@ -69,6 +69,10 @@ export const GetCommentsResponseSchema = z
     userId: z.string(),
     postId: z.string(),
     content: z.string(),
+    user: z.object({
+      imageUrl: z.string(),
+      username: z.string(),
+    }),
   })
   .array();
 
