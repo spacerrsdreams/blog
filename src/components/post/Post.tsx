@@ -1,6 +1,5 @@
 import type { PostT } from "@/types";
 
-import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,8 +25,6 @@ export default function Post({
   isBookmarked,
   onPostDelete,
 }: PostT) {
-  const { user } = useUser();
-
   if (!author) {
     throw new Error(ERROR_CODES.POST_AUTHOR_NOT_FOUND);
   }
@@ -80,15 +77,7 @@ export default function Post({
               </div>
               <div className="flex items-center">
                 <BookmarkButton isBookmarked={isBookmarked} postId={id} />
-
-                {user?.id === author?.id && (
-                  <MoreActionsButton
-                    userId={user.id}
-                    authorId={author.id}
-                    postId={id}
-                    onPostDelete={onPostDelete}
-                  />
-                )}
+                <MoreActionsButton authorId={author.id} postId={id} onPostDelete={onPostDelete} />
               </div>
             </div>
           </Link>

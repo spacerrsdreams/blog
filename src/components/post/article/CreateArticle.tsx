@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import "react-quill/dist/quill.snow.css";
 
 import { TAGS } from "@/constants/tags";
+import type { UserBasicInfoT } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
@@ -209,21 +210,22 @@ export default function CreateArticle() {
             </div>
           )}
 
-          <Article
-            authorFullName={user?.fullName || ""}
-            authorImageUrl={user?.imageUrl}
-            tag={form.watch("tag")}
-            content={editorValue}
-            subTitle={form.watch("subTitle")}
-            title={form.watch("title")}
-            coverImageSrc={coverImageSrc}
-            createdAt={new Date()}
-            likesLength={0}
-            commentsLength={0}
-            articleId=""
-            disableActions={true}
-            handleRemoveImage={handleImageRemove}
-          />
+          {user && (
+            <Article
+              author={user as unknown as UserBasicInfoT}
+              tag={form.watch("tag")}
+              content={editorValue}
+              subTitle={form.watch("subTitle")}
+              title={form.watch("title")}
+              coverImageSrc={coverImageSrc}
+              createdAt={new Date()}
+              likesLength={0}
+              commentsLength={0}
+              articleId=""
+              disableActions={true}
+              handleRemoveImage={handleImageRemove}
+            />
+          )}
         </div>
       </div>
     </div>

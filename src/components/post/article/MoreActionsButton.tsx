@@ -1,28 +1,34 @@
 "use client";
 
-import { Ellipsis, Trash } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { Ellipsis } from "lucide-react";
 import { useState, type MouseEvent } from "react";
 
+import { ROUTES } from "@/utils/routes";
 import { useDeleteArticle } from "@/services/post/article";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   postId: string;
-  userId: string;
   authorId: string;
-  onPostDelete: (postId: string) => void;
+  onPostDelete?: (postId: string) => void;
 };
 
-export default function MoreActionsButton({ postId, authorId, userId, onPostDelete }: Props) {
+export default function MoreActionsButton({ postId, authorId, onPostDelete }: Props) {
   const { toast } = useToast();
-  const [open, setOpen] = useState<boolean>(false);
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
   const { mutateAsync: deleteArticleAsync } = useDeleteArticle();
+  const { user } = useUser();
+  const userId = user?.id;
 
   const handleDelete = async (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -39,7 +45,7 @@ export default function MoreActionsButton({ postId, authorId, userId, onPostDele
     deleteArticleAsync({ id: postId })
       .then(() => {
         toast({ title: "Post deleted successfully" });
-        onPostDelete(postId);
+        onPostDelete ? onPostDelete(postId) : router.push(ROUTES.root);
       })
       .catch(() => {
         toast({ title: "Failed to delete post", variant: "destructive" });
@@ -51,18 +57,49 @@ export default function MoreActionsButton({ postId, authorId, userId, onPostDele
       <DropdownMenuTrigger>
         <Ellipsis />
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="min-w-52">
         <DropdownMenuItem
-          className="gap-4"
+          className="px-4"
           onClick={(e) => {
             setOpen(false);
             handleDelete(e);
           }}
         >
-          <Trash color="red" size="20" />
-          <span className="text-foreground">Delete</span>
+          <span className="text-muted-foreground">Follow author</span>
         </DropdownMenuItem>
-        {/* <DropdownMenuSeparator /> */}
+
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="px-4"
+          onClick={(e) => {
+            setOpen(false);
+            handleDelete(e);
+          }}
+        >
+          <span className="text-muted-foreground">Undo claps</span>
+        </DropdownMenuItem>
+
+        {userId === authorId && (
+          <DropdownMenuItem
+            className="px-4"
+            onClick={(e) => {
+              setOpen(false);
+              handleDelete(e);
+            }}
+          >
+            <span className="text-muted-foreground">Delete article</span>
+          </DropdownMenuItem>
+        )}
+
+        <DropdownMenuItem
+          className="px-4"
+          onClick={(e) => {
+            setOpen(false);
+            handleDelete(e);
+          }}
+        >
+          <span className="text-red-500">Report Story...</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

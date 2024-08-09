@@ -66,11 +66,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <div className="flex w-full justify-center py-2">
       <div className="w-full max-w-full py-2 md:max-w-[860px]">
         <Article
+          author={post.author}
           articleId={post.id}
           title={post.title}
           subTitle={post.subTitle}
-          authorImageUrl={post.author.imageUrl}
-          authorFullName={`${post.author.firstName} ${post.author.lastName}`}
           tag={post.tag}
           content={post.content as Value}
           coverImageSrc={post.coverImageSrc}
