@@ -3,10 +3,11 @@
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Ellipsis } from "lucide-react";
-import { useState, type MouseEvent } from "react";
+import { useState } from "react";
 
 import { ROUTES } from "@/utils/routes";
 import { useDeleteArticle } from "@/services/post/article";
+import { useCreateFollower } from "@/services/user/followers";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,16 +24,34 @@ type Props = {
 };
 
 export default function MoreActionsButton({ postId, authorId, onPostDelete }: Props) {
+  const [open, setOpen] = useState(false);
+  const { mutateAsync: createFollowerAsync } = useCreateFollower();
+  const { mutateAsync: deleteArticleAsync } = useDeleteArticle();
   const { toast } = useToast();
   const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const { mutateAsync: deleteArticleAsync } = useDeleteArticle();
   const { user } = useUser();
   const userId = user?.id;
 
-  const handleDelete = async (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
+  const handleCreateFollower = async () => {
+    if (!authorId) return;
 
+    if (userId === authorId) {
+      toast({
+        title: "You cannot follow yourself",
+        variant: "destructive",
+      });
+    }
+
+    createFollowerAsync({ followingUserId: authorId })
+      .then(() => {
+        toast({ title: "You are now following this author" });
+      })
+      .catch(() => {
+        toast({ title: "Failed to follow author", variant: "destructive" });
+      });
+  };
+
+  const handleDelete = async () => {
     if (!postId) return;
 
     if (authorId !== userId) {
@@ -58,17 +77,22 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
         <Ellipsis />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-52">
-        <DropdownMenuItem
-          className="px-4"
-          onClick={(e) => {
-            console.log(e);
-            setOpen(false);
-          }}
-        >
-          <span className="text-muted-foreground">Follow author</span>
-        </DropdownMenuItem>
+        {authorId !== userId && (
+          <div>
+            <DropdownMenuItem
+              className="z-50 px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                handleCreateFollower();
+                setOpen(false);
+              }}
+            >
+              <span className="text-muted-foreground">Follow author</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </div>
+        )}
 
-        <DropdownMenuSeparator />
         <DropdownMenuItem
           className="px-4"
           onClick={(e) => {
@@ -83,7 +107,8 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
           <DropdownMenuItem
             className="px-4"
             onClick={(e) => {
-              console.log(e);
+              e.preventDefault();
+              handleDelete();
               setOpen(false);
             }}
           >
@@ -94,8 +119,8 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
         <DropdownMenuItem
           className="px-4"
           onClick={(e) => {
+            e.preventDefault();
             setOpen(false);
-            handleDelete(e);
           }}
         >
           <span className="text-red-500">Report Story...</span>

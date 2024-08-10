@@ -46,6 +46,7 @@ export const ROUTES = {
     },
     user: {
       byId: (userId: string) => `/api/user/${userId}`,
+      followers: "/api/user/followers",
     },
     image: {
       upload: "/api/image/upload",
