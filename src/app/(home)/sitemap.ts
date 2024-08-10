@@ -8,15 +8,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     select: {
       slug: true,
       modifiedAt: true,
+      author: true,
     },
   });
 
-  const sitemaps = posts.map((post) => {
+  const articleSitemaps = posts.map((post) => {
     return {
       url: `${BASE_URL}/article/${post.slug}`,
       lastModified: post.modifiedAt,
     };
   });
+  const authorSitemaps = posts.map((post) => {
+    return {
+      url: `${BASE_URL}/author/${post.author.username}`,
+      lastModified: post.author.updatedAt,
+    };
+  });
 
-  return sitemaps;
+  return [...articleSitemaps, ...authorSitemaps];
 }
