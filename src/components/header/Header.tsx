@@ -1,3 +1,5 @@
+"use client";
+
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
@@ -53,7 +55,17 @@ export default function Header() {
                 </SignInButton>
               </SignedOut>
               <SignedIn>
-                <UserButton />
+                <UserButton>
+                  <UserButton.MenuItems>
+                    <UserButton.Link
+                      label="Bookmarks"
+                      labelIcon={<Icons.bookmark className="h-4 w-4" />}
+                      href={ROUTES.showBookmarks}
+                    />
+                    <UserButton.Action label="manageAccount" />
+                    <UserButton.Action label="signOut" />
+                  </UserButton.MenuItems>
+                </UserButton>
               </SignedIn>
             </div>
           </nav>
