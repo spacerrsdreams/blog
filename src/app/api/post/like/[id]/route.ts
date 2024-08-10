@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { ROUTES } from "@/utils/routes";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 import type { LikeResponsePayload } from "@/services/types";
 
 export const GET = async (_req: NextRequest, { params }: { params: { id: string } }) => {
@@ -21,7 +21,7 @@ export const GET = async (_req: NextRequest, { params }: { params: { id: string 
       return NextResponse.json({ message: "id is required" }, { status: 400 });
     }
 
-    const data = await prismaClient.likes.findFirst({
+    const data = await database.likes.findFirst({
       where: {
         userId: user.userId,
         postId: id,
@@ -57,7 +57,7 @@ export const DELETE = async (_req: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ message: "id is required" }, { status: 400 });
     }
 
-    await prismaClient.likes.deleteMany({
+    await database.likes.deleteMany({
       where: {
         userId: user.userId,
         postId: id,

@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { ROUTES } from "@/utils/routes";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 import { LikeRequestSchema } from "@/services/types";
 
 export const POST = async (req: NextRequest) => {
@@ -16,7 +16,7 @@ export const POST = async (req: NextRequest) => {
 
     const body = await req.json();
     const { postId, totalLikes } = LikeRequestSchema.parse(body);
-    const likeUpdated = await prismaClient.posts.update({
+    const likeUpdated = await database.posts.update({
       where: { id: postId },
       data: {
         likes: {

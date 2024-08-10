@@ -1,9 +1,9 @@
 import type { ClerkUser } from "@/types";
 
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 
 export const getUserByUserName = async (username: string) => {
-  return await prismaClient.users.findUnique({
+  return await database.users.findUnique({
     where: {
       username,
     },
@@ -11,7 +11,7 @@ export const getUserByUserName = async (username: string) => {
 };
 
 export const getUserByUserId = async (userId: string) => {
-  return await prismaClient.users.findUnique({
+  return await database.users.findUnique({
     where: {
       id: userId,
     },
@@ -25,7 +25,7 @@ export const createUser = async (data: ClerkUser) => {
     throw new Error("User already exists");
   }
 
-  return prismaClient.users.create({
+  return database.users.create({
     data: {
       id: data.data.id,
       birthday: data.data.birthday,
@@ -66,7 +66,7 @@ export const createUser = async (data: ClerkUser) => {
 };
 
 export const updateUser = async (data: ClerkUser) => {
-  return prismaClient.users.update({
+  return database.users.update({
     where: {
       id: data.data.id,
     },

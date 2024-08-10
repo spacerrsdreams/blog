@@ -61,8 +61,8 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
         <DropdownMenuItem
           className="px-4"
           onClick={(e) => {
+            console.log(e);
             setOpen(false);
-            handleDelete(e);
           }}
         >
           <span className="text-muted-foreground">Follow author</span>
@@ -72,8 +72,8 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
         <DropdownMenuItem
           className="px-4"
           onClick={(e) => {
+            console.log(e);
             setOpen(false);
-            handleDelete(e);
           }}
         >
           <span className="text-muted-foreground">Undo claps</span>
@@ -83,8 +83,8 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
           <DropdownMenuItem
             className="px-4"
             onClick={(e) => {
+              console.log(e);
               setOpen(false);
-              handleDelete(e);
             }}
           >
             <span className="text-muted-foreground">Delete article</span>

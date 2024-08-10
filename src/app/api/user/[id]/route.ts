@@ -5,7 +5,7 @@ import type { UserPayload } from "@/types";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { handleError } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 
 export const GET = async (_req: NextRequest, { params }: { params: { id: string } }) => {
   try {
@@ -15,7 +15,7 @@ export const GET = async (_req: NextRequest, { params }: { params: { id: string 
       return NextResponse.json({ message: "id is required" }, { status: 400 });
     }
 
-    const data = await prismaClient.users.findUnique({
+    const data = await database.users.findUnique({
       where: {
         id,
       },

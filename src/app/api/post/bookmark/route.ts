@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { ROUTES } from "@/utils/routes";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 import { BookmarkRequestSchema } from "@/services/types";
 
 export const POST = async (req: NextRequest) => {
@@ -17,7 +17,7 @@ export const POST = async (req: NextRequest) => {
 
     const body = await req.json();
     const { postId } = BookmarkRequestSchema.parse(body);
-    const bookmark = await prismaClient.bookmarks.create({
+    const bookmark = await database.bookmarks.create({
       data: {
         userId,
         postId,
