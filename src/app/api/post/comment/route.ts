@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 import { CommentRequestSchema, type GetCommentsResponsePayload } from "@/services/types";
 
 export const GET = async (req: NextRequest) => {
@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ message: "id is required" }, { status: 400 });
     }
 
-    const data = await prismaClient.comments.findMany({
+    const data = await database.comments.findMany({
       skip: from,
       take: to - from,
       where: {
@@ -56,7 +56,7 @@ export const POST = async (req: NextRequest) => {
     const body = await req.json();
     const { postId, content } = CommentRequestSchema.parse(body);
 
-    const comment = await prismaClient.comments.create({
+    const comment = await database.comments.create({
       data: {
         content,
         userId: user.userId,

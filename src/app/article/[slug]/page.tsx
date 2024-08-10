@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { Value } from "react-quill";
 
 import { siteConfig } from "@/config/siteConfig";
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 import Article from "@/components/post/article/Article";
 
 export const dynamicParams = true;
@@ -16,7 +16,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = params.slug;
 
-  const post = await prismaClient.posts.findUnique({
+  const post = await database.posts.findUnique({
     where: {
       slug: slug,
     },
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const posts = await prismaClient.posts.findMany({
+  const posts = await database.posts.findMany({
     select: {
       slug: true,
     },
@@ -43,7 +43,7 @@ export async function generateStaticParams() {
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
-  const post = await prismaClient.posts.findUnique({
+  const post = await database.posts.findUnique({
     where: {
       slug: slug,
     },
@@ -66,11 +66,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <div className="flex w-full justify-center py-2">
       <div className="w-full max-w-full py-2 md:max-w-[860px]">
         <Article
+          author={post.author}
           articleId={post.id}
           title={post.title}
           subTitle={post.subTitle}
-          authorImageUrl={post.author.imageUrl}
-          authorFullName={`${post.author.firstName} ${post.author.lastName}`}
           tag={post.tag}
           content={post.content as Value}
           coverImageSrc={post.coverImageSrc}

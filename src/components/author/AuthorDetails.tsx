@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import prisma from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 
 type Props = {
   profileImageSrc: string;
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default async function AuthorDetails({ profileImageSrc, authorName, authorId }: Props) {
-  const posts = await prisma.posts.findMany({
+  const posts = await database.posts.findMany({
     where: {
       authorId,
     },

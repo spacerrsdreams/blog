@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 
 export const GET = async (_req: NextRequest, { params }: { params: { id: string } }) => {
   const { id } = params;
@@ -17,7 +17,7 @@ export const GET = async (_req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({ data: null }, { status: 200 });
   }
   try {
-    const isBookmarked = await prismaClient.bookmarks.findFirst({
+    const isBookmarked = await database.bookmarks.findFirst({
       where: {
         userId: user.userId,
         postId: id,
@@ -47,7 +47,7 @@ export const DELETE = async (_req: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ message: "id is required" }, { status: 400 });
     }
 
-    await prismaClient.bookmarks.deleteMany({
+    await database.bookmarks.deleteMany({
       where: {
         userId: user.userId,
         postId: id,

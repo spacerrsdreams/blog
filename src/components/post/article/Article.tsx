@@ -1,3 +1,5 @@
+import type { UserBasicInfoT } from "@/types";
+
 import Image from "next/image";
 import { type Value } from "react-quill";
 
@@ -6,14 +8,14 @@ import ArticleContent from "@/components/post/article/ArticleContent";
 import ArticleCover from "@/components/post/article/ArticleCover";
 import BookmarkButton from "@/components/post/article/BookmarkButton";
 import LikeButton from "@/components/post/article/LikeButton";
+import MoreActionsButton from "@/components/post/article/MoreActionsButton";
 import CommentSheet from "@/components/post/comment/CommentSheet";
 
 type Props = {
+  author: UserBasicInfoT;
   articleId: string;
   title: string;
   subTitle: string;
-  authorImageUrl: string | undefined;
-  authorFullName: string;
   tag: string;
   content: Value;
   coverImageSrc: string | undefined;
@@ -28,8 +30,7 @@ export default function Article({
   articleId,
   title,
   subTitle,
-  authorImageUrl,
-  authorFullName,
+  author,
   tag,
   content,
   coverImageSrc,
@@ -56,10 +57,10 @@ export default function Article({
         </div>
         <div className="flex flex-col">
           <div className="mx-3 flex gap-4">
-            {authorImageUrl && (
+            {author?.imageUrl && (
               <Image
-                src={authorImageUrl}
-                alt={authorFullName}
+                src={author?.imageUrl}
+                alt={author?.firstName || ""}
                 width={48}
                 height={48}
                 className="size-12 rounded-full"
@@ -67,7 +68,7 @@ export default function Article({
             )}
 
             <div className="">
-              <h4 className="text-lg capitalize">{authorFullName}</h4>
+              <h4 className="text-lg capitalize">{author?.firstName + " " + author?.lastName}</h4>
               <div className="text-sm text-muted-foreground">
                 Published in <span className="text-sm font-semibold text-black">{tag}</span> ·{" "}
                 {formatDate(createdAt)}
@@ -83,11 +84,10 @@ export default function Article({
                 disabled={disableActions}
               />
             </div>
-            <BookmarkButton
-              postId={articleId}
-              fetchBookmarkState={true}
-              inEditMode={disableActions}
-            />
+            <div className="flex items-center">
+              <BookmarkButton isBookmarked={false} postId={articleId} />
+              <MoreActionsButton authorId={author.id} postId={articleId} />
+            </div>
           </div>
         </div>
         <ArticleContent postContent={content} />

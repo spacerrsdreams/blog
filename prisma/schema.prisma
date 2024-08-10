@@ -119,7 +119,22 @@ model Users {
   likes                  Likes[]       @relation("userLikes")
   comments               Comments[]    @relation("userComments")
   bookmarks              Bookmarks[]   @relation("userBookmarks")
+  followers              Followers[]   @relation("followerUsers")
+  following              Followers[]   @relation("followingUsers")
+  accountIsDeactivated   Boolean       @default(false)
 
   @@map("users")
 }
 
+model Followers {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  
+  follower    Users    @relation("followerUsers", fields: [followerId], references: [id], onDelete: Cascade)
+  following   Users    @relation("followingUsers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@map("followers")
+}

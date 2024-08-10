@@ -32,5 +32,5 @@ export const ERROR_MESSAGES = {
   [ERROR_CODES.AUTHOR_NOT_FOUND]: "Author not found",
   [ERROR_CODES.POST_AUTHOR_NOT_FOUND]: "Post author not found",
   [ERROR_CODES.POST_NOT_FOUND]: "Post not found",
-  [ERROR_CODES.USER_IS_NOT_AUTHENTICATED]: "Please sign in to like this post",
+  [ERROR_CODES.USER_IS_NOT_AUTHENTICATED]: "Please sign in to perfrom action",
 };
