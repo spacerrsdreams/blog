@@ -104,6 +104,16 @@ export type Contributor = {
   avatarFallback: string;
 };
 
+export type UserBasicInfoT = Omit<
+  User,
+  | "emailAddresses"
+  | "object"
+  | "phoneNumbers"
+  | "privateMetadata"
+  | "publicMetadata"
+  | "unsafeMetadata"
+>;
+
 export type PostT = {
   id: string;
   slug: string;
@@ -118,15 +128,7 @@ export type PostT = {
     likes: number;
     comments: number;
   };
-  author: Omit<
-    User,
-    | "emailAddresses"
-    | "object"
-    | "phoneNumbers"
-    | "privateMetadata"
-    | "publicMetadata"
-    | "unsafeMetadata"
-  >;
+  author: UserBasicInfoT;
   isBookmarked: boolean;
 };
 export type Like = {

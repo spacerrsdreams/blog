@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { ROUTES } from "@/utils/routes";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 
 export const DELETE = async (_req: NextRequest, { params }: { params: { id: string } }) => {
   const user = auth();
@@ -20,7 +20,7 @@ export const DELETE = async (_req: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ message: "id is required" }, { status: 400 });
     }
 
-    await prismaClient.comments.delete({
+    await database.comments.delete({
       where: {
         id,
       },
@@ -49,7 +49,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: { id: string
     const body = await req.json();
     const { content } = body;
 
-    const comment = await prismaClient.comments.update({
+    const comment = await database.comments.update({
       where: {
         id: id,
       },

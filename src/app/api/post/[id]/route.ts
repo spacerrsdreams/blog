@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { ROUTES } from "@/utils/routes";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 
 export const DELETE = async (_req: NextRequest, { params }: { params: { id: string } }) => {
   try {
@@ -19,7 +19,7 @@ export const DELETE = async (_req: NextRequest, { params }: { params: { id: stri
     if (!user.userId) {
       return handleError(ERROR_MESSAGES[ERROR_CODES.USER_IS_NOT_AUTHENTICATED]);
     }
-    await prismaClient.posts.delete({
+    await database.posts.delete({
       where: {
         id,
         authorId: user.userId,

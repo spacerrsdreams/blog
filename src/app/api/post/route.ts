@@ -9,7 +9,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { ROUTES } from "@/utils/routes";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
-import prismaClient from "@/lib/prisma";
+import { database } from "@/lib/prisma";
 import { CreateArticleRequestSchema } from "@/services/types";
 
 export const GET = async (req: NextRequest) => {
@@ -35,12 +35,12 @@ export const GET = async (req: NextRequest) => {
     };
 
     // Count posts with the applied filter
-    const totalPosts = await prismaClient.posts.count({
+    const totalPosts = await database.posts.count({
       where: filter,
     });
 
     // Fetch posts with the applied filter and pagination
-    const posts = await prismaClient.posts.findMany({
+    const posts = await database.posts.findMany({
       skip: from,
       take: to - from,
       include: {
@@ -95,7 +95,7 @@ export const POST = async (req: NextRequest) => {
     const body = await req.json();
     const data = CreateArticleRequestSchema.parse(body);
 
-    const post = await prismaClient.posts.create({
+    const post = await database.posts.create({
       data: {
         authorId: userId,
         slug: data.title.toLowerCase().replace(/ /g, "-") + "-" + uuidv4(),
