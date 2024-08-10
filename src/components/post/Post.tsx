@@ -22,7 +22,9 @@ export default function Post({
   createdAt,
   coverImageSrc,
   currentFeed,
+  likeCount,
   isBookmarked,
+  isLikedByUser,
   onPostDelete,
 }: PostT) {
   if (!author) {
@@ -67,8 +69,8 @@ export default function Post({
               <div className="flex items-center gap-2 text-xs">
                 <span className="text-muted-foreground">{formatDate(new Date(createdAt))}</span>
                 <span className="ml-4 flex items-center">
-                  <Icons.clap />
-                  <span>{formatNumberWithK(_count.likes)}</span>
+                  {isLikedByUser ? <Icons.clapDark /> : <Icons.clap />}
+                  <span>{formatNumberWithK(likeCount)}</span>
                 </span>
                 <span className="flex items-center">
                   <Icons.message />
@@ -77,7 +79,12 @@ export default function Post({
               </div>
               <div className="flex items-center">
                 <BookmarkButton isBookmarked={isBookmarked} postId={id} />
-                <MoreActionsButton authorId={author.id} postId={id} onPostDelete={onPostDelete} />
+                <MoreActionsButton
+                  isLikedByUser={isLikedByUser}
+                  authorId={author.id}
+                  postId={id}
+                  onPostDelete={onPostDelete}
+                />
               </div>
             </div>
           </Link>

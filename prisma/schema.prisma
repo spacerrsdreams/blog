@@ -30,6 +30,7 @@ model Posts {
   likes         Likes[]    @relation("postLikes")
   comments      Comments[] @relation("postComments")
   bookmarks     Bookmarks[] @relation("postBookmarks")
+  likeCount     Int        @default(0)
 
   @@map("posts")
 }
@@ -40,9 +41,11 @@ model Likes {
   modifiedAt DateTime @updatedAt
   userId    String
   postId    String
+  likeCount Int      @default(0)
   user      Users     @relation("userLikes", fields: [userId], references: [id])
   post      Posts     @relation("postLikes", fields: [postId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, postId])
   @@map("likes")
 }
 

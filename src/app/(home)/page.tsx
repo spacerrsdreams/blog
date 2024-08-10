@@ -23,7 +23,6 @@ export default function Home() {
   const searchParams = useSearchParams();
   const feed = searchParams.get("feed");
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
-
   const feedToFetch = TAGS.includes(feed as TagsT) ? feed : "all";
 
   useEffect(() => {
@@ -87,11 +86,13 @@ export default function Home() {
             tag={post.tag}
             title={post.title}
             subTitle={post.subTitle}
+            likeCount={post.likeCount}
             _count={post._count}
             author={post.author}
             createdAt={post.createdAt}
             coverImageSrc={post.coverImageSrc}
             isBookmarked={post.isBookmarked}
+            isLikedByUser={post.isLikedByUser}
             onPostDelete={onPostDelete}
           />
         ))}

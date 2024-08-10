@@ -42,3 +42,22 @@ export const useLikePost = () => {
     },
   });
 };
+
+export const useRemoveLike = () => {
+  return useMutation({
+    mutationFn: async (postId: string) => {
+      const res = await fetch(ROUTES.api.post.like(postId), {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to remove like");
+      }
+
+      return res;
+    },
+    onError: (error) => {
+      console.error("Error removing like:", error);
+    },
+  });
+};

@@ -18,7 +18,7 @@ export const GET = async (_req: NextRequest, { params }: { params: { id: string 
     const { id } = params;
 
     if (!id) {
-      return NextResponse.json({ message: "id is required" }, { status: 400 });
+      return NextResponse.json({ message: "post id is required" }, { status: 400 });
     }
 
     const data = await database.likes.findFirst({
@@ -57,11 +57,39 @@ export const DELETE = async (_req: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ message: "id is required" }, { status: 400 });
     }
 
-    await database.likes.deleteMany({
+    const likes = await database.likes.findUnique({
       where: {
-        userId: user.userId,
-        postId: id,
+        userId_postId: {
+          postId: id,
+          userId: user.userId,
+        },
       },
+    });
+
+    if (!likes) {
+      return NextResponse.json(
+        { message: "No like found for the specified user and post." },
+        { status: 404 },
+      );
+    }
+
+    await database.$transaction(async (transaction) => {
+      await transaction.likes.delete({
+        where: {
+          id: likes.id,
+        },
+      });
+
+      await transaction.posts.update({
+        where: {
+          id,
+        },
+        data: {
+          likeCount: {
+            decrement: likes.likeCount,
+          },
+        },
+      });
     });
 
     revalidatePath(ROUTES.root);

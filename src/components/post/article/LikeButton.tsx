@@ -21,7 +21,8 @@ export default function LikeButton({ count, postId, disabled }: Props) {
   const { user } = useUser();
   const { toast } = useToast();
   const [likes, setLikes] = useState(count);
-  const [userLikes, setUserLikes] = useState(0);
+  const [_, setUserLikes] = useState(0);
+  const [isLikedByUser, setIsLikedByUser] = useState(true);
   const { mutateAsync: likePostAsync } = useLikePost();
   const { mutateAsync: getLikeAsync } = useGetLike();
   const { open } = usePopupProvider();
@@ -36,18 +37,20 @@ export default function LikeButton({ count, postId, disabled }: Props) {
     if (!userId || disabled) return;
 
     getLikeAsync(postId).then(({ data }) => {
-      data ? setUserLikes(1) : setUserLikes(0);
+      data ? setIsLikedByUser(true) : setIsLikedByUser(false);
     });
   }, [userId, getLikeAsync, postId]);
 
-  const like = (totalLikes: number) => {
-    likePostAsync({ postId, totalLikes }).catch(() => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to like the post",
+  const like = (userLikes: number) => {
+    likePostAsync({ postId, userLikes })
+      .then(() => setUserLikes(0))
+      .catch(() => {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to like the post",
+        });
       });
-    });
   };
 
   const handleClick = () => {
@@ -55,6 +58,8 @@ export default function LikeButton({ count, postId, disabled }: Props) {
       open(true);
       return;
     }
+
+    setIsLikedByUser(true);
     setLikes((prevLikes) => prevLikes + 1);
     setUserLikes((prevLikes) => {
       if (timeoutRef.current) {
@@ -63,14 +68,15 @@ export default function LikeButton({ count, postId, disabled }: Props) {
 
       timeoutRef.current = setTimeout(() => {
         like(prevLikes + 1);
-      }, 300);
+      }, 500);
+
       return prevLikes + 1;
     });
   };
 
   return (
     <Button disabled={disabled} variant="ghost" onClick={handleClick}>
-      {userLikes > 0 ? <Icons.clapDark /> : <Icons.clap />}
+      {isLikedByUser ? <Icons.clapDark /> : <Icons.clap />}
       <span>{formatNumberWithK(likes)}</span>
     </Button>
   );

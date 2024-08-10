@@ -15,29 +15,41 @@ export const POST = async (req: NextRequest) => {
     }
 
     const body = await req.json();
-    const { postId, totalLikes } = LikeRequestSchema.parse(body);
-    const likeUpdated = await database.posts.update({
+    const { postId, userLikes } = LikeRequestSchema.parse(body);
+
+    await database.posts.update({
       where: { id: postId },
       data: {
-        likes: {
-          createMany: {
-            data: Array.from({ length: totalLikes }, () => ({ userId })),
-          },
+        likeCount: {
+          increment: userLikes,
         },
       },
     });
 
-    if (likeUpdated) {
-      revalidatePath(ROUTES.root, "page");
-      revalidatePath(ROUTES.articleSlug, "page");
-      return NextResponse.json({ message: "Post liked successfully." }, { status: 201 });
-    } else {
-      return NextResponse.json(
-        { error: "An error occurred while liking the post." },
-        { status: 500 },
-      );
-    }
+    await database.likes.upsert({
+      where: {
+        userId_postId: {
+          userId,
+          postId,
+        },
+      },
+      update: {
+        likeCount: {
+          increment: userLikes,
+        },
+      },
+      create: {
+        userId,
+        postId,
+        likeCount: userLikes,
+      },
+    });
+
+    revalidatePath(ROUTES.root, "page");
+    revalidatePath(ROUTES.articleSlug, "page");
+    return NextResponse.json({ message: "Post liked successfully." }, { status: 201 });
   } catch (error) {
+    console.error("Error occurred:", error); // Log the error for debugging
     return handleError(error);
   }
 };

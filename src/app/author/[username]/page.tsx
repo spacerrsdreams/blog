@@ -100,6 +100,8 @@ export default function Home({ params }: { params: { username: string } }) {
             title={post.title}
             subTitle={post.subTitle}
             _count={post._count}
+            likeCount={post.likeCount}
+            isLikedByUser={post.isLikedByUser}
             author={post.author}
             createdAt={post.createdAt}
             coverImageSrc={post.coverImageSrc}

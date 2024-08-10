@@ -125,11 +125,12 @@ export type PostT = {
   createdAt: Date;
   currentFeed: string;
   _count: {
-    likes: number;
     comments: number;
   };
   author: UserBasicInfoT;
   isBookmarked: boolean;
+  isLikedByUser: boolean;
+  likeCount: number;
 };
 export type Like = {
   id: string;

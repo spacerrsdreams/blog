@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import { ROUTES } from "@/utils/routes";
 import { useDeleteArticle } from "@/services/post/article";
+import { useGetLike, useRemoveLike } from "@/services/post/like";
 import { useFollow, useGetFollowerIfExists, useUnfollow } from "@/services/user/followers";
 import {
   DropdownMenu,
@@ -21,15 +22,24 @@ import { useToast } from "@/components/ui/use-toast";
 type Props = {
   postId: string;
   authorId: string;
+  isLikedByUser: boolean | null;
   onPostDelete?: (postId: string) => void;
 };
 
-export default function MoreActionsButton({ postId, authorId, onPostDelete }: Props) {
+export default function MoreActionsButton({
+  postId,
+  isLikedByUser,
+  authorId,
+  onPostDelete,
+}: Props) {
   const [open, setOpen] = useState(false);
+  const [postIsLiked, setIsLikedByUser] = useState(isLikedByUser);
   const { mutateAsync: getFollowerIfExistsAsync, isPending } = useGetFollowerIfExists();
   const { mutateAsync: followAuthorAsync } = useFollow();
   const { mutateAsync: unfollowAuthorAsync } = useUnfollow();
   const { mutateAsync: deleteArticleAsync } = useDeleteArticle();
+  const { mutateAsync: removeUserLikeAsync } = useRemoveLike();
+  const { mutateAsync: getLikeAsync } = useGetLike();
   const { toast } = useToast();
   const router = useRouter();
   const { user } = useUser();
@@ -49,6 +59,14 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
         toast({ title: "Failed to get follower", variant: "destructive" });
       });
   }, [open, userId]);
+
+  useEffect(() => {
+    if (!userId || postIsLiked) return;
+
+    getLikeAsync(postId).then(({ data }) => {
+      data ? setIsLikedByUser(true) : setIsLikedByUser(false);
+    });
+  }, [userId, getLikeAsync, postId, postIsLiked, isLikedByUser]);
 
   const handleFollowAuthor = async () => {
     if (!authorId) return;
@@ -108,6 +126,20 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
       });
   };
 
+  const handleRemoveLike = async () => {
+    if (!postId) return;
+
+    removeUserLikeAsync(postId)
+      .then(() => {
+        toast({ title: "Like removed successfully" });
+      })
+      .catch(() => {
+        toast({ title: "Failed to remove like", variant: "destructive" });
+      });
+  };
+
+  console.log(isLikedByUser);
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger>
@@ -140,15 +172,18 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
           </>
         )}
 
-        <DropdownMenuItem
-          className="px-4"
-          onClick={(e) => {
-            console.log(e);
-            setOpen(false);
-          }}
-        >
-          <span className="text-muted-foreground">Undo claps</span>
-        </DropdownMenuItem>
+        {postIsLiked && (
+          <DropdownMenuItem
+            className="px-4"
+            onClick={(e) => {
+              e.preventDefault();
+              handleRemoveLike();
+              setOpen(false);
+            }}
+          >
+            <span className="text-muted-foreground">Undo claps</span>
+          </DropdownMenuItem>
+        )}
 
         {userId === authorId && (
           <DropdownMenuItem
