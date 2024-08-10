@@ -3,11 +3,11 @@
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Ellipsis } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ROUTES } from "@/utils/routes";
 import { useDeleteArticle } from "@/services/post/article";
-import { useCreateFollower } from "@/services/user/followers";
+import { useFollow, useGetFollowerIfExists, useUnfollow } from "@/services/user/followers";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
@@ -25,14 +26,31 @@ type Props = {
 
 export default function MoreActionsButton({ postId, authorId, onPostDelete }: Props) {
   const [open, setOpen] = useState(false);
-  const { mutateAsync: createFollowerAsync } = useCreateFollower();
+  const { mutateAsync: getFollowerIfExistsAsync, isPending } = useGetFollowerIfExists();
+  const { mutateAsync: followAuthorAsync } = useFollow();
+  const { mutateAsync: unfollowAuthorAsync } = useUnfollow();
   const { mutateAsync: deleteArticleAsync } = useDeleteArticle();
   const { toast } = useToast();
   const router = useRouter();
   const { user } = useUser();
   const userId = user?.id;
+  const [following, setFollowing] = useState(false);
 
-  const handleCreateFollower = async () => {
+  useEffect(() => {
+    if (!authorId || !userId) return;
+    if (!open) return;
+    if (authorId === userId) return;
+
+    getFollowerIfExistsAsync(authorId)
+      .then((data) => {
+        data.data ? setFollowing(true) : setFollowing(false);
+      })
+      .catch(() => {
+        toast({ title: "Failed to get follower", variant: "destructive" });
+      });
+  }, [open, userId]);
+
+  const handleFollowAuthor = async () => {
     if (!authorId) return;
 
     if (userId === authorId) {
@@ -42,12 +60,31 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
       });
     }
 
-    createFollowerAsync({ followingUserId: authorId })
+    followAuthorAsync({ followingUserId: authorId })
       .then(() => {
         toast({ title: "You are now following this author" });
       })
       .catch(() => {
         toast({ title: "Failed to follow author", variant: "destructive" });
+      });
+  };
+
+  const handleUnffolowAuthor = async () => {
+    if (!authorId) return;
+
+    if (userId === authorId) {
+      toast({
+        title: "You cannot unfollow yourself",
+        variant: "destructive",
+      });
+    }
+
+    unfollowAuthorAsync(authorId)
+      .then(() => {
+        toast({ title: "You are no longer following this author" });
+      })
+      .catch(() => {
+        toast({ title: "Failed to unfollow author", variant: "destructive" });
       });
   };
 
@@ -78,19 +115,29 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-52">
         {authorId !== userId && (
-          <div>
-            <DropdownMenuItem
-              className="z-50 px-4"
-              onClick={(e) => {
-                e.preventDefault();
-                handleCreateFollower();
-                setOpen(false);
-              }}
-            >
-              <span className="text-muted-foreground">Follow author</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-          </div>
+          <>
+            {isPending ? (
+              <div className="px-3">
+                <Skeleton className="h-8" />
+              </div>
+            ) : (
+              <>
+                <DropdownMenuItem
+                  className="px-4"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    following ? handleUnffolowAuthor() : handleFollowAuthor();
+                    setOpen(false);
+                  }}
+                >
+                  <span className="text-muted-foreground">
+                    {following ? "Unfollow author" : "Follow author"}
+                  </span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
+          </>
         )}
 
         <DropdownMenuItem

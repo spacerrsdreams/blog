@@ -46,7 +46,7 @@ export const ROUTES = {
     },
     user: {
       byId: (userId: string) => `/api/user/${userId}`,
-      followers: "/api/user/followers",
+      followers: (userId?: string) => `/api/user/followers${appendIfExists(userId)}`,
     },
     image: {
       upload: "/api/image/upload",
