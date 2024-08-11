@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import type { Value } from "react-quill";
 
 import { ROUTES } from "@/utils/routes";
-import { useUploadImage } from "@/lib/aws";
+import { useUploadImage } from "@/services/aws";
 import { useCreateArticle } from "@/services/post/article";
 import { CreateArticleRequestSchema, type CreateArticleRequestPayload } from "@/services/types";
 import Post from "@/components/post/Post";

@@ -85,7 +85,12 @@ export default function Post({
               />
             </div>
             <div className="flex items-center">
-              <BookmarkButton isBookmarked={false} fetchBookmarkState postId={articleId} />
+              <BookmarkButton
+                isBookmarked={false}
+                inEditMode
+                fetchBookmarkState
+                postId={articleId}
+              />
               <MoreActionsButton
                 userTotalLikes={1}
                 isLikedByUser={null}

@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
+import request from "@/utils/request";
 import { ROUTES } from "@/utils/routes";
 
 type UploadPayload = {
@@ -11,40 +12,30 @@ type UploadPayload = {
 export const useUploadImage = () => {
   return useMutation({
     mutationFn: async ({ file, contentType, filename }: UploadPayload) => {
-      const res = await fetch(ROUTES.api.image.upload, {
+      const res = await request({
+        url: ROUTES.api.image.upload,
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ contentType, filename }),
+        data: { contentType, filename },
       });
 
-      if (res.ok) {
-        const { url, fields } = await res.json();
+      const { url, fields } = res;
+      const formData = new FormData();
 
-        const formData = new FormData();
-        Object.entries(fields).forEach(([key, value]) => {
-          formData.append(key, value as string);
-        });
+      Object.entries(fields).forEach(([key, value]) => {
+        formData.append(key, value as string);
+      });
 
-        formData.append("file", file);
+      formData.append("file", file);
 
-        const uploadResponse = await fetch(url, {
-          method: "POST",
-          body: formData,
-        });
+      await request({
+        url,
+        method: "POST",
+        data: formData,
+      });
 
-        const imageUrl = `${url}${fields.key}`;
+      const imageUrl = `${url}${fields.key}`;
 
-        if (!uploadResponse.ok) {
-          throw new Error("Upload failed.");
-        }
-
-        // Step 4: Check if the response has content before parsing as JSON
-        return imageUrl;
-      } else {
-        throw new Error("Failed to get pre-signed URL.");
-      }
+      return imageUrl;
     },
   });
 };

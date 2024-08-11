@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import ReactQuill, { type UnprivilegedEditor, type Value } from "react-quill";
 
-import { useUploadImage } from "@/lib/aws";
+import { useUploadImage } from "@/services/aws";
 
 type Props = {
   editorValue: Value;

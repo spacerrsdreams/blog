@@ -40,7 +40,7 @@ export default function BookmarkButton({
     getBookmark(postId).then((data) => {
       data.data ? setIsChecked(true) : setIsChecked(false);
     });
-  }, [fetchBookmarkState]);
+  }, [fetchBookmarkState, inEditMode]);
 
   const createBookmark = () => {
     if (!user) {
