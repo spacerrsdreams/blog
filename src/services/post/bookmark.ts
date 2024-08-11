@@ -1,11 +1,9 @@
+import type { BookmarkedPost } from "@/types";
+
 import { useMutation } from "@tanstack/react-query";
 
 import { ROUTES } from "@/utils/routes";
-import {
-  BookmarkResponseSchema,
-  type BookmarkByAuthorResponsePayload,
-  type BookmarkRequestPayload,
-} from "@/services/types";
+import { BookmarkResponseSchema, type BookmarkRequestPayload } from "@/services/types";
 
 export const useCreateBookmark = () => {
   return useMutation({
@@ -47,7 +45,7 @@ export const useGetBookmarksByAuthor = () => {
       from: number;
       to: number;
       id: string;
-    }): Promise<BookmarkByAuthorResponsePayload[]> => {
+    }): Promise<BookmarkedPost[]> => {
       const res = await fetch(ROUTES.api.post.getBookmarksByAuthor(payload));
 
       if (!res.ok) {

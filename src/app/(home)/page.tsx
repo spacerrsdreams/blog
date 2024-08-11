@@ -25,7 +25,6 @@ export default function Home() {
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
 
   const feedToFetch = TAGS.includes(feed as TagsT) ? feed : "all";
-
   useEffect(() => {
     setAllPosts([]);
     setHasMore(true);

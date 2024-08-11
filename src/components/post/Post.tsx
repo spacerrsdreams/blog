@@ -24,6 +24,7 @@ export default function Post({
   currentFeed,
   isBookmarked,
   onPostDelete,
+  onRemoveBookmark,
 }: PostT) {
   if (!author) {
     throw new Error(ERROR_CODES.POST_AUTHOR_NOT_FOUND);
@@ -76,7 +77,11 @@ export default function Post({
                 </span>
               </div>
               <div className="flex items-center">
-                <BookmarkButton isBookmarked={isBookmarked} postId={id} />
+                <BookmarkButton
+                  isBookmarked={isBookmarked}
+                  postId={id}
+                  onRemoveBookmark={onRemoveBookmark}
+                />
                 <MoreActionsButton authorId={author.id} postId={id} onPostDelete={onPostDelete} />
               </div>
             </div>

@@ -142,8 +142,7 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
 
         <DropdownMenuItem
           className="px-4"
-          onClick={(e) => {
-            console.log(e);
+          onClick={() => {
             setOpen(false);
           }}
         >

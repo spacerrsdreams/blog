@@ -118,6 +118,7 @@ export type PostT = {
   id: string;
   slug: string;
   onPostDelete: (postId: string) => void;
+  onRemoveBookmark?: (postId: string) => void;
   tag: string;
   title: string;
   subTitle: string;
@@ -144,6 +145,15 @@ export type Bookmark = {
   modifiedAt: Date;
   userId: string;
   postId: string;
+};
+export type BookmarkedPost = {
+  id: string;
+  createdAt: Date;
+  modifiedAt: Date;
+  userId: string;
+  postId: string;
+  post: PostT;
+  author: UserBasicInfoT;
 };
 
 export type CommentWithUser = {
