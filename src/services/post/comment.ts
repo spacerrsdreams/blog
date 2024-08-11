@@ -1,4 +1,4 @@
-import type { CommentWithUser } from "@/types";
+import type { CommentWithUserProps } from "@/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -73,7 +73,7 @@ export const useGetComments = () => {
       from: number;
       to: number;
       id: string;
-    }): Promise<CommentWithUser[]> => {
+    }): Promise<CommentWithUserProps[]> => {
       const res = await fetch(ROUTES.api.post.getManyComments(payload));
 
       if (!res.ok) {

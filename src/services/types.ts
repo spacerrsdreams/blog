@@ -124,11 +124,3 @@ export const CreateArticleRequestSchema = z
   .strict();
 
 export type CreateArticleRequestPayload = z.infer<typeof CreateArticleRequestSchema>;
-
-export const GetUserByIdRequestSchema = z
-  .object({
-    userId: z.string().min(1, "User ID must be at least 1 character long."),
-  })
-  .strict();
-
-export type GetUserByIdRequestPayload = z.infer<typeof GetUserByIdRequestSchema>;

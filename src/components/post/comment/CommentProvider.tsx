@@ -1,6 +1,6 @@
 "use client";
 
-import type { CommentWithUser } from "@/types";
+import type { CommentWithUserProps } from "@/types";
 
 import { createContext, useContext, useState, type Dispatch, type SetStateAction } from "react";
 
@@ -8,10 +8,10 @@ export type CommentContextType = {
   showModal: boolean;
   inEdit: boolean;
   commentId: string;
-  comments: CommentWithUser[];
+  comments: CommentWithUserProps[];
   commentsCount: number;
   setCommentsCount: Dispatch<SetStateAction<number>>;
-  setComments: Dispatch<SetStateAction<CommentWithUser[]>>;
+  setComments: Dispatch<SetStateAction<CommentWithUserProps[]>>;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   setInEdit: Dispatch<SetStateAction<boolean>>;
   setCommentId: Dispatch<SetStateAction<string>>;
@@ -34,7 +34,7 @@ export const CommentProvider = ({ children }: { children: React.ReactNode }) => 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [inEdit, setInEdit] = useState<boolean>(false);
   const [commentId, setCommentId] = useState<string>("");
-  const [comments, setComments] = useState<CommentWithUser[]>([]);
+  const [comments, setComments] = useState<CommentWithUserProps[]>([]);
   const [commentsCount, setCommentsCount] = useState(0);
 
   const value = {

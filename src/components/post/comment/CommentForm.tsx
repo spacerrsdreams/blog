@@ -1,7 +1,7 @@
 "use client";
 
 import { usePopupProvider } from "@/context/PopupProvider";
-import type { CommentWithUser } from "@/types";
+import type { CommentWithUserProps } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
@@ -41,7 +41,7 @@ export default function CommentCreator({ postId }: Props) {
             imageUrl: user.imageUrl || "",
             username: user.username || "",
           },
-        } as CommentWithUser,
+        } as CommentWithUserProps,
       ]);
     });
   };

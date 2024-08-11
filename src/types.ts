@@ -17,9 +17,7 @@ type PhoneNumber = {
   number: string;
 };
 
-interface Metadata {
-  // Define properties as needed
-}
+interface Metadata {}
 
 export interface ClerkUser {
   data: {
@@ -97,13 +95,6 @@ export type UserPayload = {
   unsafeMetadata: Prisma.JsonValue;
 } | null;
 
-export type Contributor = {
-  authorSlug: string;
-  authorName: string;
-  avatarSrc: string;
-  avatarFallback: string;
-};
-
 export type UserBasicInfoT = Omit<
   User,
   | "emailAddresses"
@@ -136,22 +127,8 @@ export type PostT = {
     likeCount: number;
   }[];
 };
-export type Like = {
-  id: string;
-  createdAt: Date;
-  modifiedAt: Date;
-  userId: string;
-  postId: string;
-};
-export type Bookmark = {
-  id: string;
-  createdAt: Date;
-  modifiedAt: Date;
-  userId: string;
-  postId: string;
-};
 
-export type CommentWithUser = {
+export type CommentWithUserProps = {
   id: string;
   content: string;
   createdAt: Date;
@@ -162,9 +139,4 @@ export type CommentWithUser = {
     imageUrl: string;
     username: string;
   };
-};
-
-export type Tab = {
-  title: string;
-  slug: string;
 };

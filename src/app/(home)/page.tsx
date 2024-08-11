@@ -15,14 +15,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 const POST_LOADING_LIMIT = 10;
 
 export default function Home() {
-  const { isPending, mutateAsync: fetchArticles, error } = useGetArticles();
-  const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
-  const [allPosts, setAllPosts] = useState<PostT[]>([]);
-  const [hasMore, setHasMore] = useState(true);
   const loader = useRef(null);
   const searchParams = useSearchParams();
-  const feed = searchParams.get("feed");
+  const [hasMore, setHasMore] = useState(true);
+  const [allPosts, setAllPosts] = useState<PostT[]>([]);
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
+  const { isPending, mutateAsync: fetchArticles, error } = useGetArticles();
+  const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
+
+  const feed = searchParams.get("feed");
   const feedToFetch = TAGS.includes(feed as TagsT) ? feed : "all";
 
   useEffect(() => {
