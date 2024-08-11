@@ -20,13 +20,13 @@ type Props = {
 export default function LikeButton({ count, postId, disabled }: Props) {
   const { user } = useUser();
   const { toast } = useToast();
-  const [likes, setLikes] = useState(count);
-  const [_, setUserLikes] = useState(0);
-  const [isLikedByUser, setIsLikedByUser] = useState(true);
-  const { mutateAsync: likePostAsync } = useLikePost();
-  const { mutateAsync: getLikeAsync } = useGetLike();
   const { open } = usePopupProvider();
+  const [_, setUserLikes] = useState(0);
+  const [likes, setLikes] = useState(count);
+  const { mutateAsync: getLike } = useGetLike();
+  const { mutateAsync: likePost } = useLikePost();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isLikedByUser, setIsLikedByUser] = useState(true);
   const userId = user?.id;
 
   useEffect(() => {
@@ -36,13 +36,13 @@ export default function LikeButton({ count, postId, disabled }: Props) {
   useEffect(() => {
     if (!userId || disabled) return;
 
-    getLikeAsync(postId).then(({ data }) => {
-      data ? setIsLikedByUser(true) : setIsLikedByUser(false);
+    getLike(postId).then((data) => {
+      data?.data ? setIsLikedByUser(true) : setIsLikedByUser(false);
     });
-  }, [userId, getLikeAsync, postId]);
+  }, [userId, getLike, postId]);
 
   const like = (userLikes: number) => {
-    likePostAsync({ postId, userLikes })
+    likePost({ postId, userLikes })
       .then(() => setUserLikes(0))
       .catch(() => {
         toast({

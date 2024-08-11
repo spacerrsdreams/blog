@@ -2,26 +2,18 @@ import type { PostT } from "@/types";
 
 import { useMutation } from "@tanstack/react-query";
 
+import request from "@/utils/request";
 import { ROUTES } from "@/utils/routes";
 import type { CreateArticleRequestPayload } from "@/services/types";
 
 export const useCreateArticle = () => {
   return useMutation({
     mutationFn: async (payload: CreateArticleRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.article(), {
+      return request({
+        url: ROUTES.api.post.article(),
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        data: payload,
       });
-
-      if (!res.ok) {
-        console.error(res);
-        throw new Error("Failed to create article");
-      }
-
-      return res.json();
     },
   });
 };
@@ -35,14 +27,10 @@ export const useGetArticles = () => {
       feed: string;
       username?: string;
     }): Promise<{ data: PostT[]; totalPosts: string }> => {
-      const res = await fetch(ROUTES.api.post.getManyArticle(payload));
-
-      if (!res.ok) {
-        console.error(res);
-        throw new Error("Failed to fetch articles");
-      }
-
-      return res.json();
+      return request({
+        url: ROUTES.api.post.getManyArticle(payload),
+        method: "GET",
+      });
     },
   });
 };
@@ -50,16 +38,10 @@ export const useGetArticles = () => {
 export const useDeleteArticle = () => {
   return useMutation({
     mutationFn: async (payload: { id: string }) => {
-      const res = await fetch(ROUTES.api.post.article(payload.id), {
+      return request({
+        url: ROUTES.api.post.article(payload.id),
         method: "DELETE",
       });
-
-      if (!res.ok) {
-        console.error(res);
-        throw new Error("Failed to delete article");
-      }
-
-      return res.json();
     },
   });
 };
