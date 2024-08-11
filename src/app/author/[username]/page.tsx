@@ -94,6 +94,7 @@ export default function Home({ params }: { params: { username: string } }) {
           <Post
             key={uuidv4()}
             id={post.id}
+            likes={post.likes}
             currentFeed={feedToFetch || ""}
             slug={post.slug}
             tag={post.tag}

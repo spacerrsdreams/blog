@@ -25,7 +25,9 @@ export default function Post({
   likeCount,
   isBookmarked,
   isLikedByUser,
+  likes,
   onPostDelete,
+  onUnlike,
 }: PostT) {
   if (!author) {
     throw new Error(ERROR_CODES.POST_AUTHOR_NOT_FOUND);
@@ -84,6 +86,8 @@ export default function Post({
                   authorId={author.id}
                   postId={id}
                   onPostDelete={onPostDelete}
+                  onUnlike={onUnlike}
+                  likes={likes}
                 />
               </div>
             </div>

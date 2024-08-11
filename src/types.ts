@@ -117,7 +117,8 @@ export type UserBasicInfoT = Omit<
 export type PostT = {
   id: string;
   slug: string;
-  onPostDelete: (postId: string) => void;
+  onPostDelete?: (postId: string) => void;
+  onUnlike?: (postId: string, userLikeCount: number) => void;
   tag: string;
   title: string;
   subTitle: string;
@@ -131,6 +132,9 @@ export type PostT = {
   isBookmarked: boolean;
   isLikedByUser: boolean;
   likeCount: number;
+  likes: {
+    likeCount: number;
+  }[];
 };
 export type Like = {
   id: string;

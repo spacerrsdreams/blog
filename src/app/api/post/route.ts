@@ -64,7 +64,7 @@ export const GET = async (req: NextRequest) => {
               userId: userId || "",
             },
             select: {
-              id: true,
+              likeCount: true,
             },
           },
         }),

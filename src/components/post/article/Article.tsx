@@ -86,7 +86,12 @@ export default function Article({
             </div>
             <div className="flex items-center">
               <BookmarkButton isBookmarked={false} postId={articleId} />
-              <MoreActionsButton isLikedByUser={null} authorId={author.id} postId={articleId} />
+              <MoreActionsButton
+                likes={[]}
+                isLikedByUser={null}
+                authorId={author.id}
+                postId={articleId}
+              />
             </div>
           </div>
         </div>

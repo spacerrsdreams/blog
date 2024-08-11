@@ -74,6 +74,20 @@ export default function Home() {
     setAllPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   };
 
+  const onUnlike = (postId: string, userLikeCount: number) => {
+    setAllPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              isLikedByUser: false,
+              likeCount: post.likeCount - userLikeCount,
+            }
+          : post,
+      ),
+    );
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
@@ -81,6 +95,7 @@ export default function Home() {
           <Post
             key={uuidv4()}
             id={post.id}
+            likes={post.likes}
             currentFeed={feedToFetch || ""}
             slug={post.slug}
             tag={post.tag}
@@ -94,6 +109,7 @@ export default function Home() {
             isBookmarked={post.isBookmarked}
             isLikedByUser={post.isLikedByUser}
             onPostDelete={onPostDelete}
+            onUnlike={onUnlike}
           />
         ))}
       </div>

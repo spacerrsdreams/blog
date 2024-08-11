@@ -54,6 +54,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
           comments: true,
         },
       },
+      likes: {
+        select: {
+          userId: true,
+        },
+      },
     },
   });
 

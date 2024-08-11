@@ -23,13 +23,19 @@ type Props = {
   postId: string;
   authorId: string;
   isLikedByUser: boolean | null;
+  likes: {
+    likeCount: number;
+  }[];
   onPostDelete?: (postId: string) => void;
+  onUnlike?: (postId: string, userLikeCount: number) => void;
 };
 
 export default function MoreActionsButton({
   postId,
   isLikedByUser,
   authorId,
+  onUnlike,
+  likes,
   onPostDelete,
 }: Props) {
   const [open, setOpen] = useState(false);
@@ -132,13 +138,12 @@ export default function MoreActionsButton({
     removeUserLikeAsync(postId)
       .then(() => {
         toast({ title: "Like removed successfully" });
+        onUnlike ? onUnlike(postId, likes[0]?.likeCount || 1) : setIsLikedByUser(false);
       })
       .catch(() => {
         toast({ title: "Failed to remove like", variant: "destructive" });
       });
   };
-
-  console.log(isLikedByUser);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
