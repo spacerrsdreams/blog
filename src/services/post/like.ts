@@ -1,21 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
 
+import request from "@/utils/request";
 import { ROUTES } from "@/utils/routes";
-import { LikeResponseSchema, type LikeRequestPayload } from "@/services/types";
+import { type LikeRequestPayload } from "@/services/types";
 
 export const useGetLike = () => {
   return useMutation({
     mutationFn: async (postId: string) => {
-      const res = await fetch(ROUTES.api.post.like(postId));
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch user like information");
-      }
-
-      return LikeResponseSchema.parse(await res.json());
-    },
-    onError: (error) => {
-      console.error("Error fetching user like information:", error);
+      return request({
+        url: ROUTES.api.post.like(postId),
+      });
     },
   });
 };
@@ -23,22 +17,11 @@ export const useGetLike = () => {
 export const useLikePost = () => {
   return useMutation({
     mutationFn: async (payload: LikeRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.like(), {
+      return request({
+        url: ROUTES.api.post.like(payload.postId),
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        data: payload,
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to like post");
-      }
-
-      return res;
-    },
-    onError: (error) => {
-      console.error("Error updating user like information:", error);
     },
   });
 };
@@ -46,18 +29,10 @@ export const useLikePost = () => {
 export const useRemoveLike = () => {
   return useMutation({
     mutationFn: async (postId: string) => {
-      const res = await fetch(ROUTES.api.post.like(postId), {
+      return request({
+        url: ROUTES.api.post.like(postId),
         method: "DELETE",
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to remove like");
-      }
-
-      return res;
-    },
-    onError: (error) => {
-      console.error("Error removing like:", error);
     },
   });
 };
