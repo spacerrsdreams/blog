@@ -3,36 +3,24 @@ import type { UserBasicInfoT } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
-import { formatDate } from "@/utils/formatDate";
-import { formatNumberWithK } from "@/utils/formatNumberWithK";
-import BookmarkButton from "@/components/post/article/BookmarkButton";
-import MoreActionsButton from "@/components/post/article/MoreActionsButton";
-import { Icons } from "@/components/shared/Icons";
+import type { PostActionsProps } from "@/components/post/actions/PostActions";
+import PostActions from "@/components/post/actions/PostActions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export type Props = {
-  id: string;
+export type Props = PostActionsProps & {
   slug: string;
   tag: string;
   title: string;
   subTitle: string;
   coverImageSrc: string | undefined;
-  createdAt: Date;
   currentFeed: string;
   author: UserBasicInfoT;
-  isBookmarked: boolean;
-  isLikedByUser: boolean;
-  userTotalLikes: number;
-  totalLikes: number;
-  totalComments: number;
-  onPostDelete?: (postId: string) => void;
-  onUnlike?: (postId: string, userLikeCount: number) => void;
 };
 
 export default function PostPreview({
-  id,
   tag,
   title,
+  postId,
   slug,
   subTitle,
   author,
@@ -45,7 +33,6 @@ export default function PostPreview({
   totalLikes,
   userTotalLikes,
   onPostDelete,
-  onUnlike,
 }: Props) {
   return (
     <div className="flex w-full flex-col gap-2 border-b border-border/50 pb-8">
@@ -81,30 +68,17 @@ export default function PostPreview({
                 {subTitle.length > 100 ? `${subTitle.slice(0, 100)}...` : subTitle}
               </h4>
             </div>
-            <div className="flex w-full justify-between">
-              <div className="flex items-center gap-2 text-xs">
-                <span className="text-muted-foreground">{formatDate(new Date(createdAt))}</span>
-                <span className="ml-4 flex items-center">
-                  {isLikedByUser ? <Icons.clapDark /> : <Icons.clap />}
-                  <span>{formatNumberWithK(totalLikes)}</span>
-                </span>
-                <span className="flex items-center">
-                  <Icons.message />
-                  <span>{formatNumberWithK(totalComments)}</span>
-                </span>
-              </div>
-              <div className="flex items-center">
-                <BookmarkButton isBookmarked={isBookmarked} postId={id} />
-                <MoreActionsButton
-                  isLikedByUser={isLikedByUser}
-                  authorId={author.id}
-                  postId={id}
-                  userTotalLikes={userTotalLikes}
-                  onPostDelete={onPostDelete}
-                  onUnlike={onUnlike}
-                />
-              </div>
-            </div>
+            <PostActions
+              postId={postId}
+              isBookmarked={isBookmarked}
+              isLikedByUser={isLikedByUser}
+              totalComments={totalComments}
+              totalLikes={totalLikes}
+              userTotalLikes={userTotalLikes}
+              createdAt={createdAt}
+              author={author}
+              onPostDelete={onPostDelete}
+            />
           </Link>
         </div>
         {coverImageSrc && (

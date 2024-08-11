@@ -10,7 +10,9 @@ type GetManyComments = {
   id: string;
 };
 
-const appendIfExists = (arg?: string) => (arg ? "/" + arg : "");
+const appendIfExists = (arg?: string, asQuery: boolean = false) => {
+  return asQuery ? `?id=${arg}` : arg ? "/" + arg : "";
+};
 
 export const ROUTES = {
   root: "/",
@@ -32,7 +34,8 @@ export const ROUTES = {
 
         return `/api/post?${queryParams.toString()}`;
       },
-      like: (postId?: string) => `/api/post/like${appendIfExists(postId)}`,
+      like: (postId?: string, asQuery: boolean = false) =>
+        `/api/post/like${appendIfExists(postId, asQuery)}`,
       comment: (postId?: string) => `/api/post/comment${appendIfExists(postId)}`,
       getManyComments: ({ from, to, id }: GetManyComments) => {
         const queryParams = new URLSearchParams({

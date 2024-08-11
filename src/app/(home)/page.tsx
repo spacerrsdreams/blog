@@ -74,27 +74,13 @@ export default function Home() {
     setAllPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   };
 
-  const onUnlike = (postId: string, userLikeCount: number) => {
-    setAllPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              isLikedByUser: false,
-              likeCount: post.likeCount - userLikeCount,
-            }
-          : post,
-      ),
-    );
-  };
-
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
         {allPosts.map((post) => (
           <PostPreview
             key={uuidv4()}
-            id={post.id}
+            postId={post.id}
             userTotalLikes={post.likes[0]?.likeCount || 0}
             totalComments={post._count.comments}
             totalLikes={post.likeCount}
@@ -109,7 +95,6 @@ export default function Home() {
             isBookmarked={post.isBookmarked}
             isLikedByUser={post.isLikedByUser}
             onPostDelete={onPostDelete}
-            onUnlike={onUnlike}
           />
         ))}
       </div>

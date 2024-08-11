@@ -23,31 +23,29 @@ type Props = {
   postId: string;
   authorId: string;
   isLikedByUser: boolean | null;
-  userTotalLikes: number;
   onPostDelete?: (postId: string) => void;
-  onUnlike?: (postId: string, userLikeCount: number) => void;
+  onUnlike?: () => void;
 };
 
 export default function MoreActionsButton({
   postId,
   isLikedByUser,
   authorId,
-  userTotalLikes,
   onUnlike,
   onPostDelete,
 }: Props) {
   const [open, setOpen] = useState(false);
-  const [postIsLiked, setIsLikedByUser] = useState(isLikedByUser);
   const { mutateAsync: getFollowerIfExistsAsync, isPending } = useGetFollowerIfExists();
   const { mutateAsync: followAuthorAsync } = useFollow();
   const { mutateAsync: unfollowAuthorAsync } = useUnfollow();
   const { mutateAsync: deleteArticleAsync } = useDeleteArticle();
   const { mutateAsync: removeUserLikeAsync } = useRemoveLike();
+  const [following, setFollowing] = useState(false);
+
   const { toast } = useToast();
   const router = useRouter();
   const { user } = useUser();
   const userId = user?.id;
-  const [following, setFollowing] = useState(false);
 
   useEffect(() => {
     if (!authorId || !userId) return;
@@ -101,7 +99,7 @@ export default function MoreActionsButton({
       });
   };
 
-  const handleDelete = async () => {
+  const handleDeleteArticle = async () => {
     if (!postId) return;
 
     if (authorId !== userId) {
@@ -127,7 +125,7 @@ export default function MoreActionsButton({
     removeUserLikeAsync(postId)
       .then(() => {
         toast({ title: "Like removed successfully" });
-        onUnlike ? onUnlike(postId, userTotalLikes) : setIsLikedByUser(false);
+        onUnlike && onUnlike();
       })
       .catch(() => {
         toast({ title: "Failed to remove like", variant: "destructive" });
@@ -166,7 +164,7 @@ export default function MoreActionsButton({
           </>
         )}
 
-        {postIsLiked && (
+        {isLikedByUser && (
           <DropdownMenuItem
             className="px-4"
             onClick={(e) => {
@@ -184,7 +182,7 @@ export default function MoreActionsButton({
             className="px-4"
             onClick={(e) => {
               e.preventDefault();
-              handleDelete();
+              handleDeleteArticle();
               setOpen(false);
             }}
           >

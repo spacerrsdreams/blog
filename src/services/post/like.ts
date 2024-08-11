@@ -8,7 +8,7 @@ export const useGetLike = () => {
   return useMutation({
     mutationFn: async (postId: string) => {
       return request({
-        url: ROUTES.api.post.like(postId),
+        url: ROUTES.api.post.like(postId, true),
       });
     },
   });
@@ -18,8 +18,8 @@ export const useLikePost = () => {
   return useMutation({
     mutationFn: async (payload: LikeRequestPayload) => {
       return request({
-        url: ROUTES.api.post.like(payload.postId),
         method: "POST",
+        url: ROUTES.api.post.like(),
         data: payload,
       });
     },

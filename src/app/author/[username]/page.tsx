@@ -92,7 +92,7 @@ export default function Home({ params }: { params: { username: string } }) {
         {allPosts.map((post) => (
           <PostPreview
             key={uuidv4()}
-            id={post.id}
+            postId={post.id}
             totalLikes={post.likeCount}
             userTotalLikes={post.likes[0]?.likeCount || 0}
             currentFeed={feedToFetch || ""}

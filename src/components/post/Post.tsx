@@ -4,11 +4,11 @@ import Image from "next/image";
 import { type Value } from "react-quill";
 
 import { formatDate } from "@/utils/formatDate";
+import BookmarkButton from "@/components/post/actions/BookmarkButton";
+import LikeButton from "@/components/post/actions/LikeButton";
+// import MoreActionsButton from "@/components/post/actions/MoreActionsButton";
 import ArticleContent from "@/components/post/article/ArticleContent";
 import ArticleCover from "@/components/post/article/ArticleCover";
-import BookmarkButton from "@/components/post/article/BookmarkButton";
-import LikeButton from "@/components/post/article/LikeButton";
-import MoreActionsButton from "@/components/post/article/MoreActionsButton";
 import CommentSheet from "@/components/post/comment/CommentSheet";
 
 type Props = {
@@ -91,12 +91,12 @@ export default function Post({
                 fetchBookmarkState
                 postId={articleId}
               />
-              <MoreActionsButton
+              {/* <MoreActionsButton
                 userTotalLikes={1}
                 isLikedByUser={null}
                 authorId={author.id}
                 postId={articleId}
-              />
+              /> */}
             </div>
           </div>
         </div>
