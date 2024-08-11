@@ -3,7 +3,7 @@ import type { Value } from "react-quill";
 
 import { siteConfig } from "@/config/siteConfig";
 import { database } from "@/lib/prisma";
-import Post from "@/components/post/article/Post";
+import Post from "@/components/post/Post";
 
 export const dynamicParams = true;
 
@@ -52,11 +52,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
       _count: {
         select: {
           comments: true,
-        },
-      },
-      likes: {
-        select: {
-          userId: true,
         },
       },
     },

@@ -1,10 +1,8 @@
-import type { PostT } from "@/types";
-
 import { useMutation } from "@tanstack/react-query";
 
 import request from "@/utils/request";
 import { ROUTES } from "@/utils/routes";
-import type { CreateArticleRequestPayload } from "@/services/types";
+import type { ArticleT, CreateArticleRequestPayload } from "@/services/types";
 
 export const useCreateArticle = () => {
   return useMutation({
@@ -26,7 +24,7 @@ export const useGetArticles = () => {
       to: number;
       feed: string;
       username?: string;
-    }): Promise<{ data: PostT[]; totalPosts: string }> => {
+    }): Promise<{ data: ArticleT[]; totalPosts: string }> => {
       return request({
         url: ROUTES.api.post.getManyArticle(payload),
         method: "GET",

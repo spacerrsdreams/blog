@@ -105,29 +105,6 @@ export type UserBasicInfoT = Omit<
   | "unsafeMetadata"
 >;
 
-export type PostT = {
-  id: string;
-  slug: string;
-  onPostDelete?: (postId: string) => void;
-  onUnlike?: (postId: string, userLikeCount: number) => void;
-  tag: string;
-  title: string;
-  subTitle: string;
-  coverImageSrc: string | undefined;
-  createdAt: Date;
-  currentFeed: string;
-  _count: {
-    comments: number;
-  };
-  author: UserBasicInfoT;
-  isBookmarked: boolean;
-  isLikedByUser: boolean;
-  likeCount: number;
-  likes: {
-    likeCount: number;
-  }[];
-};
-
 export type CommentWithUserProps = {
   id: string;
   content: string;
@@ -139,4 +116,13 @@ export type CommentWithUserProps = {
     imageUrl: string;
     username: string;
   };
+};
+
+export type Likes = {
+  id: string;
+  createdAt: Date;
+  modifiedAt: Date;
+  userId: string;
+  postId: string;
+  likeCount: number;
 };

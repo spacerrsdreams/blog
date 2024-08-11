@@ -37,7 +37,6 @@ export default function BookmarkButton({
   useEffect(() => {
     if (!fetchBookmarkState || inEditMode) return;
 
-    console.log("HIT");
     getBookmark(postId).then((data) => {
       data.data ? setIsChecked(true) : setIsChecked(false);
     });

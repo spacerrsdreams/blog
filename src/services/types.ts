@@ -1,4 +1,5 @@
 import { TAGS } from "@/constants/tags";
+import type { Likes, UserBasicInfoT } from "@/types";
 import { z } from "zod";
 
 export const LikeRequestSchema = z
@@ -124,3 +125,22 @@ export const CreateArticleRequestSchema = z
   .strict();
 
 export type CreateArticleRequestPayload = z.infer<typeof CreateArticleRequestSchema>;
+
+export type ArticleT = {
+  id: string;
+  slug: string;
+  tag: string;
+  title: string;
+  subTitle: string;
+  coverImageSrc: string | undefined;
+  createdAt: Date;
+  currentFeed: string;
+  _count: {
+    comments: number;
+  };
+  author: UserBasicInfoT;
+  isBookmarked: boolean;
+  isLikedByUser: boolean;
+  likeCount: number;
+  likes: Likes[];
+};

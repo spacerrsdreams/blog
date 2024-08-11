@@ -1,14 +1,13 @@
 "use client";
 
 import { TAGS, type TagsT } from "@/constants/tags";
-import type { PostT } from "@/types";
-// eslint-disable-next-line import/named
 import { v4 as uuidv4 } from "uuid";
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { useGetArticles } from "@/services/post/article";
+import type { ArticleT } from "@/services/types";
 import PostPreview from "@/components/post/PostPreview";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -17,7 +16,7 @@ const POST_LOADING_LIMIT = 10;
 export default function Home({ params }: { params: { username: string } }) {
   const { isPending, mutateAsync: fetchArticles, error } = useGetArticles();
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
-  const [allPosts, setAllPosts] = useState<PostT[]>([]);
+  const [allPosts, setAllPosts] = useState<ArticleT[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const loader = useRef(null);
 

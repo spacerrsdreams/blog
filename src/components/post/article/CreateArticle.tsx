@@ -22,7 +22,7 @@ import { ROUTES } from "@/utils/routes";
 import { useUploadImage } from "@/lib/aws";
 import { useCreateArticle } from "@/services/post/article";
 import { CreateArticleRequestSchema, type CreateArticleRequestPayload } from "@/services/types";
-import Post from "@/components/post/article/Post";
+import Post from "@/components/post/Post";
 import QuillEditor from "@/components/shared/QuillEditor";
 import { Button } from "@/components/ui/button";
 import {

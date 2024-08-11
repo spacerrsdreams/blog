@@ -10,7 +10,7 @@ import MoreActionsButton from "@/components/post/article/MoreActionsButton";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-type Props = {
+export type Props = {
   id: string;
   slug: string;
   tag: string;
