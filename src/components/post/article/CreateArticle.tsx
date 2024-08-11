@@ -22,7 +22,7 @@ import { ROUTES } from "@/utils/routes";
 import { useUploadImage } from "@/lib/aws";
 import { useCreateArticle } from "@/services/post/article";
 import { CreateArticleRequestSchema, type CreateArticleRequestPayload } from "@/services/types";
-import Article from "@/components/post/article/Article";
+import Post from "@/components/post/article/Post";
 import QuillEditor from "@/components/shared/QuillEditor";
 import { Button } from "@/components/ui/button";
 import {
@@ -211,7 +211,7 @@ export default function CreateArticle() {
           )}
 
           {user && (
-            <Article
+            <Post
               author={user as unknown as UserBasicInfoT}
               tag={form.watch("tag")}
               content={editorValue}

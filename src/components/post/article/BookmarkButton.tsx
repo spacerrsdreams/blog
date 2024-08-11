@@ -6,7 +6,11 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
 
-import { useCreateBookmark, useGetBookmark, useRemoveBookmark } from "@/services/post/bookmark";
+import {
+  useCreateBookmark,
+  useGetBookmarkByPostId,
+  useRemoveBookmark,
+} from "@/services/post/bookmark";
 import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 
@@ -26,14 +30,15 @@ export default function BookmarkButton({
   const [isChecked, setIsChecked] = useState(isBookmarked);
   const { user } = useUser();
   const { open } = usePopupProvider();
-  const { mutateAsync: createBookmarkAsync } = useCreateBookmark();
-  const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark();
-  const { mutateAsync: getBookmarkAsync } = useGetBookmark();
+  const { mutateAsync: bookmark } = useCreateBookmark();
+  const { mutateAsync: removeBookmark } = useRemoveBookmark();
+  const { mutateAsync: getBookmark } = useGetBookmarkByPostId();
 
   useEffect(() => {
     if (!fetchBookmarkState || inEditMode) return;
 
-    getBookmarkAsync(postId).then((data) => {
+    console.log("HIT");
+    getBookmark(postId).then((data) => {
       data.data ? setIsChecked(true) : setIsChecked(false);
     });
   }, [fetchBookmarkState]);
@@ -46,7 +51,7 @@ export default function BookmarkButton({
 
     setIsChecked(true);
 
-    createBookmarkAsync({
+    bookmark({
       postId,
     }).catch((err) => {
       console.error(err);
@@ -54,7 +59,7 @@ export default function BookmarkButton({
     });
   };
 
-  const removeBookmark = () => {
+  const deleteBookmark = () => {
     if (!user) {
       open(true);
       return;
@@ -62,7 +67,7 @@ export default function BookmarkButton({
 
     setIsChecked(false);
 
-    removeBookmarkAsync(postId).catch((err) => {
+    removeBookmark(postId).catch((err) => {
       console.error(err);
       setIsChecked(true);
     });
@@ -70,7 +75,7 @@ export default function BookmarkButton({
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    isChecked ? removeBookmark() : createBookmark();
+    isChecked ? deleteBookmark() : createBookmark();
   };
 
   return (

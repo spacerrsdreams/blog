@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 import { ROUTES } from "@/utils/routes";
 import { useDeleteArticle } from "@/services/post/article";
-import { useGetLike, useRemoveLike } from "@/services/post/like";
+import { useRemoveLike } from "@/services/post/like";
 import { useFollow, useGetFollowerIfExists, useUnfollow } from "@/services/user/followers";
 import {
   DropdownMenu,
@@ -23,9 +23,7 @@ type Props = {
   postId: string;
   authorId: string;
   isLikedByUser: boolean | null;
-  likes: {
-    likeCount: number;
-  }[];
+  userTotalLikes: number;
   onPostDelete?: (postId: string) => void;
   onUnlike?: (postId: string, userLikeCount: number) => void;
 };
@@ -34,8 +32,8 @@ export default function MoreActionsButton({
   postId,
   isLikedByUser,
   authorId,
+  userTotalLikes,
   onUnlike,
-  likes,
   onPostDelete,
 }: Props) {
   const [open, setOpen] = useState(false);
@@ -45,7 +43,6 @@ export default function MoreActionsButton({
   const { mutateAsync: unfollowAuthorAsync } = useUnfollow();
   const { mutateAsync: deleteArticleAsync } = useDeleteArticle();
   const { mutateAsync: removeUserLikeAsync } = useRemoveLike();
-  const { mutateAsync: getLikeAsync } = useGetLike();
   const { toast } = useToast();
   const router = useRouter();
   const { user } = useUser();
@@ -65,14 +62,6 @@ export default function MoreActionsButton({
         toast({ title: "Failed to get follower", variant: "destructive" });
       });
   }, [open, userId]);
-
-  useEffect(() => {
-    if (!userId || postIsLiked) return;
-
-    getLikeAsync(postId).then(({ data }) => {
-      data ? setIsLikedByUser(true) : setIsLikedByUser(false);
-    });
-  }, [userId, getLikeAsync, postId, postIsLiked, isLikedByUser]);
 
   const handleFollowAuthor = async () => {
     if (!authorId) return;
@@ -138,7 +127,7 @@ export default function MoreActionsButton({
     removeUserLikeAsync(postId)
       .then(() => {
         toast({ title: "Like removed successfully" });
-        onUnlike ? onUnlike(postId, likes[0]?.likeCount || 1) : setIsLikedByUser(false);
+        onUnlike ? onUnlike(postId, userTotalLikes) : setIsLikedByUser(false);
       })
       .catch(() => {
         toast({ title: "Failed to remove like", variant: "destructive" });

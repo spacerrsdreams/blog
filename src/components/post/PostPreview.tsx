@@ -1,38 +1,52 @@
-import type { PostT } from "@/types";
+import type { UserBasicInfoT } from "@/types";
 
 import Image from "next/image";
 import Link from "next/link";
 
 import { formatDate } from "@/utils/formatDate";
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
-import { ERROR_CODES } from "@/lib/error";
 import BookmarkButton from "@/components/post/article/BookmarkButton";
 import MoreActionsButton from "@/components/post/article/MoreActionsButton";
 import { Icons } from "@/components/shared/Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function Post({
+type Props = {
+  id: string;
+  slug: string;
+  tag: string;
+  title: string;
+  subTitle: string;
+  coverImageSrc: string | undefined;
+  createdAt: Date;
+  currentFeed: string;
+  author: UserBasicInfoT;
+  isBookmarked: boolean;
+  isLikedByUser: boolean;
+  userTotalLikes: number;
+  totalLikes: number;
+  totalComments: number;
+  onPostDelete?: (postId: string) => void;
+  onUnlike?: (postId: string, userLikeCount: number) => void;
+};
+
+export default function PostPreview({
   id,
   tag,
   title,
   slug,
   subTitle,
-  _count,
   author,
   createdAt,
   coverImageSrc,
   currentFeed,
-  likeCount,
   isBookmarked,
   isLikedByUser,
-  likes,
+  totalComments,
+  totalLikes,
+  userTotalLikes,
   onPostDelete,
   onUnlike,
-}: PostT) {
-  if (!author) {
-    throw new Error(ERROR_CODES.POST_AUTHOR_NOT_FOUND);
-  }
-
+}: Props) {
   return (
     <div className="flex w-full flex-col gap-2 border-b border-border/50 pb-8">
       <div className="flex w-full items-center gap-1 text-xs">
@@ -72,11 +86,11 @@ export default function Post({
                 <span className="text-muted-foreground">{formatDate(new Date(createdAt))}</span>
                 <span className="ml-4 flex items-center">
                   {isLikedByUser ? <Icons.clapDark /> : <Icons.clap />}
-                  <span>{formatNumberWithK(likeCount)}</span>
+                  <span>{formatNumberWithK(totalLikes)}</span>
                 </span>
                 <span className="flex items-center">
                   <Icons.message />
-                  <span>{formatNumberWithK(_count.comments)}</span>
+                  <span>{formatNumberWithK(totalComments)}</span>
                 </span>
               </div>
               <div className="flex items-center">
@@ -85,9 +99,9 @@ export default function Post({
                   isLikedByUser={isLikedByUser}
                   authorId={author.id}
                   postId={id}
+                  userTotalLikes={userTotalLikes}
                   onPostDelete={onPostDelete}
                   onUnlike={onUnlike}
-                  likes={likes}
                 />
               </div>
             </div>

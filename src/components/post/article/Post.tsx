@@ -26,7 +26,7 @@ type Props = {
   handleRemoveImage?: () => void;
 };
 
-export default function Article({
+export default function Post({
   articleId,
   title,
   subTitle,
@@ -85,9 +85,9 @@ export default function Article({
               />
             </div>
             <div className="flex items-center">
-              <BookmarkButton isBookmarked={false} postId={articleId} />
+              <BookmarkButton isBookmarked={false} fetchBookmarkState postId={articleId} />
               <MoreActionsButton
-                likes={[]}
+                userTotalLikes={1}
                 isLikedByUser={null}
                 authorId={author.id}
                 postId={articleId}

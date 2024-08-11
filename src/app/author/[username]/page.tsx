@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { useGetArticles } from "@/services/post/article";
-import Post from "@/components/post/Post";
+import PostPreview from "@/components/post/PostPreview";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const POST_LOADING_LIMIT = 10;
@@ -91,17 +91,17 @@ export default function Home({ params }: { params: { username: string } }) {
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
         {allPosts.map((post) => (
-          <Post
+          <PostPreview
             key={uuidv4()}
             id={post.id}
-            likes={post.likes}
+            totalLikes={post.likeCount}
+            userTotalLikes={post.likes[0]?.likeCount || 0}
             currentFeed={feedToFetch || ""}
             slug={post.slug}
             tag={post.tag}
             title={post.title}
             subTitle={post.subTitle}
-            _count={post._count}
-            likeCount={post.likeCount}
+            totalComments={post._count.comments}
             isLikedByUser={post.isLikedByUser}
             author={post.author}
             createdAt={post.createdAt}
