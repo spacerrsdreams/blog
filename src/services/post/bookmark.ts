@@ -1,7 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { ROUTES } from "@/utils/routes";
-import { BookmarkResponseSchema, type BookmarkRequestPayload } from "@/services/types";
+import {
+  BookmarkResponseSchema,
+  type BookmarkByAuthorResponsePayload,
+  type BookmarkRequestPayload,
+} from "@/services/types";
 
 export const useCreateBookmark = () => {
   return useMutation({
@@ -33,6 +37,25 @@ export const useGetBookmark = () => {
       }
 
       return BookmarkResponseSchema.parse(await res.json());
+    },
+  });
+};
+export const useGetBookmarksByAuthor = () => {
+  return useMutation({
+    mutationKey: ["bookmarks/get"],
+    mutationFn: async (payload: {
+      from: number;
+      to: number;
+      id: string;
+    }): Promise<BookmarkByAuthorResponsePayload[]> => {
+      const res = await fetch(ROUTES.api.post.getBookmarksByAuthor(payload));
+
+      if (!res.ok) {
+        console.error(res);
+        throw new Error("Failed to fetch comments");
+      }
+
+      return res.json();
     },
   });
 };
