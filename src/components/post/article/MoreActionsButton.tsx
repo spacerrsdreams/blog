@@ -150,6 +150,16 @@ export default function MoreActionsButton({ postId, authorId, onPostDelete }: Pr
           <span className="text-muted-foreground">Undo claps</span>
         </DropdownMenuItem>
 
+        <DropdownMenuItem
+          className="px-4"
+          onClick={(e) => {
+            e.preventDefault();
+            router.push(`${ROUTES.editArticle(postId)}`);
+          }}
+        >
+          <span className="text-muted-foreground">Edit Article</span>
+        </DropdownMenuItem>
+
         {userId === authorId && (
           <DropdownMenuItem
             className="px-4"

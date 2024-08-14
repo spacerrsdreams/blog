@@ -15,6 +15,7 @@ const appendIfExists = (arg?: string) => (arg ? "/" + arg : "");
 export const ROUTES = {
   root: "/",
   createArticle: "/create-article",
+  editArticle: (postId?: string) => `/edit-article/${appendIfExists(postId)}`,
   articleSlug: "/article/[slug]",
   api: {
     post: {
