@@ -42,7 +42,6 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
-
   const post = await database.posts.findUnique({
     where: {
       slug: slug,

@@ -3,7 +3,7 @@ import type { PostT } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 import { ROUTES } from "@/utils/routes";
-import type { CreateArticleRequestPayload } from "@/services/types";
+import type { CreateArticleRequestPayload, EditArticleRequestPayload } from "@/services/types";
 
 export const useCreateArticle = () => {
   return useMutation({
@@ -25,7 +25,27 @@ export const useCreateArticle = () => {
     },
   });
 };
+export const useEditArticle = () => {
+  ("trigger");
+  return useMutation({
+    mutationFn: async (payload: EditArticleRequestPayload) => {
+      const res = await fetch(ROUTES.api.post.article(), {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
+      if (!res.ok) {
+        console.error(res);
+        throw new Error("Failed to edit article");
+      }
+
+      return res.json();
+    },
+  });
+};
 export const useGetArticles = () => {
   return useMutation({
     mutationKey: ["articles/get"],

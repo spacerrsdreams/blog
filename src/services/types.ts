@@ -123,7 +123,29 @@ export const CreateArticleRequestSchema = z
   })
   .strict();
 
+export const EditArticleRequestSchema = z
+  .object({
+    id: z.string(),
+    title: z
+      .string()
+      .min(1, "Title must be at least 1 character long.")
+      .max(60, "Title must be at most 60 characters long."),
+    subTitle: z
+      .string()
+      .min(1, "SubTitle must be at least 1 character long.")
+      .max(220, "SubTitle must be at most 220 characters long."),
+    tag: z.enum(TAGS, {
+      errorMap: () => ({ message: "Tag must be one of: AI, Finances, Crypto, Startups." }),
+    }),
+    coverImageSrc: z.string().optional(),
+    postContent: z.record(z.any()),
+  })
+  .strict();
+
+export const EditArticleFormSchema = CreateArticleRequestSchema;
+export type ArticleEditFormType = CreateArticleRequestPayload;
 export type CreateArticleRequestPayload = z.infer<typeof CreateArticleRequestSchema>;
+export type EditArticleRequestPayload = z.infer<typeof EditArticleRequestSchema>;
 
 export const GetUserByIdRequestSchema = z
   .object({
