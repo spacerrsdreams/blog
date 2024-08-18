@@ -46,7 +46,6 @@ export const GET = async (req: NextRequest) => {
       include: {
         _count: {
           select: {
-            likes: true,
             comments: true,
           },
         },
@@ -60,6 +59,14 @@ export const GET = async (req: NextRequest) => {
               id: true,
             },
           },
+          likes: {
+            where: {
+              userId: userId || "",
+            },
+            select: {
+              likeCount: true,
+            },
+          },
         }),
       },
       orderBy: {
@@ -71,6 +78,7 @@ export const GET = async (req: NextRequest) => {
     const postsWithBookmarkStatus = posts.map((post) => ({
       ...post,
       isBookmarked: post?.bookmarks?.length > 0,
+      isLikedByUser: post?.likes?.length > 0,
     }));
 
     return NextResponse.json(

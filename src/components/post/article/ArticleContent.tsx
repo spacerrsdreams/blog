@@ -1,6 +1,9 @@
 "use client";
 
-import ReactQuill, { type Value } from "react-quill";
+import dynamic from "next/dynamic";
+import type { Value } from "react-quill";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 export default function ArticleContent({ postContent }: { postContent: Value }) {
   return (

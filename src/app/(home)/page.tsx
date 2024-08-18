@@ -1,29 +1,28 @@
 "use client";
 
 import { TAGS, type TagsT } from "@/constants/tags";
-import type { PostT } from "@/types";
-// eslint-disable-next-line import/named
 import { v4 as uuidv4 } from "uuid";
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { useGetArticles } from "@/services/post/article";
-import Post from "@/components/post/Post";
+import type { ArticleT } from "@/services/types";
+import PostPreview from "@/components/post/PostPreview";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const POST_LOADING_LIMIT = 10;
 
 export default function Home() {
-  const { isPending, mutateAsync: fetchArticles, error } = useGetArticles();
-  const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
-  const [allPosts, setAllPosts] = useState<PostT[]>([]);
-  const [hasMore, setHasMore] = useState(true);
   const loader = useRef(null);
   const searchParams = useSearchParams();
-  const feed = searchParams.get("feed");
+  const [hasMore, setHasMore] = useState(true);
+  const [allPosts, setAllPosts] = useState<ArticleT[]>([]);
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
+  const { isPending, mutateAsync: fetchArticles, error } = useGetArticles();
+  const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
 
+  const feed = searchParams.get("feed");
   const feedToFetch = TAGS.includes(feed as TagsT) ? feed : "all";
 
   useEffect(() => {
@@ -78,23 +77,27 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
-        {allPosts.map((post) => (
-          <Post
-            key={uuidv4()}
-            id={post.id}
-            currentFeed={feedToFetch || ""}
-            slug={post.slug}
-            tag={post.tag}
-            title={post.title}
-            subTitle={post.subTitle}
-            _count={post._count}
-            author={post.author}
-            createdAt={post.createdAt}
-            coverImageSrc={post.coverImageSrc}
-            isBookmarked={post.isBookmarked}
-            onPostDelete={onPostDelete}
-          />
-        ))}
+        {allPosts.length > 0 &&
+          allPosts.map((post) => (
+            <PostPreview
+              key={uuidv4()}
+              postId={post.id}
+              userTotalLikes={post?.likes?.[0]?.likeCount || 0}
+              totalComments={post._count.comments}
+              totalLikes={post.likeCount}
+              currentFeed={feedToFetch || ""}
+              slug={post.slug}
+              tag={post.tag}
+              title={post.title}
+              subTitle={post.subTitle}
+              author={post.author}
+              createdAt={post.createdAt}
+              coverImageSrc={post.coverImageSrc}
+              isBookmarked={post.isBookmarked}
+              isLikedByUser={post.isLikedByUser}
+              onPostDelete={onPostDelete}
+            />
+          ))}
       </div>
 
       {!error && allPosts.length > 0 && <div ref={loader} />}

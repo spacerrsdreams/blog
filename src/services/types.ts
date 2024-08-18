@@ -1,9 +1,10 @@
 import { TAGS } from "@/constants/tags";
+import type { Likes, UserBasicInfoT } from "@/types";
 import { z } from "zod";
 
 export const LikeRequestSchema = z
   .object({
-    totalLikes: z.number(),
+    userLikes: z.number(),
     postId: z.string().min(1, "Post ID must be at least 1 character long."),
   })
   .strict();
@@ -125,10 +126,21 @@ export const CreateArticleRequestSchema = z
 
 export type CreateArticleRequestPayload = z.infer<typeof CreateArticleRequestSchema>;
 
-export const GetUserByIdRequestSchema = z
-  .object({
-    userId: z.string().min(1, "User ID must be at least 1 character long."),
-  })
-  .strict();
-
-export type GetUserByIdRequestPayload = z.infer<typeof GetUserByIdRequestSchema>;
+export type ArticleT = {
+  id: string;
+  slug: string;
+  tag: string;
+  title: string;
+  subTitle: string;
+  coverImageSrc: string | undefined;
+  createdAt: Date;
+  currentFeed: string;
+  _count: {
+    comments: number;
+  };
+  author: UserBasicInfoT;
+  isBookmarked: boolean;
+  isLikedByUser: boolean;
+  likeCount: number;
+  likes: Likes[];
+};

@@ -19,10 +19,10 @@ import { useForm } from "react-hook-form";
 import type { Value } from "react-quill";
 
 import { ROUTES } from "@/utils/routes";
-import { useUploadImage } from "@/lib/aws";
+import { useUploadImage } from "@/services/aws";
 import { useCreateArticle } from "@/services/post/article";
 import { CreateArticleRequestSchema, type CreateArticleRequestPayload } from "@/services/types";
-import Article from "@/components/post/article/Article";
+import Post from "@/components/post/Post";
 import QuillEditor from "@/components/shared/QuillEditor";
 import { Button } from "@/components/ui/button";
 import {
@@ -211,7 +211,8 @@ export default function CreateArticle() {
           )}
 
           {user && (
-            <Article
+            <Post
+              userTotalLikes={0}
               author={user as unknown as UserBasicInfoT}
               tag={form.watch("tag")}
               content={editorValue}
@@ -219,8 +220,8 @@ export default function CreateArticle() {
               title={form.watch("title")}
               coverImageSrc={coverImageSrc}
               createdAt={new Date()}
-              likesLength={0}
-              commentsLength={0}
+              totalLikes={0}
+              totalComments={0}
               articleId=""
               disableActions={true}
               handleRemoveImage={handleImageRemove}

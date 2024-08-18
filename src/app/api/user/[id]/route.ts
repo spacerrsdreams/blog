@@ -1,5 +1,3 @@
-//import type { UserPayload } from "@/types";
-
 import type { UserPayload } from "@/types";
 
 import { NextResponse, type NextRequest } from "next/server";

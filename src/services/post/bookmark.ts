@@ -1,38 +1,28 @@
 import { useMutation } from "@tanstack/react-query";
 
+import request from "@/utils/request";
 import { ROUTES } from "@/utils/routes";
-import { BookmarkResponseSchema, type BookmarkRequestPayload } from "@/services/types";
+import { type BookmarkRequestPayload } from "@/services/types";
 
 export const useCreateBookmark = () => {
   return useMutation({
     mutationFn: async (payload: BookmarkRequestPayload) => {
-      const res = await fetch(ROUTES.api.post.bookmark(), {
+      return request({
+        url: ROUTES.api.post.bookmark(),
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        data: payload,
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to create comment.");
-      }
-
-      return BookmarkResponseSchema.parse(await res.json());
     },
   });
 };
 
-export const useGetBookmark = () => {
+export const useGetBookmarkByPostId = () => {
   return useMutation({
     mutationFn: async (postId: string): Promise<{ data: object | null }> => {
-      const res = await fetch(ROUTES.api.post.bookmark(postId));
-
-      if (!res.ok) {
-        throw new Error("Failed to get bookmark.");
-      }
-
-      return BookmarkResponseSchema.parse(await res.json());
+      return request({
+        url: ROUTES.api.post.bookmark(postId),
+        method: "GET",
+      });
     },
   });
 };
@@ -40,15 +30,10 @@ export const useGetBookmark = () => {
 export const useRemoveBookmark = () => {
   return useMutation({
     mutationFn: async (postId: string) => {
-      const res = await fetch(ROUTES.api.post.bookmark(postId), {
+      return request({
+        url: ROUTES.api.post.bookmark(postId),
         method: "DELETE",
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to remove comment.");
-      }
-
-      return null;
     },
   });
 };

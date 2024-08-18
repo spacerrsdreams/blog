@@ -1,13 +1,17 @@
 "use client";
 
 import { TAGS } from "@/constants/tags";
-import type { Tab } from "@/types";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { cn } from "@/lib/utils";
+
+type Tab = {
+  title: string;
+  slug: string;
+};
 
 type TabProps = {
   title: string;

@@ -1,9 +1,10 @@
+import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 import type { Value } from "react-quill";
 
 import { siteConfig } from "@/config/siteConfig";
 import { database } from "@/lib/prisma";
-import Article from "@/components/post/article/Article";
+import Post from "@/components/post/Post";
 
 export const dynamicParams = true;
 
@@ -41,15 +42,32 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
+  const { userId } = auth();
   const { slug } = params;
 
   const post = await database.posts.findUnique({
     where: {
       slug: slug,
     },
+
     include: {
+      likes: {
+        where: {
+          userId: userId || "",
+        },
+        select: {
+          likeCount: true,
+        },
+      },
+      bookmarks: {
+        where: {
+          userId: userId || "",
+        },
+        select: {
+          id: true,
+        },
+      },
       author: true,
-      likes: true,
       _count: {
         select: {
           comments: true,
@@ -65,7 +83,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   return (
     <div className="flex w-full justify-center py-2">
       <div className="w-full max-w-full py-2 md:max-w-[860px]">
-        <Article
+        <Post
           author={post.author}
           articleId={post.id}
           title={post.title}
@@ -74,8 +92,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
           content={post.content as Value}
           coverImageSrc={post.coverImageSrc}
           createdAt={post.createdAt}
-          likesLength={post.likes.length}
-          commentsLength={post._count.comments}
+          totalLikes={post.likeCount}
+          userTotalLikes={post.likes[0]?.likeCount}
+          totalComments={post._count.comments}
+          isLikedByUser={post.likes.length > 0}
+          isBookmarked={post.bookmarks.length > 0}
         />
       </div>
     </div>
