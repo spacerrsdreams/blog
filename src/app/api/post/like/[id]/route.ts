@@ -55,6 +55,7 @@ export const DELETE = async (_req: NextRequest, { params }: { params: { id: stri
     });
 
     revalidatePath(ROUTES.root);
+    revalidatePath(ROUTES.articleSlug);
     return NextResponse.json({ message: "Post unliked successfully." }, { status: 200 });
   } catch (error) {
     return handleError(error);

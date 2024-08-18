@@ -89,26 +89,27 @@ export default function Home({ params }: { params: { username: string } }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
-        {allPosts.map((post) => (
-          <PostPreview
-            key={uuidv4()}
-            postId={post.id}
-            totalLikes={post.likeCount}
-            userTotalLikes={post.likes[0]?.likeCount || 0}
-            currentFeed={feedToFetch || ""}
-            slug={post.slug}
-            tag={post.tag}
-            title={post.title}
-            subTitle={post.subTitle}
-            totalComments={post._count.comments}
-            isLikedByUser={post.isLikedByUser}
-            author={post.author}
-            createdAt={post.createdAt}
-            coverImageSrc={post.coverImageSrc}
-            isBookmarked={post.isBookmarked}
-            onPostDelete={onPostDelete}
-          />
-        ))}
+        {allPosts.length > 0 &&
+          allPosts.map((post) => (
+            <PostPreview
+              key={uuidv4()}
+              postId={post.id}
+              totalLikes={post.likeCount}
+              userTotalLikes={post?.likes?.[0]?.likeCount || 0}
+              currentFeed={feedToFetch || ""}
+              slug={post.slug}
+              tag={post.tag}
+              title={post.title}
+              subTitle={post.subTitle}
+              totalComments={post._count.comments}
+              isLikedByUser={post.isLikedByUser}
+              author={post.author}
+              createdAt={post.createdAt}
+              coverImageSrc={post.coverImageSrc}
+              isBookmarked={post.isBookmarked}
+              onPostDelete={onPostDelete}
+            />
+          ))}
       </div>
 
       {!error && allPosts.length > 0 && <div ref={loader} />}

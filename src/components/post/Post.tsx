@@ -1,28 +1,27 @@
 import type { UserBasicInfoT } from "@/types";
 
-import Image from "next/image";
 import { type Value } from "react-quill";
 
-import { formatDate } from "@/utils/formatDate";
-import BookmarkButton from "@/components/post/actions/BookmarkButton";
-import LikeButton from "@/components/post/actions/LikeButton";
-// import MoreActionsButton from "@/components/post/actions/MoreActionsButton";
+import PostBar from "@/components/post/actions/PostBar";
 import ArticleContent from "@/components/post/article/ArticleContent";
 import ArticleCover from "@/components/post/article/ArticleCover";
-import CommentSheet from "@/components/post/comment/CommentSheet";
+import { PostProvider } from "@/components/post/context/PostContext";
 
 type Props = {
-  author: UserBasicInfoT;
-  articleId: string;
+  content: Value;
+  coverImageSrc?: string;
   title: string;
   subTitle: string;
+  author: UserBasicInfoT;
   tag: string;
-  content: Value;
-  coverImageSrc: string | undefined;
   createdAt: Date;
-  likesLength: number;
-  commentsLength: number;
+  totalLikes: number;
+  userTotalLikes: number;
+  totalComments: number;
+  isLikedByUser?: boolean;
+  isBookmarked?: boolean;
   disableActions?: boolean;
+  articleId: string;
   handleRemoveImage?: () => void;
 };
 
@@ -35,9 +34,12 @@ export default function Post({
   content,
   coverImageSrc,
   createdAt,
-  likesLength,
-  commentsLength,
+  totalComments,
+  totalLikes,
+  isLikedByUser,
   disableActions = false,
+  isBookmarked,
+  userTotalLikes,
   handleRemoveImage,
 }: Props) {
   return (
@@ -51,55 +53,24 @@ export default function Post({
         />
       )}
       <div className="mx-2 flex flex-col justify-center gap-8 self-center md:mx-6">
-        <div className="flex w-full flex-col gap-3">
-          <h1 className="text-5xl font-bold">{title}</h1>
-          <h3 className="text-xl text-muted-foreground">{subTitle}</h3>
-        </div>
-        <div className="flex flex-col">
-          <div className="mx-3 flex gap-4">
-            {author?.imageUrl && (
-              <Image
-                src={author?.imageUrl}
-                alt={author?.firstName || ""}
-                width={48}
-                height={48}
-                className="size-12 rounded-full"
-              />
-            )}
-
-            <div className="">
-              <h4 className="text-lg capitalize">{author?.firstName + " " + author?.lastName}</h4>
-              <div className="text-sm text-muted-foreground">
-                Published in <span className="text-sm font-semibold text-black">{tag}</span> ·{" "}
-                {formatDate(createdAt)}
-              </div>
-            </div>
-          </div>
-          <div className="mt-6 flex items-center justify-between border-b border-t border-border/60 py-1">
-            <div className="flex items-center">
-              <LikeButton disabled={disableActions} count={likesLength} postId={articleId} />
-              <CommentSheet
-                postId={articleId}
-                commentsCount={commentsLength}
-                disabled={disableActions}
-              />
-            </div>
-            <div className="flex items-center">
-              <BookmarkButton
-                isBookmarked={false}
-                inEditMode
-                fetchBookmarkState
-                postId={articleId}
-              />
-              {/* <MoreActionsButton
-                userTotalLikes={1}
-                isLikedByUser={null}
-                authorId={author.id}
-                postId={articleId}
-              /> */}
-            </div>
-          </div>
-        </div>
+        <PostProvider
+          data={{
+            title,
+            subTitle,
+            tag,
+            postId: articleId,
+            createdAt,
+            author,
+            totalLikes,
+            userTotalLikes,
+            totalComments,
+            isLikedByUser,
+            isBookmarked,
+            disableActions,
+          }}
+        >
+          <PostBar />
+        </PostProvider>
         <ArticleContent postContent={content} />
       </div>
     </article>

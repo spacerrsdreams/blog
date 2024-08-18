@@ -22,7 +22,7 @@ import { useToast } from "@/components/ui/use-toast";
 type Props = {
   postId: string;
   authorId: string;
-  isLikedByUser: boolean | null;
+  isLikedByUser: boolean | undefined;
   onPostDelete?: (postId: string) => void;
   onUnlike?: () => void;
 };

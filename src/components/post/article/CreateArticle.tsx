@@ -212,6 +212,7 @@ export default function CreateArticle() {
 
           {user && (
             <Post
+              userTotalLikes={0}
               author={user as unknown as UserBasicInfoT}
               tag={form.watch("tag")}
               content={editorValue}
@@ -219,8 +220,8 @@ export default function CreateArticle() {
               title={form.watch("title")}
               coverImageSrc={coverImageSrc}
               createdAt={new Date()}
-              likesLength={0}
-              commentsLength={0}
+              totalLikes={0}
+              totalComments={0}
               articleId=""
               disableActions={true}
               handleRemoveImage={handleImageRemove}

@@ -10,7 +10,7 @@ import BookmarkButton from "@/components/post/actions/BookmarkButton";
 import MoreActionsButton from "@/components/post/actions/MoreActionsButton";
 import { Icons } from "@/components/shared/Icons";
 
-export type PostActionsProps = {
+export type PostPreviewEngagementBarProps = {
   postId: string;
   isBookmarked: boolean;
   isLikedByUser: boolean;
@@ -22,7 +22,7 @@ export type PostActionsProps = {
   onPostDelete?: (postId: string) => void;
 };
 
-export default function PostActions({
+export default function PostPreviewEngagementBar({
   postId,
   isBookmarked,
   isLikedByUser,
@@ -32,7 +32,7 @@ export default function PostActions({
   createdAt,
   author,
   onPostDelete,
-}: PostActionsProps) {
+}: PostPreviewEngagementBarProps) {
   const [postIsLikedByUser, setIsLikedByUser] = useState(isLikedByUser);
   const [totalPostLikes, setTotalPostLikes] = useState(totalLikes);
 
@@ -45,6 +45,7 @@ export default function PostActions({
     <div className="flex w-full justify-between">
       <div className="flex items-center gap-2 text-xs">
         <span className="text-muted-foreground">{formatDate(new Date(createdAt))}</span>
+
         <span className="ml-4 flex items-center">
           {postIsLikedByUser ? <Icons.clapDark /> : <Icons.clap />}
           <span>{formatNumberWithK(totalPostLikes)}</span>

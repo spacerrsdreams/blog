@@ -77,26 +77,27 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
-        {allPosts.map((post) => (
-          <PostPreview
-            key={uuidv4()}
-            postId={post.id}
-            userTotalLikes={post.likes[0]?.likeCount || 0}
-            totalComments={post._count.comments}
-            totalLikes={post.likeCount}
-            currentFeed={feedToFetch || ""}
-            slug={post.slug}
-            tag={post.tag}
-            title={post.title}
-            subTitle={post.subTitle}
-            author={post.author}
-            createdAt={post.createdAt}
-            coverImageSrc={post.coverImageSrc}
-            isBookmarked={post.isBookmarked}
-            isLikedByUser={post.isLikedByUser}
-            onPostDelete={onPostDelete}
-          />
-        ))}
+        {allPosts.length > 0 &&
+          allPosts.map((post) => (
+            <PostPreview
+              key={uuidv4()}
+              postId={post.id}
+              userTotalLikes={post?.likes?.[0]?.likeCount || 0}
+              totalComments={post._count.comments}
+              totalLikes={post.likeCount}
+              currentFeed={feedToFetch || ""}
+              slug={post.slug}
+              tag={post.tag}
+              title={post.title}
+              subTitle={post.subTitle}
+              author={post.author}
+              createdAt={post.createdAt}
+              coverImageSrc={post.coverImageSrc}
+              isBookmarked={post.isBookmarked}
+              isLikedByUser={post.isLikedByUser}
+              onPostDelete={onPostDelete}
+            />
+          ))}
       </div>
 
       {!error && allPosts.length > 0 && <div ref={loader} />}

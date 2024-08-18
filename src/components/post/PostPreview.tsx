@@ -3,11 +3,11 @@ import type { UserBasicInfoT } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
-import type { PostActionsProps } from "@/components/post/actions/PostActions";
-import PostActions from "@/components/post/actions/PostActions";
+import type { PostPreviewEngagementBarProps } from "@/components/post/actions/PostPreviewEngagementBar";
+import PostEngagementBar from "@/components/post/actions/PostPreviewEngagementBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export type Props = PostActionsProps & {
+export type Props = PostPreviewEngagementBarProps & {
   slug: string;
   tag: string;
   title: string;
@@ -68,7 +68,7 @@ export default function PostPreview({
                 {subTitle.length > 100 ? `${subTitle.slice(0, 100)}...` : subTitle}
               </h4>
             </div>
-            <PostActions
+            <PostEngagementBar
               postId={postId}
               isBookmarked={isBookmarked}
               isLikedByUser={isLikedByUser}

@@ -1,3 +1,4 @@
+import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 import type { Value } from "react-quill";
 
@@ -41,13 +42,31 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
+  const { userId } = auth();
   const { slug } = params;
 
   const post = await database.posts.findUnique({
     where: {
       slug: slug,
     },
+
     include: {
+      likes: {
+        where: {
+          userId: userId || "",
+        },
+        select: {
+          likeCount: true,
+        },
+      },
+      bookmarks: {
+        where: {
+          userId: userId || "",
+        },
+        select: {
+          id: true,
+        },
+      },
       author: true,
       _count: {
         select: {
@@ -73,8 +92,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
           content={post.content as Value}
           coverImageSrc={post.coverImageSrc}
           createdAt={post.createdAt}
-          likesLength={post.likeCount}
-          commentsLength={post._count.comments}
+          totalLikes={post.likeCount}
+          userTotalLikes={post.likes[0]?.likeCount}
+          totalComments={post._count.comments}
+          isLikedByUser={post.likes.length > 0}
+          isBookmarked={post.bookmarks.length > 0}
         />
       </div>
     </div>

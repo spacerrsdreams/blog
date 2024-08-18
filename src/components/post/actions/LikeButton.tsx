@@ -3,47 +3,36 @@
 import { usePopupProvider } from "@/context/PopupProvider";
 
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { formatNumberWithK } from "@/utils/formatNumberWithK";
-import { useGetLike, useLikePost } from "@/services/post/like";
+import { useLikePost } from "@/services/post/like";
+import { usePostContext } from "@/components/post/context/PostContext";
 import { Icons } from "@/components/shared/Icons";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
-type Props = {
-  count: number;
-  postId: string;
-  disabled?: boolean;
-};
-
-export default function LikeButton({ count, postId, disabled }: Props) {
+export default function LikeButton() {
+  const {
+    totalLikes,
+    postId,
+    isLikedByUser,
+    disableActions,
+    setTotalLikes,
+    setUserTotalLikes,
+    setIsLikedByUser,
+  } = usePostContext();
   const { user } = useUser();
   const { toast } = useToast();
   const { open } = usePopupProvider();
-  const [_, setUserLikes] = useState(0);
-  const [likes, setLikes] = useState(count);
-  const { mutateAsync: getLike } = useGetLike();
   const { mutateAsync: likePost } = useLikePost();
+  const [_, setLocalUserTotalLikes] = useState(0);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [isLikedByUser, setIsLikedByUser] = useState(true);
   const userId = user?.id;
-
-  useEffect(() => {
-    setLikes(count);
-  }, [count]);
-
-  useEffect(() => {
-    if (!userId || disabled) return;
-
-    getLike(postId).then((data) => {
-      data?.data ? setIsLikedByUser(true) : setIsLikedByUser(false);
-    });
-  }, [userId, getLike, postId]);
 
   const like = (userLikes: number) => {
     likePost({ postId, userLikes })
-      .then(() => setUserLikes(0))
+      .then(() => setLocalUserTotalLikes(0))
       .catch(() => {
         toast({
           variant: "destructive",
@@ -60,8 +49,9 @@ export default function LikeButton({ count, postId, disabled }: Props) {
     }
 
     setIsLikedByUser(true);
-    setLikes((prevLikes) => prevLikes + 1);
-    setUserLikes((prevLikes) => {
+    setTotalLikes((prevLikes) => prevLikes + 1);
+    setUserTotalLikes((prevLikes) => prevLikes + 1);
+    setLocalUserTotalLikes((prevLikes) => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -75,9 +65,9 @@ export default function LikeButton({ count, postId, disabled }: Props) {
   };
 
   return (
-    <Button disabled={disabled} variant="ghost" onClick={handleClick}>
+    <Button disabled={disableActions} variant="ghost" onClick={handleClick}>
       {isLikedByUser ? <Icons.clapDark /> : <Icons.clap />}
-      <span>{formatNumberWithK(likes)}</span>
+      <span>{formatNumberWithK(totalLikes)}</span>
     </Button>
   );
 }
