@@ -20,6 +20,7 @@ export type PostPreviewEngagementBarProps = {
   author: UserBasicInfoT;
   userTotalLikes: number;
   onPostDelete?: (postId: string) => void;
+  onRemoveBookmark?: (postId: string) => void;
 };
 
 export default function PostPreviewEngagementBar({
@@ -32,6 +33,7 @@ export default function PostPreviewEngagementBar({
   createdAt,
   author,
   onPostDelete,
+  onRemoveBookmark,
 }: PostPreviewEngagementBarProps) {
   const [postIsLikedByUser, setIsLikedByUser] = useState(isLikedByUser);
   const [totalPostLikes, setTotalPostLikes] = useState(totalLikes);
@@ -56,7 +58,11 @@ export default function PostPreviewEngagementBar({
         </span>
       </div>
       <div className="flex items-center">
-        <BookmarkButton isBookmarked={isBookmarked} postId={postId} />
+        <BookmarkButton
+          isBookmarked={isBookmarked}
+          postId={postId}
+          onRemoveBookmark={onRemoveBookmark}
+        />
         <MoreActionsButton
           isLikedByUser={postIsLikedByUser}
           authorId={author.id}

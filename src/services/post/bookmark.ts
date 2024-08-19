@@ -1,3 +1,5 @@
+import type { BookmarkedPost } from "@/types";
+
 import { useMutation } from "@tanstack/react-query";
 
 import request from "@/utils/request";
@@ -32,6 +34,21 @@ export const useRemoveBookmark = () => {
       return request({
         url: ROUTES.api.post.bookmark(postId),
         method: "DELETE",
+      });
+    },
+  });
+};
+export const useGetBookmarksByAuthor = () => {
+  return useMutation({
+    mutationKey: ["bookmarks/get"],
+    mutationFn: async (payload: {
+      from: number;
+      to: number;
+      id: string;
+    }): Promise<BookmarkedPost[]> => {
+      return request({
+        url: ROUTES.api.post.getBookmarksByUsername(payload),
+        method: "GET",
       });
     },
   });

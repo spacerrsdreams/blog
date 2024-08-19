@@ -3,9 +3,11 @@
 import { usePopupProvider } from "@/context/PopupProvider";
 
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
 
+import { ROUTES } from "@/utils/routes";
 import {
   useCreateBookmark,
   useGetBookmarkByPostId,
@@ -19,6 +21,7 @@ type Props = {
   isBookmarked?: boolean;
   inEditMode?: boolean;
   fetchBookmarkState?: boolean;
+  onRemoveBookmark?: (postId: string) => void;
 };
 
 export default function BookmarkButton({
@@ -26,6 +29,7 @@ export default function BookmarkButton({
   isBookmarked,
   inEditMode = false,
   fetchBookmarkState = false,
+  onRemoveBookmark,
 }: Props) {
   const [isChecked, setIsChecked] = useState(isBookmarked);
   const { user } = useUser();
@@ -33,6 +37,7 @@ export default function BookmarkButton({
   const { mutateAsync: bookmark } = useCreateBookmark();
   const { mutateAsync: removeBookmark } = useRemoveBookmark();
   const { mutateAsync: getBookmark } = useGetBookmarkByPostId();
+  const router = useRouter();
 
   useEffect(() => {
     if (!fetchBookmarkState || inEditMode) return;
@@ -66,10 +71,14 @@ export default function BookmarkButton({
 
     setIsChecked(false);
 
-    removeBookmark(postId).catch((err) => {
-      console.error(err);
-      setIsChecked(true);
-    });
+    removeBookmark(postId)
+      .then(() => {
+        onRemoveBookmark ? onRemoveBookmark(postId) : router.push(ROUTES.root);
+      })
+      .catch((err) => {
+        console.error(err);
+        setIsChecked(true);
+      });
   };
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {

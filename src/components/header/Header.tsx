@@ -11,14 +11,6 @@ import { MobileNavigation } from "@/components/header/MobileNavigation";
 import { Icons } from "@/components/shared/Icons";
 import { buttonVariants } from "@/components/ui/button";
 
-const DotIcon = () => {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-      <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
-    </svg>
-  );
-};
-
 export default function Header() {
   return (
     <header className="top-0 z-50 block w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -65,15 +57,14 @@ export default function Header() {
               <SignedIn>
                 <UserButton>
                   <UserButton.MenuItems>
-                    <UserButton.Action label="Help" labelIcon={<DotIcon />} open="help" />
+                    <UserButton.Link
+                      label="Bookmarks"
+                      labelIcon={<Icons.bookmark className="h-4 w-4" />}
+                      href={ROUTES.bookmarks}
+                    />
+                    <UserButton.Action label="manageAccount" />
+                    <UserButton.Action label="signOut" />
                   </UserButton.MenuItems>
-
-                  <UserButton.UserProfilePage label="Help" labelIcon={<DotIcon />} url="help">
-                    <div>
-                      <h1>Help Page</h1>
-                      <p>This is the custom help page</p>
-                    </div>
-                  </UserButton.UserProfilePage>
                 </UserButton>
               </SignedIn>
             </div>
