@@ -23,7 +23,6 @@ export const useGetBookmarkByPostId = () => {
     mutationFn: async (postId: string): Promise<{ data: object | null }> => {
       return request({
         url: ROUTES.api.post.bookmark(postId),
-        method: "GET",
       });
     },
   });

@@ -19,6 +19,7 @@ export const ROUTES = {
   root: "/",
   createArticle: "/create-article",
   bookmarks: "/profile/bookmarks",
+  editArticle: (postId?: string) => `/edit-article/${appendIfExists(postId)}`,
   articleSlug: "/article/[slug]",
   api: {
     post: {

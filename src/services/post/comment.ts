@@ -55,6 +55,7 @@ export const useGetComments = () => {
     }): Promise<CommentWithUserProps[]> => {
       return request({
         url: ROUTES.api.post.getManyComments(payload),
+        method: "GET",
       });
     },
   });

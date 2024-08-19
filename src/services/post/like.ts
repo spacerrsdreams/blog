@@ -9,6 +9,7 @@ export const useGetLike = () => {
     mutationFn: async (postId: string) => {
       return request({
         url: ROUTES.api.post.like(postId, true),
+        method: "GET",
       });
     },
   });
