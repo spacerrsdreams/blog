@@ -176,6 +176,18 @@ export default function MoreActionsButton({
             <span className="text-muted-foreground">Undo claps</span>
           </DropdownMenuItem>
         )}
+        {userId === authorId && (
+          <DropdownMenuItem
+            className="px-4"
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(`${ROUTES.editArticle(postId)}`);
+              setOpen(false);
+            }}
+          >
+            <span className="text-muted-foreground">Edit article</span>
+          </DropdownMenuItem>
+        )}
 
         {userId === authorId && (
           <DropdownMenuItem
