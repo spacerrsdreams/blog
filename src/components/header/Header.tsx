@@ -60,7 +60,7 @@ export default function Header() {
                     <UserButton.Link
                       label="Bookmarks"
                       labelIcon={<Icons.bookmark className="h-4 w-4" />}
-                      href={ROUTES.showBookmarks}
+                      href={ROUTES.bookmarks}
                     />
                     <UserButton.Action label="manageAccount" />
                     <UserButton.Action label="signOut" />

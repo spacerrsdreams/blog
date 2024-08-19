@@ -13,7 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const POST_LOADING_LIMIT = 10;
 
-export default function Home() {
+export default function Bookmarks() {
   const { user } = useUser();
   const { isPending, mutateAsync: fetchBookmarksByAuthor, error } = useGetBookmarksByAuthor();
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });

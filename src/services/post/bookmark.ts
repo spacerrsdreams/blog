@@ -48,7 +48,7 @@ export const useGetBookmarksByAuthor = () => {
       id: string;
     }): Promise<BookmarkedPost[]> => {
       return request({
-        url: ROUTES.api.post.getBookmarksByAuthor(payload),
+        url: ROUTES.api.post.getBookmarksByUsername(payload),
         method: "GET",
       });
     },
