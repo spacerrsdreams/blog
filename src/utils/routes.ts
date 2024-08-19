@@ -9,6 +9,7 @@ type GetManyComments = {
   to: number;
   id: string;
 };
+type GetBookmarksByAuthor = GetManyComments;
 
 const appendIfExists = (arg?: string, asQuery: boolean = false) => {
   return asQuery ? `?id=${arg}` : arg ? "/" + arg : "";
@@ -17,7 +18,7 @@ const appendIfExists = (arg?: string, asQuery: boolean = false) => {
 export const ROUTES = {
   root: "/",
   createArticle: "/create-article",
-  showBookmarks: "/bookmarks/[slug]",
+  showBookmarks: "/profile/bookmarks",
   articleSlug: "/article/[slug]",
   api: {
     post: {
@@ -47,6 +48,14 @@ export const ROUTES = {
         return `/api/post/comment?${queryParams.toString()}`;
       },
       bookmark: (postId?: string) => `/api/post/bookmark${appendIfExists(postId)}`,
+      getBookmarksByAuthor: ({ from, to, id }: GetBookmarksByAuthor) => {
+        const queryParams = new URLSearchParams({
+          from: from.toString(),
+          to: to.toString(),
+          id,
+        });
+        return `/api/post/bookmark?${queryParams.toString()}`;
+      },
     },
     user: {
       byId: (userId: string) => `/api/user/${userId}`,

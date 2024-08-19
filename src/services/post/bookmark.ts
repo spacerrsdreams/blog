@@ -2,7 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 
 import request from "@/utils/request";
 import { ROUTES } from "@/utils/routes";
-import { type BookmarkRequestPayload } from "@/services/types";
+import {
+  type BookmarkByAuthorResponsePayload,
+  type BookmarkRequestPayload,
+} from "@/services/types";
 
 export const useCreateBookmark = () => {
   return useMutation({
@@ -33,6 +36,21 @@ export const useRemoveBookmark = () => {
       return request({
         url: ROUTES.api.post.bookmark(postId),
         method: "DELETE",
+      });
+    },
+  });
+};
+export const useGetBookmarksByAuthor = () => {
+  return useMutation({
+    mutationKey: ["bookmarks/get"],
+    mutationFn: async (payload: {
+      from: number;
+      to: number;
+      id: string;
+    }): Promise<BookmarkByAuthorResponsePayload[]> => {
+      return request({
+        url: ROUTES.api.post.getBookmarksByAuthor(payload),
+        method: "GET",
       });
     },
   });
