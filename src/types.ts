@@ -1,6 +1,8 @@
 import type { Prisma } from "@prisma/client";
 import type { JsonValue } from "@prisma/client/runtime/library";
 
+import type { ArticleT } from "@/services/types";
+
 interface EmailAddress {
   email_address: string;
   id: string;
@@ -125,4 +127,13 @@ export type Likes = {
   userId: string;
   postId: string;
   likeCount: number;
+};
+export type BookmarkedPost = {
+  id: string;
+  createdAt: Date;
+  modifiedAt: Date;
+  userId: string;
+  postId: string;
+  post: ArticleT;
+  author: UserBasicInfoT;
 };

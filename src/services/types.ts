@@ -103,30 +103,8 @@ export const BookmarkResponseSchema = z.object({
   message: z.string().optional(),
 });
 
-export const BookmarkByAuthorResponseSchema = z.object({
-  id: z.string(),
-  createdAt: z.string().transform((val) => new Date(val)),
-  modifiedAt: z.string().transform((val) => new Date(val)),
-  userId: z.string(),
-  postId: z.string(),
-  post: z.object({
-    id: z.string(),
-    slug: z.string(),
-    tag: z.string(),
-    title: z.string(),
-    subTitle: z.string(),
-    coverImageSrc: z.string().optional(),
-    createdAt: z.date(),
-    _count: z.object({
-      likes: z.number(),
-      comments: z.number(),
-    }),
-  }),
-});
-
 export type BookmarkRequestPayload = z.infer<typeof BookmarkRequestSchema>;
 export type BookmarkResponsePayload = z.infer<typeof BookmarkResponseSchema>;
-export type BookmarkByAuthorResponsePayload = z.infer<typeof BookmarkByAuthorResponseSchema>;
 
 export const CreateArticleRequestSchema = z
   .object({

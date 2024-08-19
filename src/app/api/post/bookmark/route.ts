@@ -5,7 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ROUTES } from "@/utils/routes";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
 import { database } from "@/lib/prisma";
-import { BookmarkRequestSchema, type BookmarkByAuthorResponsePayload } from "@/services/types";
+import { BookmarkRequestSchema } from "@/services/types";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -36,6 +36,7 @@ export const GET = async (req: NextRequest) => {
             subTitle: true,
             coverImageSrc: true,
             createdAt: true,
+            author: true,
             _count: {
               select: {
                 likes: true,
@@ -48,8 +49,7 @@ export const GET = async (req: NextRequest) => {
     });
 
     if (data) {
-      const payload: BookmarkByAuthorResponsePayload[] = data;
-      return NextResponse.json(payload, { status: 200 });
+      return NextResponse.json(data, { status: 200 });
     } else {
       return NextResponse.json(
         { data: null, message: "No bookmarks found for the specified user." },
