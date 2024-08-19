@@ -33,6 +33,7 @@ export default function PostPreview({
   totalLikes,
   userTotalLikes,
   onPostDelete,
+  onRemoveBookmark,
 }: Props) {
   return (
     <div className="flex w-full flex-col gap-2 border-b border-border/50 pb-8">
@@ -78,6 +79,7 @@ export default function PostPreview({
               createdAt={createdAt}
               author={author}
               onPostDelete={onPostDelete}
+              onRemoveBookmark={onRemoveBookmark}
             />
           </Link>
         </div>
