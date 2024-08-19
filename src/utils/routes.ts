@@ -17,6 +17,7 @@ const appendIfExists = (arg?: string, asQuery: boolean = false) => {
 export const ROUTES = {
   root: "/",
   createArticle: "/create-article",
+  showBookmarks: "/bookmarks/[slug]",
   articleSlug: "/article/[slug]",
   api: {
     post: {
