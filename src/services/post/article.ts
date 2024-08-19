@@ -2,7 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 
 import request from "@/utils/request";
 import { ROUTES } from "@/utils/routes";
-import type { ArticleT, CreateArticleRequestPayload } from "@/services/types";
+import type {
+  ArticleT,
+  CreateArticleRequestPayload,
+  EditArticleRequestPayload,
+} from "@/services/types";
 
 export const useCreateArticle = () => {
   return useMutation({
@@ -39,6 +43,19 @@ export const useDeleteArticle = () => {
       return request({
         url: ROUTES.api.post.article(payload.id),
         method: "DELETE",
+      });
+    },
+  });
+};
+
+export const useEditArticle = () => {
+  ("trigger");
+  return useMutation({
+    mutationFn: async (payload: EditArticleRequestPayload) => {
+      return request({
+        url: ROUTES.api.post.article(),
+        method: "PUT",
+        data: payload,
       });
     },
   });
