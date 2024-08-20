@@ -23,6 +23,7 @@ type Props = {
   postId: string;
   authorId: string;
   isLikedByUser: boolean | undefined;
+  className?: string;
   onPostDelete?: (postId: string) => void;
   onUnlike?: () => void;
 };
@@ -31,6 +32,7 @@ export default function MoreActionsButton({
   postId,
   isLikedByUser,
   authorId,
+  className,
   onUnlike,
   onPostDelete,
 }: Props) {
@@ -133,85 +135,87 @@ export default function MoreActionsButton({
   };
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger>
-        <Ellipsis />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-52">
-        {authorId !== userId && (
-          <>
-            {isPending ? (
-              <div className="px-3">
-                <Skeleton className="h-8" />
-              </div>
-            ) : (
-              <>
-                <DropdownMenuItem
-                  className="px-4"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    following ? handleUnffolowAuthor() : handleFollowAuthor();
-                    setOpen(false);
-                  }}
-                >
-                  <span className="text-muted-foreground">
-                    {following ? "Unfollow author" : "Follow author"}
-                  </span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-              </>
-            )}
-          </>
-        )}
+    <div className={className}>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger>
+          <Ellipsis />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="min-w-52">
+          {authorId !== userId && (
+            <>
+              {isPending ? (
+                <div className="px-3">
+                  <Skeleton className="h-8" />
+                </div>
+              ) : (
+                <>
+                  <DropdownMenuItem
+                    className="px-4"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      following ? handleUnffolowAuthor() : handleFollowAuthor();
+                      setOpen(false);
+                    }}
+                  >
+                    <span className="text-muted-foreground">
+                      {following ? "Unfollow author" : "Follow author"}
+                    </span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </>
+              )}
+            </>
+          )}
 
-        {isLikedByUser && (
+          {isLikedByUser && (
+            <DropdownMenuItem
+              className="px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                handleRemoveLike();
+                setOpen(false);
+              }}
+            >
+              <span className="text-muted-foreground">Undo claps</span>
+            </DropdownMenuItem>
+          )}
+          {userId === authorId && (
+            <DropdownMenuItem
+              className="px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                router.push(`${ROUTES.editArticle(postId)}`);
+                setOpen(false);
+              }}
+            >
+              <span className="text-muted-foreground">Edit article</span>
+            </DropdownMenuItem>
+          )}
+
+          {userId === authorId && (
+            <DropdownMenuItem
+              className="px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteArticle();
+                setOpen(false);
+              }}
+            >
+              <span className="text-muted-foreground">Delete article</span>
+            </DropdownMenuItem>
+          )}
+
           <DropdownMenuItem
             className="px-4"
             onClick={(e) => {
               e.preventDefault();
-              handleRemoveLike();
               setOpen(false);
             }}
           >
-            <span className="text-muted-foreground">Undo claps</span>
+            <span className="text-red-500">Report Story...</span>
           </DropdownMenuItem>
-        )}
-        {userId === authorId && (
-          <DropdownMenuItem
-            className="px-4"
-            onClick={(e) => {
-              e.preventDefault();
-              router.push(`${ROUTES.editArticle(postId)}`);
-              setOpen(false);
-            }}
-          >
-            <span className="text-muted-foreground">Edit article</span>
-          </DropdownMenuItem>
-        )}
-
-        {userId === authorId && (
-          <DropdownMenuItem
-            className="px-4"
-            onClick={(e) => {
-              e.preventDefault();
-              handleDeleteArticle();
-              setOpen(false);
-            }}
-          >
-            <span className="text-muted-foreground">Delete article</span>
-          </DropdownMenuItem>
-        )}
-
-        <DropdownMenuItem
-          className="px-4"
-          onClick={(e) => {
-            e.preventDefault();
-            setOpen(false);
-          }}
-        >
-          <span className="text-red-500">Report Story...</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
