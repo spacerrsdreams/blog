@@ -78,6 +78,9 @@ export default function Bookmarks() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
+        <h1 className="border-b border-border/50 pb-3 text-3xl font-bold sm:text-4xl">
+          My Bookmarks
+        </h1>
         {allPosts.map((data) => (
           <PostPreview
             key={uuidv4()}
