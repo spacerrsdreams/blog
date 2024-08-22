@@ -3,25 +3,36 @@
 import { createContext, useContext, useState, type PropsWithChildren } from "react";
 
 import SignInPopup from "@/components/popup/SignInPopup";
+import ReportStory from "@/components/post/actions/ReportStory";
 
+type PopupTypes = "signIn" | "report";
 type PopupContextT = {
-  isOpen: boolean;
-  open: (e: boolean) => void;
-  close: (e: boolean) => void;
+  signInModalOpen: boolean;
+  reportModalOpen: boolean;
+  setOpenModal: (open: boolean, type: PopupTypes) => void;
 };
 
 export const PopupContext = createContext<PopupContextT | null>(null);
 
 export const PopupProvider = ({ children }: PropsWithChildren) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [signInModalOpen, setSignInModalOpen] = useState(false);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
 
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const setOpenModal = (open: boolean, type: PopupTypes) => {
+    type === "signIn" ? setSignInModalOpen(open) : setReportModalOpen(open);
+  };
+
+  const value = {
+    signInModalOpen,
+    reportModalOpen,
+    setOpenModal,
+  };
 
   return (
-    <PopupContext.Provider value={{ isOpen, open, close }}>
+    <PopupContext.Provider value={value}>
       {children}
-      <SignInPopup open={isOpen} setOpen={setIsOpen} />
+      <SignInPopup open={signInModalOpen} setOpen={(open) => setOpenModal(open, "signIn")} />
+      <ReportStory open={reportModalOpen} setOpen={(open) => setOpenModal(open, "report")} />
     </PopupContext.Provider>
   );
 };

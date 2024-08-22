@@ -1,5 +1,7 @@
 "use client";
 
+import { usePopupProvider } from "@/context/PopupProvider";
+
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Ellipsis } from "lucide-react";
@@ -9,6 +11,7 @@ import { ROUTES } from "@/utils/routes";
 import { useDeleteArticle } from "@/services/post/article";
 import { useRemoveLike } from "@/services/post/like";
 import { useFollow, useGetFollowerIfExists, useUnfollow } from "@/services/user/followers";
+import ReportStory from "@/components/post/actions/ReportStory";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +37,7 @@ export default function MoreActionsButton({
   onUnlike,
   onPostDelete,
 }: Props) {
+  const { setOpenModal, reportModalOpen } = usePopupProvider();
   const [open, setOpen] = useState(false);
   const { mutateAsync: getFollowerIfExistsAsync, isPending } = useGetFollowerIfExists();
   const { mutateAsync: followAuthorAsync } = useFollow();
@@ -41,7 +45,6 @@ export default function MoreActionsButton({
   const { mutateAsync: deleteArticleAsync } = useDeleteArticle();
   const { mutateAsync: removeUserLikeAsync } = useRemoveLike();
   const [following, setFollowing] = useState(false);
-
   const { toast } = useToast();
   const router = useRouter();
   const { user } = useUser();
@@ -137,7 +140,7 @@ export default function MoreActionsButton({
       <DropdownMenuTrigger>
         <Ellipsis />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-52">
+      <DropdownMenuContent className="z-100 min-w-52">
         {authorId !== userId && (
           <>
             {isPending ? (
@@ -206,12 +209,14 @@ export default function MoreActionsButton({
           className="px-4"
           onClick={(e) => {
             e.preventDefault();
+            setOpenModal(true, "report");
             setOpen(false);
           }}
         >
           <span className="text-red-500">Report Story...</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
+      {reportModalOpen && <ReportStory open={reportModalOpen} setOpen={setOpenModal} />}
     </DropdownMenu>
   );
 }

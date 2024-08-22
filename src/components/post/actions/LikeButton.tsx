@@ -24,7 +24,7 @@ export default function LikeButton() {
   } = usePostContext();
   const { user } = useUser();
   const { toast } = useToast();
-  const { open } = usePopupProvider();
+  const { setOpenModal } = usePopupProvider();
   const { mutateAsync: likePost } = useLikePost();
   const [_, setLocalUserTotalLikes] = useState(0);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -44,7 +44,7 @@ export default function LikeButton() {
 
   const handleClick = () => {
     if (!userId) {
-      open(true);
+      setOpenModal(true, "signIn");
       return;
     }
 

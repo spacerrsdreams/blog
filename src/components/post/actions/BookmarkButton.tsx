@@ -33,7 +33,7 @@ export default function BookmarkButton({
 }: Props) {
   const [isChecked, setIsChecked] = useState(isBookmarked);
   const { user } = useUser();
-  const { open } = usePopupProvider();
+  const { setOpenModal } = usePopupProvider();
   const { mutateAsync: bookmark } = useCreateBookmark();
   const { mutateAsync: removeBookmark } = useRemoveBookmark();
   const { mutateAsync: getBookmark } = useGetBookmarkByPostId();
@@ -49,7 +49,7 @@ export default function BookmarkButton({
 
   const createBookmark = () => {
     if (!user) {
-      open(true);
+      setOpenModal(true, "signIn");
       return;
     }
 
@@ -65,7 +65,7 @@ export default function BookmarkButton({
 
   const deleteBookmark = () => {
     if (!user) {
-      open(true);
+      setOpenModal(true, "signIn");
       return;
     }
 

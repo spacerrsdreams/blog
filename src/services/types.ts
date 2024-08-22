@@ -1,3 +1,4 @@
+import { REASONS } from "@/constants/reasons";
 import { TAGS } from "@/constants/tags";
 import type { Likes, UserBasicInfoT } from "@/types";
 import { z } from "zod";
@@ -143,7 +144,18 @@ export const EditArticleRequestSchema = z
   })
   .strict();
 
+export const ReportStoryRequestSchema = z
+  .object({
+    reason: z.enum(REASONS, {
+      errorMap: () => ({ message: "Required" }),
+    }),
+    email: z.string().min(1, "Email is required").email("Wrong format email"),
+    addInfo: z.string().max(220, "must be at most 220 characters long").optional(),
+  })
+  .strict();
+
 export const EditArticleFormSchema = CreateArticleRequestSchema;
+export type ReportStoryRequestPayload = z.infer<typeof ReportStoryRequestSchema>;
 export type ArticleEditFormType = CreateArticleRequestPayload;
 export type EditArticleRequestPayload = z.infer<typeof EditArticleRequestSchema>;
 export type CreateArticleRequestPayload = z.infer<typeof CreateArticleRequestSchema>;
