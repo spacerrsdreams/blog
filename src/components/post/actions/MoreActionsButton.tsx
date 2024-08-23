@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Ellipsis } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { copyArticleUrl } from "@/utils/copyArticleUrl";
 import { ROUTES } from "@/utils/routes";
 import { useDeleteArticle } from "@/services/post/article";
 import { useRemoveLike } from "@/services/post/like";
@@ -21,6 +22,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   postId: string;
+  slug?: string;
   authorId: string;
   isLikedByUser: boolean | undefined;
   onPostDelete?: (postId: string) => void;
@@ -29,6 +31,7 @@ type Props = {
 
 export default function MoreActionsButton({
   postId,
+  slug,
   isLikedByUser,
   authorId,
   onUnlike,
@@ -176,6 +179,19 @@ export default function MoreActionsButton({
             <span className="text-muted-foreground">Undo claps</span>
           </DropdownMenuItem>
         )}
+        {slug && (
+          <DropdownMenuItem
+            className="px-4"
+            onClick={(e) => {
+              e.preventDefault();
+              copyArticleUrl(slug);
+              setOpen(false);
+            }}
+          >
+            <span className="text-muted-foreground">Copy link</span>
+          </DropdownMenuItem>
+        )}
+
         {userId === authorId && (
           <DropdownMenuItem
             className="px-4"

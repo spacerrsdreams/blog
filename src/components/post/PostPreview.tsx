@@ -71,6 +71,7 @@ export default function PostPreview({
             </div>
             <PostEngagementBar
               postId={postId}
+              slug={slug}
               isBookmarked={isBookmarked}
               isLikedByUser={isLikedByUser}
               totalComments={totalComments}

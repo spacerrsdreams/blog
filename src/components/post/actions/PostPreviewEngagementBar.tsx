@@ -12,6 +12,7 @@ import { Icons } from "@/components/shared/Icons";
 
 export type PostPreviewEngagementBarProps = {
   postId: string;
+  slug: string;
   isBookmarked: boolean;
   isLikedByUser: boolean;
   totalComments: number;
@@ -25,6 +26,7 @@ export type PostPreviewEngagementBarProps = {
 
 export default function PostPreviewEngagementBar({
   postId,
+  slug,
   isBookmarked,
   isLikedByUser,
   totalComments,
@@ -65,6 +67,7 @@ export default function PostPreviewEngagementBar({
         />
         <MoreActionsButton
           isLikedByUser={postIsLikedByUser}
+          slug={slug}
           authorId={author.id}
           postId={postId}
           onPostDelete={onPostDelete}

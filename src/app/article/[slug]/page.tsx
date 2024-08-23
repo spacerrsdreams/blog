@@ -85,6 +85,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <div className="w-full max-w-full py-2 md:max-w-[860px]">
         <Post
           author={post.author}
+          slug={post.slug}
           articleId={post.id}
           title={post.title}
           subTitle={post.subTitle}
