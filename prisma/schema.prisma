@@ -51,16 +51,33 @@ model Likes {
 
 
 model Comments {
-  id        String   @id @default(uuid())
-  content   String
-  userId    String
-  postId    String
-  createdAt DateTime @default(now())
-  modifiedAt DateTime @updatedAt
-  user      Users     @relation("userComments", fields: [userId], references: [id])
-  post      Posts     @relation("postComments", fields: [postId], references: [id], onDelete: Cascade)
+  id          String       @id @default(uuid())
+  content     String
+  userId      String
+  postId      String
+  parentId    String?      // For nested comments (replies)
+  createdAt   DateTime     @default(now())
+  modifiedAt  DateTime     @updatedAt
+  user        Users        @relation("userComments", fields: [userId], references: [id])
+  post        Posts        @relation("postComments", fields: [postId], references: [id], onDelete: Cascade)
+  parent      Comments?    @relation("commentReplies", fields: [parentId], references: [id])
+  replies     Comments[]   @relation("commentReplies")
+  commentLikes CommentLikes[]
 
   @@map("comments")
+}
+
+model CommentLikes {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @updatedAt
+  userId    String
+  commentId String
+  user      Users     @relation("userCommentLikes", fields: [userId], references: [id])
+  comment   Comments  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, commentId])
+  @@map("comment_likes")
 }
 
 model Bookmarks {
@@ -124,6 +141,7 @@ model Users {
   bookmarks              Bookmarks[]   @relation("userBookmarks")
   followers              Followers[]   @relation("followerUsers")
   following              Followers[]   @relation("followingUsers")
+  commentLikes           CommentLikes[]   @relation("userCommentLikes")
   accountIsDeactivated   Boolean       @default(false)
 
   @@map("users")
