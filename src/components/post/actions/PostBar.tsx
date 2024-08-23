@@ -35,8 +35,8 @@ export default function PostBar({ slug }: Props) {
   return (
     <>
       <div className="flex w-full flex-col gap-3">
-        <h1 className="text-5xl font-bold">{title}</h1>
-        <h3 className="text-xl text-muted-foreground">{subTitle}</h3>
+        <h1 className="text-3xl font-bold sm:text-5xl">{title}</h1>
+        <h3 className="text-lg text-muted-foreground sm:text-xl">{subTitle}</h3>
       </div>
       <div className="flex flex-col">
         <div className="mx-3 flex gap-4">

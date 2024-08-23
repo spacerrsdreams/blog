@@ -48,7 +48,7 @@ export default function PostPreviewEngagementBar({
   return (
     <div className="flex w-full justify-between">
       <div className="flex items-center gap-2 text-xs">
-        <span className="text-muted-foreground">{formatDate(new Date(createdAt))}</span>
+        <span className="w-max text-muted-foreground">{formatDate(new Date(createdAt))}</span>
 
         <span className="ml-4 flex items-center">
           {postIsLikedByUser ? <Icons.clapDark /> : <Icons.clap />}
@@ -66,6 +66,7 @@ export default function PostPreviewEngagementBar({
           onRemoveBookmark={onRemoveBookmark}
         />
         <MoreActionsButton
+          className="hidden sm:block"
           isLikedByUser={postIsLikedByUser}
           slug={slug}
           authorId={author.id}

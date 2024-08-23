@@ -7,16 +7,14 @@ import { ROUTES } from "@/utils/routes";
 import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import { MainNavigation } from "@/components/header/MainvNavigation";
-import { MobileNavigation } from "@/components/header/MobileNavigation";
 import { Icons } from "@/components/shared/Icons";
 import { buttonVariants } from "@/components/ui/button";
 
 export default function Header() {
   return (
     <header className="top-0 z-50 block w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 max-w-screen-2xl items-center">
+      <div className="flex h-14 max-w-screen-2xl items-center p-4 md:container md:p-4">
         <MainNavigation />
-        <MobileNavigation />
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none" />
           <nav className="flex items-center">
@@ -33,7 +31,12 @@ export default function Header() {
                 <span className="text-muted-foreground">Write</span>
               </div>
             </Link>
-            <Link href={siteConfig.links.twitter} target="_blank" rel="noreferrer">
+            <Link
+              href={siteConfig.links.twitter}
+              className="hidden md:flex"
+              target="_blank"
+              rel="noreferrer"
+            >
               <div
                 className={cn(
                   buttonVariants({

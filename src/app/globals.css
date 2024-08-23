@@ -84,4 +84,5 @@ body {
 
 .ql-editor {
   font-family: var(--font-sans);
+  padding-left: 0;
 }
