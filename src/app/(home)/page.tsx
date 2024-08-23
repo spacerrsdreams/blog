@@ -1,7 +1,6 @@
 "use client";
 
 import { TAGS, type TagsT } from "@/constants/tags";
-import { usePopupProvider } from "@/context/PopupProvider";
 import { v4 as uuidv4 } from "uuid";
 
 import { useSearchParams } from "next/navigation";
@@ -15,7 +14,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 const POST_LOADING_LIMIT = 10;
 
 export default function Home() {
-  const initialRender = useRef(true);
   const loader = useRef(null);
   const searchParams = useSearchParams();
   const [hasMore, setHasMore] = useState(true);
@@ -23,16 +21,8 @@ export default function Home() {
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
   const { isPending, mutateAsync: fetchArticles, error } = useGetArticles();
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
-  const { setOpenModal } = usePopupProvider();
   const feed = searchParams.get("feed");
   const feedToFetch = TAGS.includes(feed as TagsT) ? feed : "all";
-
-  useEffect(() => {
-    if (initialRender) {
-      setOpenModal(false, "report");
-      initialRender.current = false;
-    }
-  }, []);
 
   useEffect(() => {
     setAllPosts([]);

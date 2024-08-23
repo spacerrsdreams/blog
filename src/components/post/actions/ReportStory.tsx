@@ -25,14 +25,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
 
 type Props = {
   open: boolean;
   setOpen: (open: boolean, type: "signIn" | "report") => void;
 };
 export default function ReportStory({ open, setOpen }: Props) {
-  const { mutateAsync: sendEmailAsync } = useSendEmail();
-
+  const { mutateAsync: sendEmailAsync, isPending } = useSendEmail();
   const form = useForm<ReportStoryRequestPayload>({
     resolver: zodResolver(ReportStoryRequestSchema),
     defaultValues: {
@@ -46,7 +46,21 @@ export default function ReportStory({ open, setOpen }: Props) {
     return setOpen(open, "report");
   };
   const onSubmit = (values: ReportStoryRequestPayload) => {
-    sendEmailAsync(values);
+    sendEmailAsync(values)
+      .then(() => {
+        setOpenModal(false);
+        toast({
+          title: "Success",
+          description: "Report sent successfully.",
+        });
+      })
+      .catch(() => {
+        toast({
+          variant: "destructive",
+          title: "Fail",
+          description: "Failed to send report.",
+        });
+      });
   };
 
   return (
@@ -126,6 +140,7 @@ export default function ReportStory({ open, setOpen }: Props) {
               />
               <div className="flex justify-end">
                 <Button
+                  loading={isPending}
                   type="submit"
                   className="rounded-xl bg-purple-500 px-4 py-2 font-semibold text-white transition duration-200 hover:bg-purple-600"
                 >

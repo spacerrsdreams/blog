@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState, type PropsWithChildren } from "react";
+import { usePathname } from "next/navigation";
+import { createContext, useContext, useEffect, useState, type PropsWithChildren } from "react";
 
 import SignInPopup from "@/components/popup/SignInPopup";
 import ReportStory from "@/components/post/actions/ReportStory";
@@ -17,10 +18,14 @@ export const PopupContext = createContext<PopupContextT | null>(null);
 export const PopupProvider = ({ children }: PropsWithChildren) => {
   const [signInModalOpen, setSignInModalOpen] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
+  const pathname = usePathname();
 
   const setOpenModal = (open: boolean, type: PopupTypes) => {
     type === "signIn" ? setSignInModalOpen(open) : setReportModalOpen(open);
   };
+  useEffect(() => {
+    setOpenModal(false, "report");
+  }, [pathname]);
 
   const value = {
     signInModalOpen,
