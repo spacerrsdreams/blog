@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectContent } from "@radix-ui/react-select";
 import { useForm } from "react-hook-form";
 
+import { useSendEmail } from "@/services/mailgun";
 import { ReportStoryRequestSchema, type ReportStoryRequestPayload } from "@/services/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,6 +31,8 @@ type Props = {
   setOpen: (open: boolean, type: "signIn" | "report") => void;
 };
 export default function ReportStory({ open, setOpen }: Props) {
+  const { mutateAsync: sendEmailAsync } = useSendEmail();
+
   const form = useForm<ReportStoryRequestPayload>({
     resolver: zodResolver(ReportStoryRequestSchema),
     defaultValues: {
@@ -43,7 +46,7 @@ export default function ReportStory({ open, setOpen }: Props) {
     return setOpen(open, "report");
   };
   const onSubmit = (values: ReportStoryRequestPayload) => {
-    console.log(values);
+    sendEmailAsync(values);
   };
 
   return (
