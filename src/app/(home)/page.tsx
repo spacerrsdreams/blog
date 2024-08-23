@@ -22,7 +22,6 @@ export default function Home() {
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
   const { isPending, mutateAsync: fetchArticles, error } = useGetArticles();
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
-
   const feed = searchParams.get("feed");
   const feedToFetch = TAGS.includes(feed as TagsT) ? feed : "all";
 

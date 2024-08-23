@@ -21,13 +21,13 @@ export default function CommentCreator({ postId }: Props) {
   const addCommentData = useCreateComment();
   const { setComments, setCommentsCount } = useCommentProvider();
   const { isSignedIn, user } = useUser();
-  const { open } = usePopupProvider();
+  const { setOpenModal } = usePopupProvider();
 
   const handleClick = async () => {
     setContent("");
 
     if (!isSignedIn) {
-      open(true);
+      setOpenModal(true, "signIn");
       return;
     }
 

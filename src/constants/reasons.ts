@@ -1,0 +1,25 @@
+export const REASONS = [
+  "Spam",
+  "Abuse",
+  "Inappropriate Content",
+  "Other",
+  "Hate Speech",
+  "Harassment",
+  "Misinformation",
+  "Impersonation",
+  "Copyright Violation",
+  "Scam/Fraud",
+  "Privacy Violation",
+  "Illegal Activity",
+  "Self-Harm",
+  "Graphic Violence",
+  "Terrorism",
+  "Child Exploitation",
+  "Bullying",
+  "Discrimination",
+  "Nudity",
+  "False Information",
+  "Malware/Phishing",
+] as const;
+
+export type ReasonsT = (typeof REASONS)[number];
