@@ -4,6 +4,7 @@ import type { Value } from "react-quill";
 
 import { siteConfig } from "@/config/siteConfig";
 import { database } from "@/lib/prisma";
+import NotFound from "@/components/post/article/NotFound";
 import Post from "@/components/post/Post";
 
 export const dynamicParams = true;
@@ -77,7 +78,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   });
 
   if (!post) {
-    return <div>Post not found</div>;
+    return <NotFound />;
   }
 
   return (
