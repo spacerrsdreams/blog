@@ -8,6 +8,7 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
 
 import { useGetBookmarksByAuthor } from "@/services/post/bookmark";
+import NotFound from "@/components/post/NotFound";
 import PostPreview from "@/components/post/PostPreview";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -78,6 +79,9 @@ export default function Bookmarks() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
+        <h1 className="border-b border-border/50 pb-3 text-3xl font-bold sm:text-4xl">
+          My Bookmarks
+        </h1>
         {allPosts.map((data) => (
           <PostPreview
             key={uuidv4()}
@@ -102,6 +106,15 @@ export default function Bookmarks() {
       </div>
 
       {!error && allPosts.length > 0 && <div ref={loader} />}
+
+      {!isPending && allPosts.length === 0 && (
+        <div>
+          <h1 className="border-b border-border/50 pb-3 text-3xl font-bold sm:text-4xl">
+            My Bookmarks
+          </h1>
+          <NotFound />
+        </div>
+      )}
 
       {isPending && (
         <div className="flex flex-col gap-12">

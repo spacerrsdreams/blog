@@ -10,6 +10,7 @@ import { PostProvider } from "@/components/post/context/PostContext";
 type Props = {
   content: Value;
   coverImageSrc?: string;
+  slug?: string;
   title: string;
   subTitle: string;
   author: UserBasicInfoT;
@@ -28,6 +29,7 @@ type Props = {
 export default function Post({
   articleId,
   title,
+  slug,
   subTitle,
   author,
   tag,
@@ -69,7 +71,7 @@ export default function Post({
             disableActions,
           }}
         >
-          <PostBar />
+          <PostBar slug={slug as string} />
         </PostProvider>
         <ArticleContent postContent={content} />
       </div>

@@ -4,6 +4,7 @@ import type { Value } from "react-quill";
 
 import { siteConfig } from "@/config/siteConfig";
 import { database } from "@/lib/prisma";
+import NotFound from "@/components/post/article/NotFound";
 import Post from "@/components/post/Post";
 
 export const dynamicParams = true;
@@ -77,7 +78,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   });
 
   if (!post) {
-    return <div>Post not found</div>;
+    return <NotFound />;
   }
 
   return (
@@ -85,6 +86,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <div className="w-full max-w-full py-2 md:max-w-[860px]">
         <Post
           author={post.author}
+          slug={post.slug}
           articleId={post.id}
           title={post.title}
           subTitle={post.subTitle}

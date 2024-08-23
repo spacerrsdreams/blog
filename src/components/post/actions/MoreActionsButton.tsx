@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Ellipsis } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { copyArticleUrl } from "@/utils/copyArticleUrl";
 import { ROUTES } from "@/utils/routes";
 import { useDeleteArticle } from "@/services/post/article";
 import { useRemoveLike } from "@/services/post/like";
@@ -24,16 +25,20 @@ import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   postId: string;
+  slug?: string;
   authorId: string;
   isLikedByUser: boolean | undefined;
+  className?: string;
   onPostDelete?: (postId: string) => void;
   onUnlike?: () => void;
 };
 
 export default function MoreActionsButton({
   postId,
+  slug,
   isLikedByUser,
   authorId,
+  className,
   onUnlike,
   onPostDelete,
 }: Props) {
@@ -136,87 +141,102 @@ export default function MoreActionsButton({
   };
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger>
-        <Ellipsis />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="z-100 min-w-52">
-        {authorId !== userId && (
-          <>
-            {isPending ? (
-              <div className="px-3">
-                <Skeleton className="h-8" />
-              </div>
-            ) : (
-              <>
-                <DropdownMenuItem
-                  className="px-4"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    following ? handleUnffolowAuthor() : handleFollowAuthor();
-                    setOpen(false);
-                  }}
-                >
-                  <span className="text-muted-foreground">
-                    {following ? "Unfollow author" : "Follow author"}
-                  </span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-              </>
-            )}
-          </>
-        )}
+    <div className={className}>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger>
+          <Ellipsis />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="min-w-52">
+          {authorId !== userId && (
+            <>
+              {isPending ? (
+                <div className="px-3">
+                  <Skeleton className="h-8" />
+                </div>
+              ) : (
+                <>
+                  <DropdownMenuItem
+                    className="px-4"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      following ? handleUnffolowAuthor() : handleFollowAuthor();
+                      setOpen(false);
+                    }}
+                  >
+                    <span className="text-muted-foreground">
+                      {following ? "Unfollow author" : "Follow author"}
+                    </span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </>
+              )}
+            </>
+          )}
 
-        {isLikedByUser && (
+          {isLikedByUser && (
+            <DropdownMenuItem
+              className="px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                handleRemoveLike();
+                setOpen(false);
+              }}
+            >
+              <span className="text-muted-foreground">Undo claps</span>
+            </DropdownMenuItem>
+          )}
+          {slug && (
+            <DropdownMenuItem
+              className="px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                copyArticleUrl(slug);
+                setOpen(false);
+              }}
+            >
+              <span className="text-muted-foreground">Copy link</span>
+            </DropdownMenuItem>
+          )}
+
+          {userId === authorId && (
+            <DropdownMenuItem
+              className="px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                router.push(`${ROUTES.editArticle(postId)}`);
+                setOpen(false);
+              }}
+            >
+              <span className="text-muted-foreground">Edit article</span>
+            </DropdownMenuItem>
+          )}
+
+          {userId === authorId && (
+            <DropdownMenuItem
+              className="px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteArticle();
+                setOpen(false);
+              }}
+            >
+              <span className="text-muted-foreground">Delete article</span>
+            </DropdownMenuItem>
+          )}
+
           <DropdownMenuItem
             className="px-4"
             onClick={(e) => {
               e.preventDefault();
-              handleRemoveLike();
+              setOpenModal(true, "report");
               setOpen(false);
             }}
           >
-            <span className="text-muted-foreground">Undo claps</span>
+            <span className="text-red-500">Report Story...</span>
           </DropdownMenuItem>
-        )}
-        {userId === authorId && (
-          <DropdownMenuItem
-            className="px-4"
-            onClick={(e) => {
-              e.preventDefault();
-              router.push(`${ROUTES.editArticle(postId)}`);
-              setOpen(false);
-            }}
-          >
-            <span className="text-muted-foreground">Edit article</span>
-          </DropdownMenuItem>
-        )}
-
-        {userId === authorId && (
-          <DropdownMenuItem
-            className="px-4"
-            onClick={(e) => {
-              e.preventDefault();
-              handleDeleteArticle();
-              setOpen(false);
-            }}
-          >
-            <span className="text-muted-foreground">Delete article</span>
-          </DropdownMenuItem>
-        )}
-
-        <DropdownMenuItem
-          className="px-4"
-          onClick={(e) => {
-            e.preventDefault();
-            setOpenModal(true, "report");
-            setOpen(false);
-          }}
-        >
-          <span className="text-red-500">Report Story...</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-      {reportModalOpen && <ReportStory open={reportModalOpen} setOpen={setOpenModal} />}
-    </DropdownMenu>
+        </DropdownMenuContent>
+        {reportModalOpen && <ReportStory open={reportModalOpen} setOpen={setOpenModal} />}
+      </DropdownMenu>
+    </div>
   );
 }

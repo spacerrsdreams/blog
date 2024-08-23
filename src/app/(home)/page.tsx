@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { useGetArticles } from "@/services/post/article";
 import type { ArticleT } from "@/services/types";
+import NotFound from "@/components/post/NotFound";
 import PostPreview from "@/components/post/PostPreview";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -98,6 +99,8 @@ export default function Home() {
             />
           ))}
       </div>
+
+      {!isPending && allPosts.length === 0 && <NotFound />}
 
       {!error && allPosts.length > 0 && <div ref={loader} />}
 

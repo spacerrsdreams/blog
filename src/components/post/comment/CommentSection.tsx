@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { useGetComments } from "@/services/post/comment";
+import NotFound from "@/components/post/comment/NotFound";
 
 import Comment from "./Comment";
 import CommentEditor from "./CommentEditor";
@@ -80,6 +81,7 @@ export default function CommentSection({ postId }: Props) {
         ))}
       </div>
       {!error && comments.length > 0 && <div ref={loader} />}
+      {!isPending && comments.length === 0 && <NotFound />}
 
       {isPending && (
         <div className="flex flex-col gap-12">

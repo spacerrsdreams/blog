@@ -11,7 +11,11 @@ import MoreActionsButton from "@/components/post/actions/MoreActionsButton";
 import CommentSheet from "@/components/post/comment/CommentSheet";
 import { usePostContext } from "@/components/post/context/PostContext";
 
-export default function PostBar() {
+type Props = {
+  slug: string;
+};
+
+export default function PostBar({ slug }: Props) {
   const {
     title,
     subTitle,
@@ -31,8 +35,8 @@ export default function PostBar() {
   return (
     <>
       <div className="flex w-full flex-col gap-3">
-        <h1 className="text-5xl font-bold">{title}</h1>
-        <h3 className="text-xl text-muted-foreground">{subTitle}</h3>
+        <h1 className="text-3xl font-bold sm:text-5xl">{title}</h1>
+        <h3 className="text-lg text-muted-foreground sm:text-xl">{subTitle}</h3>
       </div>
       <div className="flex flex-col">
         <div className="mx-3 flex gap-4">
@@ -62,6 +66,7 @@ export default function PostBar() {
             <BookmarkButton fetchBookmarkState isBookmarked={isBookmarked} postId={postId} />
             <MoreActionsButton
               isLikedByUser={isLikedByUser}
+              slug={slug}
               authorId={author?.id}
               postId={postId}
               onUnlike={() => {
