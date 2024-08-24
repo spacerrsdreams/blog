@@ -52,7 +52,7 @@ export default function MoreActionsButton({
   const [following, setFollowing] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const { user } = useUser();
+  const { user, isSignedIn } = useUser();
   const userId = user?.id;
 
   useEffect(() => {
@@ -228,6 +228,7 @@ export default function MoreActionsButton({
             className="px-4"
             onClick={(e) => {
               e.preventDefault();
+              if (!isSignedIn) return setOpenModal(true, "signIn");
               setOpenModal(true, "report");
               setOpen(false);
             }}
