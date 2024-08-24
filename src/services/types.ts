@@ -149,7 +149,6 @@ export const ReportStoryRequestSchema = z
     reason: z.enum(REASONS, {
       errorMap: () => ({ message: "Required" }),
     }),
-    email: z.string().min(1, "Email is required").email("Wrong format email"),
     addInfo: z.string().max(220, "must be at most 220 characters long").optional(),
   })
   .strict();

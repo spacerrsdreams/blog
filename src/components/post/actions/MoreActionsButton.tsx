@@ -224,17 +224,19 @@ export default function MoreActionsButton({
             </DropdownMenuItem>
           )}
 
-          <DropdownMenuItem
-            className="px-4"
-            onClick={(e) => {
-              e.preventDefault();
-              if (!isSignedIn) return setOpenModal(true, "signIn");
-              setOpenModal(true, "report");
-              setOpen(false);
-            }}
-          >
-            <span className="text-red-500">Report Story...</span>
-          </DropdownMenuItem>
+          {userId !== authorId && (
+            <DropdownMenuItem
+              className="px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                if (!isSignedIn) return setOpenModal(true, "signIn");
+                setOpenModal(true, "report");
+                setOpen(false);
+              }}
+            >
+              <span className="text-red-500">Report Story...</span>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
         {reportModalOpen && <ReportStory open={reportModalOpen} setOpen={setOpenModal} />}
       </DropdownMenu>
