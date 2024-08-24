@@ -52,7 +52,7 @@ export default function MoreActionsButton({
   const [following, setFollowing] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const { user } = useUser();
+  const { user, isSignedIn } = useUser();
   const userId = user?.id;
 
   useEffect(() => {
@@ -224,16 +224,19 @@ export default function MoreActionsButton({
             </DropdownMenuItem>
           )}
 
-          <DropdownMenuItem
-            className="px-4"
-            onClick={(e) => {
-              e.preventDefault();
-              setOpenModal(true, "report");
-              setOpen(false);
-            }}
-          >
-            <span className="text-red-500">Report Story...</span>
-          </DropdownMenuItem>
+          {userId !== authorId && (
+            <DropdownMenuItem
+              className="px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                if (!isSignedIn) return setOpenModal(true, "signIn");
+                setOpenModal(true, "report");
+                setOpen(false);
+              }}
+            >
+              <span className="text-red-500">Report Story...</span>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
         {reportModalOpen && <ReportStory open={reportModalOpen} setOpen={setOpenModal} />}
       </DropdownMenu>
