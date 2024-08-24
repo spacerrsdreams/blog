@@ -57,6 +57,7 @@ export const ROUTES = {
         });
         return `/api/post/bookmark?${queryParams.toString()}`;
       },
+      trends: "/api/post/trend",
     },
     user: {
       byId: (userId: string) => `/api/user/${userId}`,

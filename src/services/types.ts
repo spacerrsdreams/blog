@@ -178,3 +178,13 @@ export type ArticleT = {
   likeCount: number;
   likes: Likes[];
 };
+export type Highlight = {
+  id: string;
+  slug: string;
+  tag: string;
+  title: string;
+  coverImageSrc: string | undefined;
+  first_name: string;
+  last_name: string;
+  image_url: string;
+};
