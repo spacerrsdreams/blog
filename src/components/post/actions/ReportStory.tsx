@@ -1,6 +1,7 @@
 import { REASONS } from "@/constants/reasons";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { useUser } from "@clerk/nextjs";
 import { SelectContent } from "@radix-ui/react-select";
 import { useForm } from "react-hook-form";
 
@@ -22,7 +23,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
@@ -32,12 +32,12 @@ type Props = {
   setOpen: (open: boolean, type: "signIn" | "report") => void;
 };
 export default function ReportStory({ open, setOpen }: Props) {
+  const { user } = useUser();
   const { mutateAsync: sendEmailAsync, isPending } = useSendEmail();
   const form = useForm<ReportStoryRequestPayload>({
     resolver: zodResolver(ReportStoryRequestSchema),
     defaultValues: {
       reason: "Spam",
-      email: "",
       addInfo: "",
     },
   });
@@ -46,7 +46,11 @@ export default function ReportStory({ open, setOpen }: Props) {
     return setOpen(open, "report");
   };
   const onSubmit = (values: ReportStoryRequestPayload) => {
-    sendEmailAsync(values)
+    const sendEmailPayload = {
+      ...values,
+      email: user?.emailAddresses[0].emailAddress,
+    };
+    sendEmailAsync(sendEmailPayload)
       .then(() => {
         setOpenModal(false);
         toast({
@@ -60,6 +64,9 @@ export default function ReportStory({ open, setOpen }: Props) {
           title: "Fail",
           description: "Failed to send report.",
         });
+      })
+      .finally(() => {
+        form.reset();
       });
   };
 
@@ -102,21 +109,6 @@ export default function ReportStory({ open, setOpen }: Props) {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="block text-sm font-medium text-gray-700">Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Email" {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="addInfo"

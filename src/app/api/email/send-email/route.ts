@@ -7,6 +7,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
 import { ReportStoryRequestSchema } from "@/services/types";
 
+//import { ReportStoryRequestSchema } from "@/services/types";
+
 const DOMAIN = process.env.MAILGUN_DOMAIN || "";
 const API_KEY = process.env.MAILGUN_API_KEY || "";
 const ADDRESS_EMAIL = process.env.MAILGUN_ADDRESS_EMAIL || "";
@@ -24,13 +26,18 @@ export const POST = async (req: NextRequest) => {
     }
 
     const body = await req.json();
-    const data = ReportStoryRequestSchema.parse(body);
+
+    const data = {
+      reason: body.reason,
+      addInfo: body.addInfo,
+    };
+    const { addInfo, reason } = ReportStoryRequestSchema.parse(data);
 
     const messageData = {
-      from: data.email,
+      from: body.email,
       to: ADDRESS_EMAIL,
-      subject: "Report" + " - " + `${data.reason}`,
-      html: "<p>" + data.addInfo + "</p>",
+      subject: "Report" + " - " + `${reason}`,
+      html: "<p>" + addInfo + "</p>",
     };
 
     const res = await mailgun.messages.create(DOMAIN, messageData);
