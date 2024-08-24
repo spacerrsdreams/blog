@@ -7,6 +7,7 @@ import { ROUTES } from "@/utils/routes";
 import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import { MainNavigation } from "@/components/header/MainvNavigation";
+import { Notification } from "@/components/header/Notification";
 import { Icons } from "@/components/shared/Icons";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -49,6 +50,7 @@ export default function Header() {
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
+            <Notification />
             <div className="ml-2 flex items-center">
               <SignedOut>
                 <SignInButton>
