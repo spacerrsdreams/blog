@@ -16,6 +16,7 @@ type PostContextT = {
   isLikedByUser: boolean | undefined;
   isBookmarked: boolean | undefined;
   disableActions: boolean;
+  view: number;
   createdAt: Date;
   setTotalLikes: Dispatch<SetStateAction<number>>;
   setTotalComments: Dispatch<SetStateAction<number>>;
@@ -51,6 +52,7 @@ export const PostProvider = ({
     author: data.author,
     disableActions: data.disableActions,
     createdAt: data.createdAt,
+    view: data.view,
     userTotalLikes,
     totalLikes,
     isLikedByUser,

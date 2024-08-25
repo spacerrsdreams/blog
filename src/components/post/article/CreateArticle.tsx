@@ -216,6 +216,7 @@ export default function CreateArticle() {
               author={user as unknown as UserBasicInfoT}
               tag={form.watch("tag")}
               content={editorValue}
+              view={0}
               subTitle={form.watch("subTitle")}
               title={form.watch("title")}
               coverImageSrc={coverImageSrc}

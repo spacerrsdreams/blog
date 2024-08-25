@@ -88,6 +88,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           author={post.author}
           slug={post.slug}
           articleId={post.id}
+          view={post.view}
           title={post.title}
           subTitle={post.subTitle}
           tag={post.tag}

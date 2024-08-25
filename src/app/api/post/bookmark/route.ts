@@ -37,6 +37,7 @@ export const GET = async (req: NextRequest) => {
             coverImageSrc: true,
             createdAt: true,
             author: true,
+            view: true,
             _count: {
               select: {
                 likes: true,
@@ -47,7 +48,6 @@ export const GET = async (req: NextRequest) => {
         },
       },
     });
-
     if (data) {
       return NextResponse.json(data, { status: 200 });
     } else {

@@ -13,6 +13,7 @@ import { Icons } from "@/components/shared/Icons";
 export type PostPreviewEngagementBarProps = {
   postId: string;
   slug: string;
+  view: number;
   isBookmarked: boolean;
   isLikedByUser: boolean;
   totalComments: number;
@@ -34,6 +35,7 @@ export default function PostPreviewEngagementBar({
   userTotalLikes,
   createdAt,
   author,
+  view,
   onPostDelete,
   onRemoveBookmark,
 }: PostPreviewEngagementBarProps) {
@@ -58,6 +60,10 @@ export default function PostPreviewEngagementBar({
           <Icons.message />
           <span>{formatNumberWithK(totalComments)}</span>
         </span>
+        <span className="flex items-center gap-1">
+          <Icons.views />
+          <span className="font-normal">{formatNumberWithK(view)}</span>
+        </span>
       </div>
       <div className="flex items-center">
         <BookmarkButton
@@ -65,6 +71,7 @@ export default function PostPreviewEngagementBar({
           postId={postId}
           onRemoveBookmark={onRemoveBookmark}
         />
+
         <MoreActionsButton
           className="hidden sm:block"
           isLikedByUser={postIsLikedByUser}
