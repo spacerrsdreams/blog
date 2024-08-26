@@ -3,17 +3,17 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-import { useIncreaseView } from "@/services/post/view";
+import { useIncrementViewCount } from "@/services/post/view";
 
 export default function ArticleViewCounter() {
   const pathname = usePathname();
   const previousPathname = useRef<string | null>(null);
-  const { mutateAsync: increaseViewAsync } = useIncreaseView();
+  const { mutateAsync: incrementViewCountAsync } = useIncrementViewCount();
   const slug = (pathname.startsWith("/article") && pathname.replace("/article/", "")) as string;
   useEffect(() => {
     const handleRouteChange = async () => {
       if (previousPathname.current && pathname.startsWith("/article")) {
-        increaseViewAsync({
+        incrementViewCountAsync({
           id: slug,
         });
       }
