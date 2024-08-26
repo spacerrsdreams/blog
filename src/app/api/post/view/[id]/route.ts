@@ -30,7 +30,7 @@ export const PATCH = async (_req: NextRequest, { params }: { params: { id: strin
       where: {
         id: post.id,
       },
-      data: { view: { increment: 1 } },
+      data: { viewCount: { increment: 1 } },
     });
 
     return NextResponse.json({ status: 200 });

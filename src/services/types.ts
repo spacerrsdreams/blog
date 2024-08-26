@@ -176,7 +176,7 @@ export type ArticleT = {
   isLikedByUser: boolean;
   likeCount: number;
   likes: Likes[];
-  view: number;
+  viewCount: number;
 };
 export type Highlight = {
   id: string;

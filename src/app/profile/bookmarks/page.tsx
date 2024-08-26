@@ -97,7 +97,7 @@ export default function Bookmarks() {
             userTotalLikes={data.post?.likes?.[0]?.likeCount || 0}
             totalLikes={data.post.likeCount}
             author={data.post.author}
-            view={data.post.view}
+            viewCount={data.post.viewCount}
             createdAt={data.post.createdAt}
             coverImageSrc={data.post.coverImageSrc}
             isBookmarked={true}

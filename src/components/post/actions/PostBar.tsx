@@ -24,7 +24,7 @@ export default function PostBar({ slug }: Props) {
     author,
     createdAt,
     tag,
-    view,
+    viewCount,
     userTotalLikes,
     isBookmarked,
     postId,
@@ -66,7 +66,7 @@ export default function PostBar({ slug }: Props) {
             <CommentSheet />
             <span className="ml-3 flex items-center gap-1">
               <Icons.views />
-              <span className="text-sm font-medium">{formatNumberWithK(view)}</span>
+              <span className="text-sm font-medium">{formatNumberWithK(viewCount)}</span>
             </span>
           </div>
           <div className="flex items-center">

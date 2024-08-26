@@ -66,7 +66,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <EditArticle
       author={post.author}
       articleId={post.id}
-      view={post.view}
+      viewCount={post.viewCount}
       title={post.title}
       subTitle={post.subTitle}
       tag={post.tag}

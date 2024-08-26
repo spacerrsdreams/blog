@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 
 import { useIncreaseView } from "@/services/post/view";
 
-export default function RouteListener() {
+export default function ArticleViewCounter() {
   const pathname = usePathname();
   const previousPathname = useRef<string | null>(null);
   const { mutateAsync: increaseViewAsync } = useIncreaseView();
@@ -15,8 +15,6 @@ export default function RouteListener() {
       if (previousPathname.current && pathname.startsWith("/article")) {
         increaseViewAsync({
           id: slug,
-        }).then(() => {
-          console.log("increased");
         });
       }
     };

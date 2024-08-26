@@ -31,7 +31,7 @@ model Posts {
   comments      Comments[] @relation("postComments")
   bookmarks     Bookmarks[] @relation("postBookmarks")
   likeCount     Int        @default(0)
-  view          Int        @default(0)
+  viewCount     Int        @default(0)
 
   @@map("posts")
 }

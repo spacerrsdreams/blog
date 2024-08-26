@@ -94,7 +94,7 @@ export default function Home({ params }: { params: { username: string } }) {
             <PostPreview
               key={uuidv4()}
               postId={post.id}
-              view={post.view}
+              viewCount={post.viewCount}
               totalLikes={post.likeCount}
               userTotalLikes={post?.likes?.[0]?.likeCount || 0}
               currentFeed={feedToFetch || ""}

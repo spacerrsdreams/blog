@@ -34,7 +34,7 @@ export default function PostPreview({
   totalComments,
   totalLikes,
   userTotalLikes,
-  view,
+  viewCount,
   onPostDelete,
   onRemoveBookmark,
 }: Props) {
@@ -99,7 +99,7 @@ export default function PostPreview({
               userTotalLikes={userTotalLikes}
               createdAt={createdAt}
               author={author}
-              view={view}
+              viewCount={viewCount}
               onPostDelete={onPostDelete}
               onRemoveBookmark={onRemoveBookmark}
             />
