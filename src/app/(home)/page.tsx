@@ -86,6 +86,7 @@ export default function Home() {
               totalComments={post._count.comments}
               totalLikes={post.likeCount}
               currentFeed={feedToFetch || ""}
+              viewCount={post.viewCount}
               slug={post.slug}
               tag={post.tag}
               title={post.title}

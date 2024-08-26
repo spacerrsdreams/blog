@@ -51,6 +51,7 @@ type Props = {
   likesLength: number;
   commentsLength: number;
   disableActions?: boolean;
+  viewCount: number;
   handleRemoveImage?: () => void;
 };
 
@@ -241,6 +242,7 @@ export default function EditArticle(post: Props) {
               content={editorValue}
               subTitle={form.watch("subTitle")}
               title={form.watch("title")}
+              viewCount={post.viewCount}
               coverImageSrc={coverImageSrc}
               createdAt={new Date()}
               totalLikes={0}

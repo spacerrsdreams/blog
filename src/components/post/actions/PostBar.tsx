@@ -4,12 +4,14 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { formatDate } from "@/utils/formatDate";
+import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { ROUTES } from "@/utils/routes";
 import BookmarkButton from "@/components/post/actions/BookmarkButton";
 import LikeButton from "@/components/post/actions/LikeButton";
 import MoreActionsButton from "@/components/post/actions/MoreActionsButton";
 import CommentSheet from "@/components/post/comment/CommentSheet";
 import { usePostContext } from "@/components/post/context/PostContext";
+import { Icons } from "@/components/shared/Icons";
 
 type Props = {
   slug: string;
@@ -22,6 +24,7 @@ export default function PostBar({ slug }: Props) {
     author,
     createdAt,
     tag,
+    viewCount,
     userTotalLikes,
     isBookmarked,
     postId,
@@ -61,6 +64,10 @@ export default function PostBar({ slug }: Props) {
           <div className="flex items-center">
             <LikeButton />
             <CommentSheet />
+            <span className="ml-3 flex items-center gap-1">
+              <Icons.views />
+              <span className="text-sm font-medium">{formatNumberWithK(viewCount)}</span>
+            </span>
           </div>
           <div className="flex items-center">
             <BookmarkButton fetchBookmarkState isBookmarked={isBookmarked} postId={postId} />

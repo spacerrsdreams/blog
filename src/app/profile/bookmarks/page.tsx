@@ -13,15 +13,14 @@ import PostPreview from "@/components/post/PostPreview";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const POST_LOADING_LIMIT = 10;
-
 export default function Bookmarks() {
-  const { user } = useUser();
+  const loader = useRef(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [allPosts, setAllPosts] = useState<BookmarkedPost[]>([]);
+  const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
   const { isPending, mutateAsync: fetchBookmarksByAuthor, error } = useGetBookmarksByAuthor();
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
-  const [allPosts, setAllPosts] = useState<BookmarkedPost[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const loader = useRef(null);
-  const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
+  const { user } = useUser();
 
   useEffect(() => {
     if (!user) return;
@@ -32,7 +31,7 @@ export default function Bookmarks() {
       setHasMore(data.length > 0);
       setInitialCallIsLoading(false);
     });
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -79,10 +78,12 @@ export default function Bookmarks() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-12">
-        <h1 className="border-b border-border/50 pb-3 text-3xl font-bold sm:text-4xl">
-          My Bookmarks
-        </h1>
-        {allPosts.map((data) => (
+        {!isPending && (
+          <h1 className="border-b border-border/50 pb-3 text-3xl font-bold sm:text-4xl">
+            My Bookmarks
+          </h1>
+        )}
+        {allPosts?.map((data) => (
           <PostPreview
             key={uuidv4()}
             postId={data.post.id}
@@ -96,6 +97,7 @@ export default function Bookmarks() {
             userTotalLikes={data.post?.likes?.[0]?.likeCount || 0}
             totalLikes={data.post.likeCount}
             author={data.post.author}
+            viewCount={data.post.viewCount}
             createdAt={data.post.createdAt}
             coverImageSrc={data.post.coverImageSrc}
             isBookmarked={true}
@@ -107,14 +109,7 @@ export default function Bookmarks() {
 
       {!error && allPosts.length > 0 && <div ref={loader} />}
 
-      {!isPending && allPosts.length === 0 && (
-        <div>
-          <h1 className="border-b border-border/50 pb-3 text-3xl font-bold sm:text-4xl">
-            My Bookmarks
-          </h1>
-          <NotFound />
-        </div>
-      )}
+      {!isPending && allPosts.length === 0 && <NotFound />}
 
       {isPending && (
         <div className="flex flex-col gap-12">

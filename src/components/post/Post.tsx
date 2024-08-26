@@ -23,6 +23,7 @@ type Props = {
   isBookmarked?: boolean;
   disableActions?: boolean;
   articleId: string;
+  viewCount: number;
   handleRemoveImage?: () => void;
 };
 
@@ -30,6 +31,7 @@ export default function Post({
   articleId,
   title,
   slug,
+  viewCount,
   subTitle,
   author,
   tag,
@@ -68,6 +70,7 @@ export default function Post({
             totalComments,
             isLikedByUser,
             isBookmarked,
+            viewCount,
             disableActions,
           }}
         >

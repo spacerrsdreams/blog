@@ -9,6 +9,7 @@ import { PopupProvider } from "@/context/PopupProvider";
 import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import ArticleViewCounter from "@/app/ArticleViewCounter";
 import Header from "@/components/header/Header";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -34,7 +35,9 @@ export default function RootLayout({
           <body className={cn("bg-background font-sans antialiased", fontSans.variable)}>
             <PopupProvider>
               <Header />
+              <ArticleViewCounter />
               <main className="m-auto block max-w-[1336px]">{children}</main>
+
               <Toaster />
             </PopupProvider>
           </body>
