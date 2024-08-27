@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { formatDate } from "@/utils/formatDate";
-import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { ROUTES } from "@/utils/routes";
 import BookmarkButton from "@/components/post/actions/BookmarkButton";
 import LikeButton from "@/components/post/actions/LikeButton";
 import MoreActionsButton from "@/components/post/actions/MoreActionsButton";
+import PostAction from "@/components/post/actions/PostAction";
 import CommentSheet from "@/components/post/comment/CommentSheet";
 import { usePostContext } from "@/components/post/context/PostContext";
 import { Icons } from "@/components/shared/Icons";
@@ -61,13 +61,15 @@ export default function PostBar({ slug }: Props) {
           </div>
         </div>
         <div className="mt-6 flex items-center justify-between border-b border-t border-border/60 py-1">
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
             <LikeButton />
             <CommentSheet />
-            <span className="ml-3 flex items-center gap-1">
-              <Icons.views />
-              <span className="text-sm font-medium">{formatNumberWithK(viewCount)}</span>
-            </span>
+            <PostAction
+              Icon={<Icons.views />}
+              totalCount={viewCount}
+              displayClassName="flex items-center text-sm font-medium gap-[2px]"
+              type="display"
+            />
           </div>
           <div className="flex items-center">
             <BookmarkButton fetchBookmarkState isBookmarked={isBookmarked} postId={postId} />

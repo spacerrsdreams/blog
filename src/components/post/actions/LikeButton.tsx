@@ -69,7 +69,7 @@ export default function LikeButton() {
       disableActions={disableActions}
       totalCount={totalLikes}
       isSelected={isLikedByUser}
-      Icon={<Icons.clap />}
+      Icon={<Icons.clap className="fill-gray-500 hover:fill-black" />}
       IconDark={<Icons.clapDark />}
       onClickFn={handleClick}
     />

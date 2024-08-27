@@ -8,7 +8,7 @@ type Props = {
   IconDark?: React.ReactElement;
   onClickFn?: () => void;
   disableActions?: boolean;
-  className?: string;
+  displayClassName?: string;
 };
 
 export default function PostAction({
@@ -18,15 +18,16 @@ export default function PostAction({
   type,
   Icon,
   IconDark,
+  displayClassName,
   disableActions = false,
 }: Props) {
   return type === "action" ? (
-    <Button disabled={disableActions} variant="ghost" onClick={onClickFn}>
+    <Button disabled={disableActions} size="action" variant="action" onClick={onClickFn}>
       {isSelected ? IconDark : Icon}
       <span>{totalCount}</span>
     </Button>
   ) : (
-    <span className="flex items-center gap-1">
+    <span className={displayClassName}>
       {isSelected ? IconDark : Icon}
       <span>{totalCount}</span>
     </span>

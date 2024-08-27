@@ -20,7 +20,11 @@ export default function CommentSheetTrigger({ initialCount }: Props) {
   return (
     <SheetTrigger asChild>
       <span>
-        <PostAction type="action" totalCount={commentsCount} Icon={<Icons.message />} />
+        <PostAction
+          type="action"
+          totalCount={commentsCount}
+          Icon={<Icons.message className="fill-gray-500 hover:fill-black" />}
+        />
       </span>
     </SheetTrigger>
   );

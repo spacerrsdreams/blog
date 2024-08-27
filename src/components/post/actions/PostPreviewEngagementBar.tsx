@@ -57,10 +57,21 @@ export default function PostPreviewEngagementBar({
           IconDark={<Icons.clapDark />}
           isSelected={postIsLikedByUser}
           totalCount={totalPostLikes}
+          displayClassName="flex items-center"
           type="display"
         />
-        <PostAction Icon={<Icons.message />} totalCount={totalComments} type="display" />
-        <PostAction Icon={<Icons.views />} totalCount={viewCount} type="display" />
+        <PostAction
+          Icon={<Icons.message />}
+          totalCount={totalComments}
+          displayClassName="flex items-center"
+          type="display"
+        />
+        <PostAction
+          Icon={<Icons.views className="pl-2" />}
+          totalCount={viewCount}
+          displayClassName="flex items-center gap-[2px]"
+          type="display"
+        />
       </div>
       <div className="flex items-center">
         <BookmarkButton
