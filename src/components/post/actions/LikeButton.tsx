@@ -5,11 +5,10 @@ import { usePopupProvider } from "@/context/PopupProvider";
 import { useUser } from "@clerk/nextjs";
 import { useRef, useState } from "react";
 
-import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import { useLikePost } from "@/services/post/like";
+import PostAction from "@/components/post/actions/PostAction";
 import { usePostContext } from "@/components/post/context/PostContext";
 import { Icons } from "@/components/shared/Icons";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function LikeButton() {
@@ -65,9 +64,14 @@ export default function LikeButton() {
   };
 
   return (
-    <Button disabled={disableActions} variant="ghost" onClick={handleClick}>
-      {isLikedByUser ? <Icons.clapDark /> : <Icons.clap />}
-      <span>{formatNumberWithK(totalLikes)}</span>
-    </Button>
+    <PostAction
+      type="action"
+      disableActions={disableActions}
+      totalCount={totalLikes}
+      isSelected={isLikedByUser}
+      Icon={<Icons.clap />}
+      IconDark={<Icons.clapDark />}
+      onClickFn={handleClick}
+    />
   );
 }
