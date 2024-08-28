@@ -5,9 +5,9 @@ import type { UserBasicInfoT } from "@/types";
 import { useState } from "react";
 
 import { formatDate } from "@/utils/formatDate";
-import { formatNumberWithK } from "@/utils/formatNumberWithK";
 import BookmarkButton from "@/components/post/actions/BookmarkButton";
 import MoreActionsButton from "@/components/post/actions/MoreActionsButton";
+import PostAction from "@/components/post/actions/PostAction";
 import { Icons } from "@/components/shared/Icons";
 
 export type PostPreviewEngagementBarProps = {
@@ -52,18 +52,26 @@ export default function PostPreviewEngagementBar({
       <div className="flex items-center gap-2 text-xs">
         <span className="w-max text-muted-foreground">{formatDate(new Date(createdAt))}</span>
 
-        <span className="ml-4 flex items-center">
-          {postIsLikedByUser ? <Icons.clapDark /> : <Icons.clap />}
-          <span>{formatNumberWithK(totalPostLikes)}</span>
-        </span>
-        <span className="flex items-center">
-          <Icons.message />
-          <span>{formatNumberWithK(totalComments)}</span>
-        </span>
-        <span className="flex items-center gap-1">
-          <Icons.views />
-          <span className="font-normal">{formatNumberWithK(viewCount)}</span>
-        </span>
+        <PostAction
+          Icon={<Icons.clap />}
+          IconDark={<Icons.clapDark />}
+          isSelected={postIsLikedByUser}
+          totalCount={totalPostLikes}
+          displayClassName="flex items-center"
+          type="display"
+        />
+        <PostAction
+          Icon={<Icons.message />}
+          totalCount={totalComments}
+          displayClassName="flex items-center"
+          type="display"
+        />
+        <PostAction
+          Icon={<Icons.views className="pl-2" />}
+          totalCount={viewCount}
+          displayClassName="flex items-center gap-[2px]"
+          type="display"
+        />
       </div>
       <div className="flex items-center">
         <BookmarkButton

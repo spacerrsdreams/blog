@@ -92,9 +92,9 @@ export default function Bookmarks() {
             tag={data.post.tag}
             title={data.post.title}
             subTitle={data.post.subTitle}
-            isLikedByUser={data.post.isLikedByUser}
+            isLikedByUser={data.isLikedByUser}
             totalComments={data.post._count.comments}
-            userTotalLikes={data.post?.likes?.[0]?.likeCount || 0}
+            userTotalLikes={data.post.likes?.[0]?.likeCount || 0}
             totalLikes={data.post.likeCount}
             author={data.post.author}
             viewCount={data.post.viewCount}

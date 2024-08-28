@@ -8,6 +8,8 @@ import { database } from "@/lib/prisma";
 import { BookmarkRequestSchema } from "@/services/types";
 
 export const GET = async (req: NextRequest) => {
+  const { userId } = auth();
+
   try {
     const searchParams = req.nextUrl.searchParams;
     const id = searchParams.get("id") || "";
@@ -38,18 +40,32 @@ export const GET = async (req: NextRequest) => {
             createdAt: true,
             author: true,
             viewCount: true,
+            likeCount: true,
             _count: {
               select: {
                 likes: true,
                 comments: true,
               },
             },
+
+            ...(userId && {
+              likes: {
+                where: {
+                  userId: userId || "",
+                },
+              },
+            }),
           },
         },
       },
     });
     if (data) {
-      return NextResponse.json(data, { status: 200 });
+      const postWithLikeStatus = data.map((post) => ({
+        ...post,
+        isLikedByUser: post?.post?.likes.length > 0,
+      }));
+
+      return NextResponse.json(postWithLikeStatus, { status: 200 });
     } else {
       return NextResponse.json(
         { data: null, message: "No bookmarks found for the specified user." },

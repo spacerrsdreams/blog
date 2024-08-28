@@ -2,10 +2,9 @@
 
 import { useEffect } from "react";
 
-import { formatNumberWithK } from "@/utils/formatNumberWithK";
+import PostAction from "@/components/post/actions/PostAction";
 import { useCommentProvider } from "@/components/post/comment/CommentProvider";
 import { Icons } from "@/components/shared/Icons";
-import { Button } from "@/components/ui/button";
 import { SheetTrigger } from "@/components/ui/sheet";
 
 type Props = {
@@ -14,17 +13,19 @@ type Props = {
 
 export default function CommentSheetTrigger({ initialCount }: Props) {
   const { commentsCount, setCommentsCount } = useCommentProvider();
-
   useEffect(() => {
     setCommentsCount(initialCount);
   }, []);
 
   return (
     <SheetTrigger asChild>
-      <Button variant="ghost" className="flex items-center">
-        <Icons.message />
-        <span>{formatNumberWithK(commentsCount)}</span>
-      </Button>
+      <span>
+        <PostAction
+          type="action"
+          totalCount={commentsCount}
+          Icon={<Icons.message className="fill-gray-500 hover:fill-black" />}
+        />
+      </span>
     </SheetTrigger>
   );
 }

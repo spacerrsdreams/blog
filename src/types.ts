@@ -134,6 +134,7 @@ export type BookmarkedPost = {
   modifiedAt: Date;
   userId: string;
   postId: string;
+  isLikedByUser: boolean;
   post: ArticleT;
   author: UserBasicInfoT;
 };
