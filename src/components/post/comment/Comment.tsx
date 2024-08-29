@@ -4,15 +4,21 @@ import type { CommentWithUserProps } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
+import { useState } from "react";
 
 import { formatCommentDate } from "@/utils/formatCommentDate";
+import CommentLikeButton from "@/components/post/comment/CommentLikeButton";
 
 import { CommentOption } from "./CommentOption";
 
 type Props = {
   comment: CommentWithUserProps;
 };
+
 export default function Comment({ comment }: Props) {
+  const [totalCommentLikes, setTotalCommentLikes] = useState(comment.totalLikes);
+  const [isLikedByUser, _setIsLikedByUser] = useState(comment.isLikedByUser);
+  console.log(comment);
   const loggedInUser = useUser();
 
   const isCommentCreator = loggedInUser?.user?.id === comment.userId;
@@ -39,6 +45,14 @@ export default function Comment({ comment }: Props) {
           </div>
         </div>
         <span className="text-sm">{comment.content}</span>
+        <div>
+          <CommentLikeButton
+            totalCommentLikes={totalCommentLikes}
+            setTotalCommentLikes={setTotalCommentLikes}
+            commentId={comment.id}
+            isLikedByUser={isLikedByUser}
+          />
+        </div>
       </div>
     </div>
   );
