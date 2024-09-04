@@ -118,6 +118,8 @@ export type CommentWithUserProps = {
     imageUrl: string;
     username: string;
   };
+  isLikedByUser: boolean;
+  totalLikes: number;
 };
 
 export type Likes = {
@@ -128,6 +130,7 @@ export type Likes = {
   postId: string;
   likeCount: number;
 };
+
 export type BookmarkedPost = {
   id: string;
   createdAt: Date;

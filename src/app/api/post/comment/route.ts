@@ -3,9 +3,10 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
 import { database } from "@/lib/prisma";
-import { CommentRequestSchema, type GetCommentsResponsePayload } from "@/services/types";
+import { CommentRequestSchema } from "@/services/types";
 
 export const GET = async (req: NextRequest) => {
+  const { userId } = auth();
   try {
     const searchParams = req.nextUrl.searchParams;
     const id = searchParams.get("id") || "";
@@ -29,11 +30,18 @@ export const GET = async (req: NextRequest) => {
             username: true,
           },
         },
+        commentLikes: true,
       },
     });
+
     if (data) {
-      const payload: GetCommentsResponsePayload = data;
-      return NextResponse.json(payload, { status: 200 });
+      const payloadWithLikeStatus = data.map((comment) => ({
+        ...comment,
+        isLikedByUser: comment.commentLikes.find((like) => like.userId === userId),
+        totalLikes: comment.commentLikes.length,
+      }));
+
+      return NextResponse.json(payloadWithLikeStatus, { status: 200 });
     } else {
       return NextResponse.json(
         { data: null, message: "No user found for the specified id." },

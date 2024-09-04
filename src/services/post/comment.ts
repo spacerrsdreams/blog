@@ -60,3 +60,27 @@ export const useGetComments = () => {
     },
   });
 };
+
+export const useLikeComment = () => {
+  return useMutation({
+    mutationFn: async (commentId: string) => {
+      return request({
+        method: "POST",
+        url: ROUTES.api.post.commentLike(commentId),
+        data: commentId,
+      });
+    },
+  });
+};
+
+export const useUnlikeComment = () => {
+  return useMutation({
+    mutationFn: async (commentId: string) => {
+      return request({
+        method: "DELETE",
+        url: ROUTES.api.post.commentLike(commentId),
+        data: commentId,
+      });
+    },
+  });
+};
