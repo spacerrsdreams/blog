@@ -29,8 +29,6 @@ export default function CommentLikeButton({
   const { mutateAsync: unlikeComment } = useUnlikeComment();
   const [isLiked, setIsLiked] = useState(isLikedByUser);
 
-  console.log(isLikedByUser);
-
   const userId = user?.id;
   const like = () => {
     setTotalCommentLikes((prev) => prev + 1);

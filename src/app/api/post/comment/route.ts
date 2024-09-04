@@ -33,7 +33,7 @@ export const GET = async (req: NextRequest) => {
         commentLikes: true,
       },
     });
-    console.log(data);
+
     if (data) {
       const payloadWithLikeStatus = data.map((comment) => ({
         ...comment,

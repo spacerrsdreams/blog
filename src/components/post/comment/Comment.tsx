@@ -18,7 +18,6 @@ type Props = {
 export default function Comment({ comment }: Props) {
   const [totalCommentLikes, setTotalCommentLikes] = useState(comment.totalLikes);
   const [isLikedByUser, _setIsLikedByUser] = useState(comment.isLikedByUser);
-  console.log(comment);
   const loggedInUser = useUser();
 
   const isCommentCreator = loggedInUser?.user?.id === comment.userId;

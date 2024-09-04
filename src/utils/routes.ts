@@ -40,9 +40,7 @@ export const ROUTES = {
       like: (postId?: string, asQuery: boolean = false) =>
         `/api/post/like${appendIfExists(postId, asQuery)}`,
       comment: (postId?: string) => `/api/post/comment${appendIfExists(postId)}`,
-      likeComment: (commentId: string) => `/api/post/comment/like/${commentId}`,
-      unlikeComment: (commentId: string) => `/api/post/comment/like/${commentId}`,
-      getLikeComments: (commentId: string) => `/api/post/comment/like/${commentId}`,
+      commentLike: (commentId: string) => `/api/post/comment/like/${commentId}`,
       view: (postId?: string) => `/api/post/view${appendIfExists(postId)}`,
       getManyComments: ({ from, to, id }: GetManyComments) => {
         const queryParams = new URLSearchParams({
