@@ -63,9 +63,30 @@ model Comments {
   post        Posts        @relation("postComments", fields: [postId], references: [id], onDelete: Cascade)
   parent      Comments?    @relation("commentReplies", fields: [parentId], references: [id])
   replies     Comments[]   @relation("commentReplies")
+  notifications Notifications[] @relation("commentNotifications") // Add this line to represent notifications for comments
   commentLikes CommentLikes[]
 
+
   @@map("comments")
+}
+
+model Notifications {
+  id          String     @id @default(uuid())
+  userId      String     
+  commentId   String?   
+  type        NotificationType
+  read        Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  user        Users      @relation("userNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  comment     Comments?  @relation("commentNotifications", fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  REPLY
+  LIKE
+  FOLLOW
 }
 
 model CommentLikes {
@@ -143,6 +164,8 @@ model Users {
   followers              Followers[]   @relation("followerUsers")
   following              Followers[]   @relation("followingUsers")
   commentLikes           CommentLikes[]   @relation("userCommentLikes")
+  notifications          Notifications[] @relation("userNotifications") // Add this line for notifications
+
   accountIsDeactivated   Boolean       @default(false)
 
   @@map("users")
