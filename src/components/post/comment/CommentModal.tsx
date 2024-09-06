@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useCommentProvider } from "./CommentProvider";
 
 export function CommentModal() {
-  const { showModal, setShowModal, commentId, setComments, setCommentsCount } =
+  const { showModal, setShowModal, currentCommentId, setComments, setCommentsCount } =
     useCommentProvider();
   const { mutateAsync: deleteCommentAsync } = useDeleteComment();
   const modalContentRef = useRef<HTMLDivElement>(null);
@@ -20,9 +20,11 @@ export function CommentModal() {
   };
   const handleDeleteClick = () => {
     setShowModal(false);
-    deleteCommentAsync({ commentId }).then(() => {
+    deleteCommentAsync({ commentId: currentCommentId }).then(() => {
       setCommentsCount((prevCount) => prevCount - 1);
-      setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId));
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== currentCommentId),
+      );
     });
   };
 

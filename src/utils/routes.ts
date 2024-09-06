@@ -8,6 +8,7 @@ type GetManyComments = {
   from: number;
   to: number;
   id: string;
+  parentId?: string;
 };
 type GetBookmarksByUsername = GetManyComments;
 

@@ -8,6 +8,9 @@ import { useState } from "react";
 
 import { formatCommentDate } from "@/utils/formatCommentDate";
 import CommentLikeButton from "@/components/post/comment/CommentLikeButton";
+import { useCommentProvider } from "@/components/post/comment/CommentProvider";
+import CommentReply from "@/components/post/comment/CommentReply";
+import CommentReplyForm from "@/components/post/comment/CommentReplyForm";
 
 import { CommentOption } from "./CommentOption";
 
@@ -16,13 +19,24 @@ type Props = {
 };
 
 export default function Comment({ comment }: Props) {
+  const {
+    inReply,
+    setInReply,
+    setCurrentCommentId,
+    currentCommentId,
+    comments,
+    viewReply,
+    setViewReply,
+  } = useCommentProvider();
   const [totalCommentLikes, setTotalCommentLikes] = useState(comment.totalLikes);
   const [isLikedByUser, _setIsLikedByUser] = useState(comment.isLikedByUser);
   const loggedInUser = useUser();
 
   const isCommentCreator = loggedInUser?.user?.id === comment.userId;
   return (
-    <div className="mx-3 flex w-full items-center gap-4">
+    <div
+      className={`flex w-full items-center gap-4 ${viewReply && comment.id === currentCommentId ? "border-l-[1px]" : ""} pl-4`}
+    >
       <div className="flex w-full flex-col gap-3">
         <div className="flex items-center gap-3">
           <Image
@@ -44,14 +58,44 @@ export default function Comment({ comment }: Props) {
           </div>
         </div>
         <span className="text-sm">{comment.content}</span>
-        <div>
-          <CommentLikeButton
-            totalCommentLikes={totalCommentLikes}
-            setTotalCommentLikes={setTotalCommentLikes}
-            commentId={comment.id}
-            isLikedByUser={isLikedByUser}
-          />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <CommentLikeButton
+              totalCommentLikes={totalCommentLikes}
+              setTotalCommentLikes={setTotalCommentLikes}
+              commentId={comment.id}
+              isLikedByUser={isLikedByUser}
+            />
+            <span
+              className="text-sm hover:cursor-pointer hover:underline"
+              onClick={() => {
+                setViewReply(!viewReply);
+                setCurrentCommentId(comment.id);
+              }}
+            >
+              {viewReply && comment.id === currentCommentId ? "Hide Replies" : "View Replies"}
+            </span>
+          </div>
+          <span
+            className="mr-7 text-sm hover:cursor-pointer hover:underline"
+            onClick={() => {
+              setCurrentCommentId(comment.id);
+              setInReply(true);
+            }}
+          >
+            Reply
+          </span>
         </div>
+        {inReply && comment.id === currentCommentId && <CommentReplyForm postId={comment.postId} />}
+        {viewReply && comment.id === currentCommentId && (
+          <div className="flex flex-col">
+            {comments
+              .filter((reply) => reply.parentId === comment.id)
+              .map((reply) => (
+                <CommentReply key={reply.id} comment={reply} />
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );

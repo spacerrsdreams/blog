@@ -7,46 +7,68 @@ import { createContext, useContext, useState, type Dispatch, type SetStateAction
 export type CommentContextType = {
   showModal: boolean;
   inEdit: boolean;
-  commentId: string;
+  inReply: boolean;
+  viewReply: boolean;
+  currentCommentId: string;
   comments: CommentWithUserProps[];
+  commentsReplies: CommentWithUserProps[];
   commentsCount: number;
   setCommentsCount: Dispatch<SetStateAction<number>>;
   setComments: Dispatch<SetStateAction<CommentWithUserProps[]>>;
+  setCommentsReplies: Dispatch<SetStateAction<CommentWithUserProps[]>>;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   setInEdit: Dispatch<SetStateAction<boolean>>;
-  setCommentId: Dispatch<SetStateAction<string>>;
+  setInReply: Dispatch<SetStateAction<boolean>>;
+  setViewReply: Dispatch<SetStateAction<boolean>>;
+  setCurrentCommentId: Dispatch<SetStateAction<string>>;
 };
 
 export const CommentContext = createContext<CommentContextType>({
   setShowModal: () => {},
   setInEdit: () => {},
-  setCommentId: () => {},
+  setInReply: () => {},
+  setViewReply: () => {},
+  setCurrentCommentId: () => {},
   setComments: () => {},
+  setCommentsReplies: () => {},
   setCommentsCount: () => {},
   commentsCount: 0,
   comments: [],
-  commentId: "",
+  commentsReplies: [],
+  currentCommentId: "",
   showModal: false,
   inEdit: false,
+  inReply: false,
+  viewReply: false,
 });
 
 export const CommentProvider = ({ children }: { children: React.ReactNode }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [inEdit, setInEdit] = useState<boolean>(false);
-  const [commentId, setCommentId] = useState<string>("");
+  const [inReply, setInReply] = useState<boolean>(false);
+  const [viewReply, setViewReply] = useState<boolean>(false);
+  const [currentCommentId, setCurrentCommentId] = useState<string>("");
   const [comments, setComments] = useState<CommentWithUserProps[]>([]);
+  const [commentsReplies, setCommentsReplies] = useState<CommentWithUserProps[]>([]);
+
   const [commentsCount, setCommentsCount] = useState(0);
 
   const value = {
     showModal,
-    commentId,
+    currentCommentId,
     inEdit,
+    inReply,
+    viewReply,
     comments,
+    commentsReplies,
     commentsCount,
     setCommentsCount,
     setComments,
+    setCommentsReplies,
     setInEdit,
-    setCommentId,
+    setInReply,
+    setViewReply,
+    setCurrentCommentId,
     setShowModal,
   };
 

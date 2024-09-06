@@ -19,11 +19,11 @@ type Props = {
 
 export function CommentOption({ commentId }: Props) {
   const [position, setPosition] = useState("bottom");
-  const { setShowModal, setCommentId, setInEdit } = useCommentProvider();
+  const { setShowModal, setCurrentCommentId, setInEdit } = useCommentProvider();
 
   const handleChange = (value: string) => {
     setPosition;
-    setCommentId(commentId);
+    setCurrentCommentId(commentId);
     value === "delete" ? setShowModal(true) : setInEdit(true);
   };
   return (
