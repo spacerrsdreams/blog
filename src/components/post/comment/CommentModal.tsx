@@ -8,8 +8,15 @@ import { Button } from "@/components/ui/button";
 import { useCommentProvider } from "./CommentProvider";
 
 export function CommentModal() {
-  const { showModal, setShowModal, commentId, setComments, setCommentsCount } =
-    useCommentProvider();
+  const {
+    showModal,
+    setShowModal,
+    currentCommentInfo,
+    setComments,
+    setCommentsReplies,
+    setCommentsCount,
+    setDeletedCommentId,
+  } = useCommentProvider();
   const { mutateAsync: deleteCommentAsync } = useDeleteComment();
   const modalContentRef = useRef<HTMLDivElement>(null);
 
@@ -18,11 +25,27 @@ export function CommentModal() {
       setShowModal(false);
     }
   };
+
   const handleDeleteClick = () => {
     setShowModal(false);
-    deleteCommentAsync({ commentId }).then(() => {
+    if (currentCommentInfo.parentId === "") {
+      deleteCommentAsync({ commentId: currentCommentInfo.rootId }).then(() => {
+        setCommentsCount((prevCount) => prevCount - 1);
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.id !== currentCommentInfo.rootId),
+        );
+      });
+      return;
+    }
+    deleteCommentAsync({ commentId: currentCommentInfo.rootId as string }).then(() => {
+      setCommentsReplies((prevReplies) =>
+        prevReplies.filter((reply) => reply.id !== currentCommentInfo.rootId),
+      );
       setCommentsCount((prevCount) => prevCount - 1);
-      setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId));
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== currentCommentInfo.rootId),
+      );
+      setDeletedCommentId(currentCommentInfo.rootId);
     });
   };
 

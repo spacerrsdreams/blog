@@ -114,6 +114,7 @@ export type CommentWithUserProps = {
   modifiedAt: Date;
   userId: string;
   postId: string;
+  parentId: string;
   user: {
     imageUrl: string;
     username: string;

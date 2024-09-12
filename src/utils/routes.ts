@@ -8,6 +8,7 @@ type GetManyComments = {
   from: number;
   to: number;
   id: string;
+  parentId?: string;
 };
 type GetBookmarksByUsername = GetManyComments;
 
@@ -49,6 +50,14 @@ export const ROUTES = {
           id,
         });
         return `/api/post/comment?${queryParams.toString()}`;
+      },
+      getCommentReplies: ({ from, to, id }: GetManyComments) => {
+        const queryParams = new URLSearchParams({
+          from: from.toString(),
+          to: to.toString(),
+          id,
+        });
+        return `/api/post/comment/reply?${queryParams.toString()}`;
       },
       bookmark: (postId?: string) => `/api/post/bookmark${appendIfExists(postId)}`,
       getBookmarksByUsername: ({ from, to, id }: GetBookmarksByUsername) => {

@@ -13,18 +13,30 @@ type Props = {
 };
 export default function CommentEditor({ content }: Props) {
   const [newContent, setNewContent] = useState("");
-  const { setInEdit, commentId, setComments } = useCommentProvider();
+  const { setInEdit, currentCommentInfo, setComments, setCommentsReplies } = useCommentProvider();
   const { mutateAsync: editCommentAsync, isPending } = useEditComment();
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setNewContent(event.target.value);
   };
   const handleSubmit = () => {
-    editCommentAsync({ commentId, content: newContent }).then(() => {
+    if (!currentCommentInfo.parentId) {
+      editCommentAsync({ commentId: currentCommentInfo.rootId, content: newContent }).then(() => {
+        setInEdit(false);
+        setComments((prevComments) =>
+          prevComments?.map((comment) =>
+            comment.id === currentCommentInfo.rootId
+              ? { ...comment, content: newContent }
+              : comment,
+          ),
+        );
+      });
+    }
+    editCommentAsync({ commentId: currentCommentInfo.rootId, content: newContent }).then(() => {
       setInEdit(false);
-      setComments((prevComments) =>
+      setCommentsReplies((prevComments) =>
         prevComments?.map((comment) =>
-          comment.id === commentId ? { ...comment, content: newContent } : comment,
+          comment.id === currentCommentInfo.rootId ? { ...comment, content: newContent } : comment,
         ),
       );
     });
