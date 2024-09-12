@@ -4,13 +4,13 @@ import type { CommentWithUserProps } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { formatCommentDate } from "@/utils/formatCommentDate";
 import CommentLikeButton from "@/components/post/comment/CommentLikeButton";
 import { useCommentProvider } from "@/components/post/comment/CommentProvider";
-import CommentReply from "@/components/post/comment/CommentReply";
 import CommentReplyForm from "@/components/post/comment/CommentReplyForm";
+import CommentReplySection from "@/components/post/comment/CommentReplySection";
 
 import { CommentOption } from "./CommentOption";
 
@@ -22,20 +22,30 @@ export default function Comment({ comment }: Props) {
   const {
     inReply,
     setInReply,
-    setCurrentCommentId,
-    currentCommentId,
-    comments,
+    setCurrentCommentInfo,
+    currentCommentInfo,
     viewReply,
     setViewReply,
+    comments,
+    deletedCommentId,
   } = useCommentProvider();
+
   const [totalCommentLikes, setTotalCommentLikes] = useState(comment.totalLikes);
   const [isLikedByUser, _setIsLikedByUser] = useState(comment.isLikedByUser);
+  const [hasReply, setHasReply] = useState(false);
   const loggedInUser = useUser();
-
   const isCommentCreator = loggedInUser?.user?.id === comment.userId;
+  const threadId = currentCommentInfo.parentId
+    ? currentCommentInfo.parentId
+    : currentCommentInfo.rootId;
+
+  useEffect(() => {
+    setHasReply(comments.some((data) => data.parentId === comment.id));
+  }, [deletedCommentId, comments.length]);
+
   return (
     <div
-      className={`flex w-full items-center gap-4 ${viewReply && comment.id === currentCommentId ? "border-l-[1px]" : ""} pl-4`}
+      className={`flex w-full items-center gap-4 ${viewReply && comment.id === threadId && hasReply ? "border-l-[1px]" : ""} pl-4`}
     >
       <div className="flex w-full flex-col gap-3">
         <div className="flex items-center gap-3">
@@ -66,36 +76,40 @@ export default function Comment({ comment }: Props) {
               commentId={comment.id}
               isLikedByUser={isLikedByUser}
             />
-            <span
-              className="text-sm hover:cursor-pointer hover:underline"
-              onClick={() => {
-                setViewReply(!viewReply);
-                setCurrentCommentId(comment.id);
-              }}
-            >
-              {viewReply && comment.id === currentCommentId ? "Hide Replies" : "View Replies"}
-            </span>
+            {hasReply && (
+              <span
+                className="text-sm hover:cursor-pointer hover:underline"
+                onClick={() => {
+                  viewReply && comment.id === currentCommentInfo.rootId
+                    ? setViewReply(false)
+                    : setViewReply(true);
+                  setCurrentCommentInfo({ rootId: comment.id });
+                }}
+              >
+                {viewReply && comment.id === currentCommentInfo.rootId
+                  ? "Hide Replies"
+                  : "View Replies"}
+              </span>
+            )}
           </div>
           <span
             className="mr-7 text-sm hover:cursor-pointer hover:underline"
             onClick={() => {
-              setCurrentCommentId(comment.id);
+              setCurrentCommentInfo({ rootId: comment.id });
               setInReply(true);
             }}
           >
             Reply
           </span>
         </div>
-        {inReply && comment.id === currentCommentId && <CommentReplyForm postId={comment.postId} />}
-        {viewReply && comment.id === currentCommentId && (
-          <div className="flex flex-col">
-            {comments
-              .filter((reply) => reply.parentId === comment.id)
-              .map((reply) => (
-                <CommentReply key={reply.id} comment={reply} />
-              ))}
-          </div>
+        {inReply && comment.id === currentCommentInfo.rootId && (
+          <CommentReplyForm
+            postId={comment.postId}
+            commentId={comment.id}
+            setHasReply={setHasReply}
+          />
         )}
+        {viewReply && comment.id === threadId && <CommentReplySection commentId={comment.id} />}
       </div>
     </div>
   );

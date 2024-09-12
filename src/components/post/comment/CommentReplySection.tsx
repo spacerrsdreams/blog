@@ -2,33 +2,31 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { useGetComments } from "@/services/post/comment";
-import NotFound from "@/components/post/comment/NotFound";
+import { useGetCommentReplies } from "@/services/post/reply";
+import CommentEditor from "@/components/post/comment/CommentEditor";
 
-import CommentEditor from "./CommentEditor";
 import { useCommentProvider } from "./CommentProvider";
 import CommentReply from "./CommentReply";
 import { CommentSkeleton } from "./CommentSkeleton";
 
 type Props = {
-  postId: string;
+  commentId: string;
 };
 const POST_LOADING_LIMIT = 10;
-export default function CommentSection({ postId }: Props) {
-  const { mutateAsync: fetchComments, isPending, error } = useGetComments();
-  const { inEdit, currentCommentId, setComments, setCommentsReplies, commentsReplies } =
+export default function CommentReplySection({ commentId }: Props) {
+  const { mutateAsync: fetchComments, isPending, error } = useGetCommentReplies();
+  const { setComments, setCommentsReplies, commentsReplies, currentCommentInfo, inEdit } =
     useCommentProvider();
   const loader = useRef(null);
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
 
   const [hasMore, setHasMore] = useState(true);
-  console.log(commentsReplies);
 
   useEffect(() => {
     setCommentsReplies([]);
     setHasMore(true);
-    fetchComments({ from: 0, to: POST_LOADING_LIMIT, id: postId }).then((newReplies) => {
+    fetchComments({ from: 0, to: POST_LOADING_LIMIT, id: commentId }).then((newReplies) => {
       setCommentsReplies(newReplies);
       setHasMore(newReplies.length > 0);
       setInitialCallIsLoading(false);
@@ -37,7 +35,7 @@ export default function CommentSection({ postId }: Props) {
 
   useEffect(() => {
     if (hasMore && !isPending && !initialCallIsLoading) {
-      fetchComments({ ...dynamicScroll, id: postId }).then((newReplies) => {
+      fetchComments({ ...dynamicScroll, id: commentId }).then((newReplies) => {
         setComments((prevReplies) => [...prevReplies, ...newReplies]);
         setHasMore(newReplies.length > 0);
       });
@@ -67,26 +65,24 @@ export default function CommentSection({ postId }: Props) {
       }
     };
   }, [loader, isPending, hasMore]);
+
   return (
     <>
-      <div className="mt-8 flex flex-col gap-6 overflow-y-auto">
+      <div className="flex flex-col">
         {commentsReplies?.map((reply) => {
-          console.log(reply);
-          if (reply.parentId === null) return;
           return (
             <div key={reply.id}>
-              {inEdit && reply.id === currentCommentId ? (
+              {inEdit && reply.id === currentCommentInfo.rootId ? (
                 <CommentEditor content={reply.content} />
               ) : (
-                <CommentReply comment={reply} />
+                <CommentReply key={reply.id} comment={reply} />
               )}
-              <div className="mt-4 w-full border-[0.5px] border-gray-300"></div>
             </div>
           );
         })}
       </div>
+
       {!error && commentsReplies.length > 0 && <div ref={loader} />}
-      {!isPending && commentsReplies.length === 0 && <NotFound />}
 
       {isPending && (
         <div className="flex flex-col gap-12">

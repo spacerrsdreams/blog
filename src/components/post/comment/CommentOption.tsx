@@ -15,16 +15,23 @@ import { useCommentProvider } from "./CommentProvider";
 
 type Props = {
   commentId: string;
+  parentId?: string;
 };
 
-export function CommentOption({ commentId }: Props) {
+export function CommentOption({ commentId, parentId }: Props) {
   const [position, setPosition] = useState("bottom");
-  const { setShowModal, setCurrentCommentId, setInEdit } = useCommentProvider();
 
-  const handleChange = (value: string) => {
+  const { setShowModal, setInEdit, setCurrentCommentInfo } = useCommentProvider();
+
+  const handleDelete = () => {
     setPosition;
-    setCurrentCommentId(commentId);
-    value === "delete" ? setShowModal(true) : setInEdit(true);
+    setShowModal(true);
+    setCurrentCommentInfo({ rootId: commentId, parentId });
+  };
+  const handleEdit = () => {
+    setPosition;
+    setCurrentCommentInfo({ rootId: commentId, parentId });
+    setInEdit(true);
   };
   return (
     <DropdownMenu>
@@ -34,7 +41,12 @@ export function CommentOption({ commentId }: Props) {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuRadioGroup value={position} onValueChange={handleChange}>
+        <DropdownMenuRadioGroup
+          value={position}
+          onValueChange={(val) => {
+            val === "delete" ? handleDelete() : handleEdit();
+          }}
+        >
           <DropdownMenuRadioItem className="cursor-pointer p-4" value="edit">
             <div className="flex items-center gap-5 font-medium">
               <Icons.edit />

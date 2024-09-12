@@ -8,18 +8,18 @@ import { useState } from "react";
 
 import { formatCommentDate } from "@/utils/formatCommentDate";
 import CommentLikeButton from "@/components/post/comment/CommentLikeButton";
-import { useCommentProvider } from "@/components/post/comment/CommentProvider";
-import CommentReplyForm from "@/components/post/comment/CommentReplyForm";
+import { CommentOption } from "@/components/post/comment/CommentOption";
 
-import { CommentOption } from "./CommentOption";
+//import { useCommentProvider } from "@/components/post/comment/CommentProvider";
+//import CommentReplyForm from "@/components/post/comment/CommentReplyForm";
 
 type Props = {
   comment: CommentWithUserProps;
 };
 
 export default function CommentReply({ comment }: Props) {
-  console.log(comment);
-  const { inReply, currentCommentId } = useCommentProvider();
+  // const { inReply, currentCommentId } = useCommentProvider();
+
   const [totalCommentLikes, setTotalCommentLikes] = useState(comment.totalLikes);
   const [isLikedByUser, _setIsLikedByUser] = useState(comment.isLikedByUser);
   const loggedInUser = useUser();
@@ -46,7 +46,9 @@ export default function CommentReply({ comment }: Props) {
               </span>
             </div>
             <div className="-translate-x-6">
-              {isCommentCreator && <CommentOption commentId={comment.id} />}
+              {isCommentCreator && (
+                <CommentOption commentId={comment.id} parentId={comment.parentId} />
+              )}
             </div>
           </div>
           <div className="absolute -left-[34px] bottom-[18px] h-5 w-7 rounded-bl-lg border-b-[1px] border-l-2"></div>
@@ -60,7 +62,7 @@ export default function CommentReply({ comment }: Props) {
             isLikedByUser={isLikedByUser}
           />
         </div>
-        {inReply && comment.id === currentCommentId && <CommentReplyForm postId={comment.postId} />}
+        {/* {inReply && comment.id === currentCommentId && <CommentReplyForm postId={comment.postId} commentId={comment.id} />} */}
       </div>
     </div>
   );

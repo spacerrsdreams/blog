@@ -16,7 +16,7 @@ type Props = {
 const POST_LOADING_LIMIT = 10;
 export default function CommentSection({ postId }: Props) {
   const { mutateAsync: fetchComments, isPending, error } = useGetComments();
-  const { inEdit, currentCommentId, comments, setComments } = useCommentProvider();
+  const { inEdit, currentCommentInfo, comments, setComments } = useCommentProvider();
   const loader = useRef(null);
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
@@ -64,6 +64,7 @@ export default function CommentSection({ postId }: Props) {
       }
     };
   }, [loader, isPending, hasMore]);
+
   return (
     <>
       <div className="mt-8 flex flex-col gap-6 overflow-y-auto">
@@ -71,11 +72,12 @@ export default function CommentSection({ postId }: Props) {
           if (comment.parentId !== null) return;
           return (
             <div key={comment.id}>
-              {inEdit && comment.id === currentCommentId ? (
+              {inEdit && comment.id === currentCommentInfo.rootId ? (
                 <CommentEditor content={comment.content} />
               ) : (
                 <Comment comment={comment} />
               )}
+
               <div className="mt-4 w-full border-[0.5px] border-gray-300"></div>
             </div>
           );

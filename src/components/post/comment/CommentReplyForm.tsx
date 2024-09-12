@@ -5,7 +5,7 @@ import type { CommentWithUserProps } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
-import { useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent, type Dispatch, type SetStateAction } from "react";
 
 import { useCreateComment } from "@/services/post/comment";
 import { useCommentProvider } from "@/components/post/comment/CommentProvider";
@@ -15,12 +15,15 @@ import { Textarea } from "@/components/ui/textarea";
 
 type Props = {
   postId: string;
+  commentId: string;
+  setHasReply: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function CommentCreator({ postId }: Props) {
+export default function CommentCreator({ postId, commentId, setHasReply }: Props) {
   const [content, setContent] = useState("");
   const addCommentData = useCreateComment();
-  const { setComments, setInReply, setCommentsCount, currentCommentId } = useCommentProvider();
+  const { setCommentsReplies, setInReply, setCommentsCount, viewReply, setViewReply, setComments } =
+    useCommentProvider();
   const { isSignedIn, user } = useUser();
   const { setOpenModal } = usePopupProvider();
   const handleClick = async () => {
@@ -31,8 +34,18 @@ export default function CommentCreator({ postId }: Props) {
       return;
     }
 
-    addCommentData.mutateAsync({ postId, content, parentId: currentCommentId }).then((data) => {
+    addCommentData.mutateAsync({ postId, content, parentId: commentId }).then((data) => {
       setCommentsCount((prevCount) => prevCount + 1);
+      setCommentsReplies((prevComments) => [
+        ...prevComments,
+        {
+          ...data.data,
+          user: {
+            imageUrl: user.imageUrl || "",
+            username: user.username || "",
+          },
+        } as CommentWithUserProps,
+      ]);
       setComments((prevComments) => [
         ...prevComments,
         {
@@ -43,7 +56,9 @@ export default function CommentCreator({ postId }: Props) {
           },
         } as CommentWithUserProps,
       ]);
+      setHasReply(true);
       setInReply(false);
+      if (!viewReply) setViewReply(true);
     });
   };
 
