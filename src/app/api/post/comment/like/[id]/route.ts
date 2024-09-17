@@ -15,12 +15,33 @@ export const POST = async (_req: NextRequest, { params }: { params: { id: string
     if (!userId) {
       return handleError(ERROR_MESSAGES[ERROR_CODES.USER_IS_NOT_AUTHENTICATED]);
     }
-
-    await database.commentLikes.create({
+    const currentComment = await database.comments.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!currentComment) {
+      return NextResponse.json({ data: null }, { status: 200 });
+    }
+    const createCommentLike = database.commentLikes.create({
       data: {
         commentId: id,
         userId,
       },
+    });
+
+    await database.$transaction(async (transaction) => {
+      Promise.all([currentComment, createCommentLike]);
+
+      if (userId !== currentComment.userId) {
+        await transaction.notifications.create({
+          data: {
+            userId,
+            addresseeId: currentComment.userId,
+            type: "LIKE",
+          },
+        });
+      }
     });
 
     return NextResponse.json({ message: "Post liked successfully." }, { status: 201 });

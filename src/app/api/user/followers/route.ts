@@ -32,11 +32,23 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "User is already following" }, { status: 400 });
     }
 
-    const newFollow = await database.followers.create({
+    const newFollow = database.followers.create({
       data: {
         followerId: userId,
         followingId: followingUserId,
       },
+    });
+
+    const updateNotifications = database.notifications.create({
+      data: {
+        userId,
+        addresseeId: followingUserId,
+        type: "FOLLOW",
+      },
+    });
+
+    await database.$transaction(async () => {
+      Promise.all([newFollow, updateNotifications]);
     });
 
     return NextResponse.json(newFollow, { status: 201 });

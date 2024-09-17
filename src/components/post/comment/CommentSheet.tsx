@@ -11,14 +11,14 @@ import { CommentProvider } from "./CommentProvider";
 import CommentSection from "./CommentSection";
 
 export default function CommentSheet() {
-  const { totalComments, postId } = usePostContext();
+  const { totalComments, postId, author } = usePostContext();
   return (
     <CommentProvider>
       <Sheet>
         <CommentSheetTrigger initialCount={totalComments} />
         <SheetContent className="w-full overflow-x-scroll md:w-[24rem]">
           <CommentSheetHeader initialCount={totalComments} />
-          <CommentForm postId={postId} />
+          <CommentForm postId={postId} postAuthor={author.id} />
           <CommentSection postId={postId} />
           <div className="flex w-full justify-center text-center">
             <CommentModal />

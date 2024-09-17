@@ -15,8 +15,9 @@ import { Textarea } from "@/components/ui/textarea";
 
 type Props = {
   postId: string;
+  postAuthor: string;
 };
-export default function CommentCreator({ postId }: Props) {
+export default function CommentForm({ postId, postAuthor }: Props) {
   const [content, setContent] = useState("");
   const addCommentData = useCreateComment();
   const { setComments, setCommentsCount } = useCommentProvider();
@@ -31,7 +32,7 @@ export default function CommentCreator({ postId }: Props) {
       return;
     }
 
-    addCommentData.mutateAsync({ postId, content }).then((data) => {
+    addCommentData.mutateAsync({ postId, content, postAuthor }).then((data) => {
       setCommentsCount((prevCount) => prevCount + 1);
       setComments((prevComments) => [
         ...prevComments,

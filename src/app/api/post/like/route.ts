@@ -15,9 +15,9 @@ export const POST = async (req: NextRequest) => {
     }
 
     const body = await req.json();
-    const { postId, userLikes } = LikeRequestSchema.parse(body);
+    const { postId, userLikes, authorId } = LikeRequestSchema.parse(body);
 
-    await database.posts.update({
+    const updatePost = database.posts.update({
       where: { id: postId },
       data: {
         likeCount: {
@@ -26,7 +26,7 @@ export const POST = async (req: NextRequest) => {
       },
     });
 
-    await database.likes.upsert({
+    const updateLikes = database.likes.upsert({
       where: {
         userId_postId: {
           userId,
@@ -43,6 +43,20 @@ export const POST = async (req: NextRequest) => {
         postId,
         likeCount: userLikes,
       },
+    });
+
+    await database.$transaction(async (transaction) => {
+      Promise.all([updatePost, updateLikes]);
+
+      if (userId !== authorId) {
+        await transaction.notifications.create({
+          data: {
+            userId,
+            addresseeId: authorId,
+            type: "LIKE",
+          },
+        });
+      }
     });
 
     revalidatePath(ROUTES.root, "page");

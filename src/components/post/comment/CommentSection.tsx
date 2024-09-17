@@ -20,7 +20,7 @@ export default function CommentSection({ postId }: Props) {
   const loader = useRef(null);
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
-
+  console.log(comments);
   const [hasMore, setHasMore] = useState(true);
   useEffect(() => {
     setComments([]);

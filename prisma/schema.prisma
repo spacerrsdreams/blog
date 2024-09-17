@@ -72,7 +72,8 @@ model Comments {
 
 model Notifications {
   id          String     @id @default(uuid())
-  userId      String     
+  userId      String   
+  addresseeId String  
   commentId   String?   
   type        NotificationType
   read        Boolean    @default(false)
@@ -84,7 +85,8 @@ model Notifications {
 }
 
 enum NotificationType {
-  REPLY
+  COMMENT
+  POST
   LIKE
   FOLLOW
 }
