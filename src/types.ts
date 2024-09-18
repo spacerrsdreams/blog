@@ -102,13 +102,16 @@ export type NotificationPayload = {
   userId: string;
   addresseeId: string;
   commentId: string | null;
-  type: "POST" | "FOLLOW" | "LIKE" | "COMMENT";
+  type: "POST" | "FOLLOW" | "LIKE" | "COMMENT" | "COMMENT_LIKE";
   read: boolean;
   createdAt: Date;
   user: {
     username: string;
     imageUrl: string;
   };
+  post: {
+    slug: string;
+  } | null;
 } | null;
 
 export type UserBasicInfoT = Omit<

@@ -32,7 +32,7 @@ model Posts {
   bookmarks     Bookmarks[] @relation("postBookmarks")
   likeCount     Int        @default(0)
   viewCount     Int        @default(0)
-
+  notifications Notifications[] @relation("postNotifications")
   @@map("posts")
 }
 
@@ -74,12 +74,14 @@ model Notifications {
   id          String     @id @default(uuid())
   userId      String   
   addresseeId String  
-  commentId   String?   
+  commentId   String?
+  postId      String?   
   type        NotificationType
   read        Boolean    @default(false)
   createdAt   DateTime   @default(now())
   user        Users      @relation("userNotifications", fields: [userId], references: [id], onDelete: Cascade)
   comment     Comments?  @relation("commentNotifications", fields: [commentId], references: [id], onDelete: Cascade)
+  post        Posts?  @relation("postNotifications", fields: [postId], references: [id], onDelete: Cascade)
 
   @@map("notifications")
 }
@@ -88,6 +90,7 @@ enum NotificationType {
   COMMENT
   POST
   LIKE
+  COMMENT_LIKE
   FOLLOW
 }
 

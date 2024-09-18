@@ -1,41 +1,54 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { formatCommentDate } from "@/utils/formatCommentDate";
 import { Icons } from "@/components/shared/Icons"; // Assuming you have icons like clapDark, followIcon, etc.
 
-type NotificationType = "FOLLOW" | "COMMENT" | "LIKE" | "POST";
+type NotificationType = "FOLLOW" | "COMMENT" | "LIKE" | "COMMENT_LIKE" | "POST";
 
 interface Props {
   userName: string | undefined;
   userImage: string | undefined;
   actionType: NotificationType | undefined;
   createdAt: Date | undefined;
+  slug: string | undefined;
 }
 
-export function NotificationText({ userName, userImage, actionType, createdAt }: Props) {
+export function NotificationText({ userName, userImage, actionType, createdAt, slug }: Props) {
   if (!userName || !actionType || !createdAt) return null;
 
   const timeAgo = formatCommentDate(new Date(createdAt));
 
   let actionText = "";
   let ActionIcon = null;
-
+  let redirectAddress = "";
   switch (actionType) {
     case "FOLLOW":
       actionText = "started following you";
       ActionIcon = Icons.notificationFollow;
+      redirectAddress = `${process.env.NEXT_PUBLIC_BASE_URL}/author/${userName}`;
       break;
     case "COMMENT":
       actionText = "commented on your post";
       ActionIcon = Icons.notificationMessage;
+      redirectAddress = `${process.env.NEXT_PUBLIC_BASE_URL}/article/${slug}`;
+
       break;
     case "LIKE":
       actionText = "liked your post";
       ActionIcon = Icons.notificationClapDark;
+      redirectAddress = `${process.env.NEXT_PUBLIC_BASE_URL}/article/${slug}`;
       break;
+    case "COMMENT_LIKE":
+      actionText = "liked your comment";
+      ActionIcon = Icons.notificationClapDark;
+      redirectAddress = `${process.env.NEXT_PUBLIC_BASE_URL}/article/${slug}`;
+      break;
+
     case "POST":
       actionText = "created a new post";
       ActionIcon = Icons.notificationPost;
+      redirectAddress = `${process.env.NEXT_PUBLIC_BASE_URL}/article/${slug}`;
       break;
     default:
       actionText = "Unknown action";
@@ -58,13 +71,13 @@ export function NotificationText({ userName, userImage, actionType, createdAt }:
           </div>
         )}
       </div>
-      <div className="flex flex-col">
+      <Link href={redirectAddress} className="flex flex-col">
         <span className="flex gap-1">
           <span className="font-bold">{userName}</span>
           {actionText}
         </span>
         <span className="text-xs text-gray-500">{timeAgo}</span>
-      </div>
+      </Link>
     </div>
   );
 }

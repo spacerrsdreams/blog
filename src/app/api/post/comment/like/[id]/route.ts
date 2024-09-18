@@ -37,8 +37,9 @@ export const POST = async (_req: NextRequest, { params }: { params: { id: string
         await transaction.notifications.create({
           data: {
             userId,
+            postId: currentComment.postId,
             addresseeId: currentComment.userId,
-            type: "LIKE",
+            type: "COMMENT_LIKE",
           },
         });
       }

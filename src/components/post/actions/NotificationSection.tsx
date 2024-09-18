@@ -20,7 +20,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function NotificationSection() {
-  const POST_LOADING_LIMIT = 1;
+  const POST_LOADING_LIMIT = 10;
   const loader = useRef(null);
   const [position, setPosition] = useState("bottom");
   const [notifications, setNotifications] = useState<NotificationPayload[]>([]);
@@ -28,10 +28,11 @@ export default function NotificationSection() {
   const { mutateAsync: getNotifications, isPending, error } = useGetNotifications();
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
-  const [clicked, setClicked] = useState(false); // Track if the button was clicked
+  const [open, setOpen] = useState(false); // Track if the button was clicked
+  const [initialClick, setInitialClick] = useState(false);
 
   useEffect(() => {
-    if (clicked) {
+    if (initialClick) {
       setNotifications([]);
       setHasMore(true);
 
@@ -41,7 +42,7 @@ export default function NotificationSection() {
         setInitialCallIsLoading(false);
       });
     }
-  }, [clicked]);
+  }, [initialClick]);
 
   useEffect(() => {
     if (hasMore && !isPending && !initialCallIsLoading) {
@@ -81,13 +82,15 @@ export default function NotificationSection() {
   return (
     <div className="flex flex-col gap-6">
       <DropdownMenu
+        open={open}
         onOpenChange={() => {
-          setClicked(true);
+          setInitialClick(true);
+          setOpen(!open);
         }}
       >
         <DropdownMenuTrigger asChild>
           {isSignedIn && (
-            <span onClick={() => setClicked(true)}>
+            <span onClick={() => setOpen(true)}>
               <Icons.notification />
             </span>
           )}
@@ -100,11 +103,13 @@ export default function NotificationSection() {
               {notifications?.map((notification) => {
                 return (
                   <DropdownMenuRadioItem
+                    onClick={() => setOpen(false)}
                     className="cursor-pointer pl-0"
                     key={notification?.id}
                     value="top"
                   >
                     <NotificationText
+                      slug={notification?.post?.slug}
                       userImage={notification?.user.imageUrl}
                       userName={notification?.user.username}
                       actionType={notification?.type}

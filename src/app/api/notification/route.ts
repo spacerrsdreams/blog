@@ -30,6 +30,11 @@ export const GET = async (req: NextRequest) => {
             imageUrl: true,
           },
         },
+        post: {
+          select: {
+            slug: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",

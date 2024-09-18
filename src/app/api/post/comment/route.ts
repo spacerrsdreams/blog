@@ -78,6 +78,7 @@ export const POST = async (req: NextRequest) => {
         await transaction.notifications.create({
           data: {
             userId: user.userId,
+            postId,
             addresseeId: postAuthor as string,
             type: "COMMENT",
           },

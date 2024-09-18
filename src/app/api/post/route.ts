@@ -125,6 +125,7 @@ export const POST = async (req: NextRequest) => {
         return transaction.notifications.create({
           data: {
             userId: userId,
+            postId: newPost.id,
             addresseeId: follower.followerId,
             type: "POST",
           },

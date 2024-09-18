@@ -52,6 +52,7 @@ export const POST = async (req: NextRequest) => {
         await transaction.notifications.create({
           data: {
             userId,
+            postId,
             addresseeId: authorId,
             type: "LIKE",
           },
