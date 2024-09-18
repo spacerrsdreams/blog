@@ -4,9 +4,10 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 import { ROUTES } from "@/utils/routes";
-import { siteConfig } from "@/config/siteConfig";
+//import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import { MainNavigation } from "@/components/header/MainvNavigation";
+import NotificationSection from "@/components/post/actions/NotificationSection";
 import { Icons } from "@/components/shared/Icons";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -31,24 +32,7 @@ export default function Header() {
                 <span className="text-muted-foreground">Write</span>
               </div>
             </Link>
-            <Link
-              href={siteConfig.links.twitter}
-              className="hidden md:flex"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <div
-                className={cn(
-                  buttonVariants({
-                    variant: "ghost",
-                  }),
-                  "w-9 px-0",
-                )}
-              >
-                <Icons.twitter className="h-3 w-3 fill-current" />
-                <span className="sr-only">Twitter</span>
-              </div>
-            </Link>
+            <NotificationSection />
             <div className="ml-2 flex items-center">
               <SignedOut>
                 <SignInButton>

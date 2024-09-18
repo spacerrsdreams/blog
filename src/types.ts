@@ -97,6 +97,20 @@ export type UserPayload = {
   unsafeMetadata: Prisma.JsonValue;
 } | null;
 
+export type NotificationPayload = {
+  id: string;
+  userId: string;
+  addresseeId: string;
+  commentId: string | null;
+  type: "POST" | "FOLLOW" | "LIKE" | "COMMENT";
+  read: boolean;
+  createdAt: Date;
+  user: {
+    username: string;
+    imageUrl: string;
+  };
+} | null;
+
 export type UserBasicInfoT = Omit<
   User,
   | "emailAddresses"

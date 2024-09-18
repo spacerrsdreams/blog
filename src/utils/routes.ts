@@ -10,6 +10,10 @@ type GetManyComments = {
   id: string;
   parentId?: string;
 };
+type GetNotifications = {
+  from: number;
+  to: number;
+};
 type GetBookmarksByUsername = GetManyComments;
 
 const appendIfExists = (arg?: string, asQuery: boolean = false) => {
@@ -79,6 +83,15 @@ export const ROUTES = {
     },
     image: {
       upload: "/api/image/upload",
+    },
+    notification: {
+      getNotifications: ({ from, to }: GetNotifications) => {
+        const queryParams = new URLSearchParams({
+          from: from.toString(),
+          to: to.toString(),
+        });
+        return `/api/notification/?${queryParams.toString()}`;
+      },
     },
   },
 };
