@@ -7,14 +7,23 @@ import { Icons } from "@/components/shared/Icons"; // Assuming you have icons li
 type NotificationType = "FOLLOW" | "COMMENT" | "LIKE" | "COMMENT_LIKE" | "POST";
 
 interface Props {
+  id: string | undefined;
   userName: string | undefined;
   userImage: string | undefined;
   actionType: NotificationType | undefined;
   createdAt: Date | undefined;
   slug: string | undefined;
+  read: boolean | undefined;
 }
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-export function NotificationText({ userName, userImage, actionType, createdAt, slug }: Props) {
+export function NotificationText({
+  userName,
+  userImage,
+  actionType,
+  createdAt,
+  slug,
+  read,
+}: Props) {
   if (!userName || !actionType || !createdAt) return null;
 
   const timeAgo = formatCommentDate(new Date(createdAt));
@@ -55,7 +64,7 @@ export function NotificationText({ userName, userImage, actionType, createdAt, s
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex w-full items-center gap-2">
       <div className="relative">
         <Image
           alt={`${userName}'s profile picture`}
@@ -71,12 +80,18 @@ export function NotificationText({ userName, userImage, actionType, createdAt, s
           </div>
         )}
       </div>
-      <Link href={redirectAddress} className="flex flex-col">
-        <span className="flex gap-1">
-          <span className="font-bold">{userName}</span>
-          {actionText}
-        </span>
-        <span className="text-xs text-gray-500">{timeAgo}</span>
+      <Link href={redirectAddress} className="flex w-full flex-col">
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="text-md flex gap-1">
+              <span className="text-md font-bold">{userName}</span>
+              {actionText}
+            </span>
+            <span className="text-xs text-gray-500">{timeAgo}</span>
+          </div>
+
+          {!read && <div className="mr-4 h-3 w-3 rounded-full bg-[#0866ff]"></div>}
+        </div>
       </Link>
     </div>
   );

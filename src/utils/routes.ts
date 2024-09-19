@@ -92,6 +92,7 @@ export const ROUTES = {
         });
         return `/api/notification/?${queryParams.toString()}`;
       },
+      updateNotificationStatus: (id?: string) => `api/notification/${appendIfExists(id)}`,
     },
   },
 };

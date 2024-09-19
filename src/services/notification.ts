@@ -16,3 +16,15 @@ export const useGetNotifications = () => {
     },
   });
 };
+
+export const UpdateNotificationStatus = () => {
+  return useMutation({
+    mutationFn: async (id: string | undefined) => {
+      return request({
+        url: ROUTES.api.notification.updateNotificationStatus(id),
+        method: "PATCH",
+        data: { id },
+      });
+    },
+  });
+};

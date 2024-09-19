@@ -86,3 +86,7 @@ body {
   font-family: var(--font-sans);
   padding-left: 0;
 }
+
+.notification:hover path {
+  stroke: black;
+}

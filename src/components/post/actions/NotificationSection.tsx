@@ -4,7 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
 
 import { NotificationText } from "@/utils/NotificationText";
-import { useGetNotifications } from "@/services/notification";
+import { UpdateNotificationStatus, useGetNotifications } from "@/services/notification";
 import { Icons } from "@/components/shared/Icons";
 import {
   DropdownMenu,
@@ -26,10 +26,18 @@ export default function NotificationSection() {
   const { mutateAsync: getNotifications, isPending, error } = useGetNotifications();
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
-  const [open, setOpen] = useState(false); // Track if the button was clicked
+  const [open, setOpen] = useState(false);
   const [initialClick, setInitialClick] = useState(false);
+  const { mutateAsync: updateNotificationStatus } = UpdateNotificationStatus();
+  const [hasMoreNotifications, setHasMoreNotifications] = useState(false);
 
   const { isSignedIn } = useUser();
+
+  useEffect(() => {
+    getNotifications({ from: 0, to: POST_LOADING_LIMIT }).then((newNotifications) => {
+      setHasMoreNotifications(newNotifications.some((not) => not?.read === false));
+    });
+  }, [notifications]);
 
   useEffect(() => {
     if (initialClick) {
@@ -88,6 +96,21 @@ export default function NotificationSection() {
     };
   }, [loader, isPending, hasMore]);
 
+  const handleItemClick = (id: string) => {
+    setOpen(false);
+    const currentNotification = notifications.find((notification) => notification?.id === id);
+
+    if (currentNotification && !currentNotification.read) {
+      updateNotificationStatus(id).then(() => {
+        setNotifications((prevNotifications) =>
+          prevNotifications.map((notification) =>
+            notification?.id === id ? { ...notification, read: true } : notification,
+          ),
+        );
+      });
+    }
+  };
+  console.log(hasMoreNotifications);
   return (
     <div className="flex flex-col gap-6">
       <DropdownMenu
@@ -97,10 +120,10 @@ export default function NotificationSection() {
           setOpen(!open);
         }}
       >
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger className="cursor-pointer" asChild>
           {isSignedIn && (
             <span onClick={() => setOpen(true)}>
-              <Icons.notification />
+              <Icons.notification fill={`${hasMoreNotifications ? "black" : "none"}`} />
             </span>
           )}
         </DropdownMenuTrigger>
@@ -109,15 +132,17 @@ export default function NotificationSection() {
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
             <div>
-              {notifications?.map((notification) => (
+              {notifications.map((notification) => (
                 <DropdownMenuRadioItem
-                  onClick={() => setOpen(false)}
+                  onClick={() => handleItemClick(notification?.id as string)}
                   className="cursor-pointer pl-0"
                   key={notification?.id}
                   value="top"
                 >
                   <NotificationText
+                    id={notification?.id}
                     slug={notification?.post?.slug}
+                    read={notification?.read}
                     userImage={notification?.user.imageUrl}
                     userName={notification?.user.username}
                     actionType={notification?.type}
