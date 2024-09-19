@@ -10,7 +10,7 @@
   "arrowParens": "always",
   "endOfLine": "lf",
   "importOrder": [
-    "<THIRD_PARTY_MODULES>",
+    "<THIRD_PARTY_MODULES>",  
     "",
     "next",
     "react",
