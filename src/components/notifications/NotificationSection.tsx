@@ -3,8 +3,8 @@ import { type NotificationPayload } from "@/types";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
 
-import { NotificationText } from "@/utils/NotificationText";
 import { UpdateNotificationStatus, useGetNotifications } from "@/services/notification";
+import { NotificationText } from "@/components/notifications/NotificationItem";
 import { Icons } from "@/components/shared/Icons";
 import {
   DropdownMenu,

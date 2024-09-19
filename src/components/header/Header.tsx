@@ -7,7 +7,7 @@ import { ROUTES } from "@/utils/routes";
 //import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import { MainNavigation } from "@/components/header/MainvNavigation";
-import NotificationSection from "@/components/post/actions/NotificationSection";
+import NotificationSection from "@/components/notifications/NotificationSection";
 import { Icons } from "@/components/shared/Icons";
 import { buttonVariants } from "@/components/ui/button";
 
