@@ -1,5 +1,3 @@
-"use client";
-
 import { type NotificationPayload } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
@@ -31,6 +29,8 @@ export default function NotificationSection() {
   const [open, setOpen] = useState(false); // Track if the button was clicked
   const [initialClick, setInitialClick] = useState(false);
 
+  const { isSignedIn } = useUser();
+
   useEffect(() => {
     if (initialClick) {
       setNotifications([]);
@@ -52,6 +52,17 @@ export default function NotificationSection() {
       });
     }
   }, [dynamicScroll]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getNotifications({ from: 0, to: POST_LOADING_LIMIT }).then((newNotifications) => {
+        setNotifications(newNotifications);
+        setHasMore(newNotifications.length > 0);
+      });
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [getNotifications]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -77,8 +88,6 @@ export default function NotificationSection() {
     };
   }, [loader, isPending, hasMore]);
 
-  const { isSignedIn } = useUser();
-
   return (
     <div className="flex flex-col gap-6">
       <DropdownMenu
@@ -100,24 +109,22 @@ export default function NotificationSection() {
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
             <div>
-              {notifications?.map((notification) => {
-                return (
-                  <DropdownMenuRadioItem
-                    onClick={() => setOpen(false)}
-                    className="cursor-pointer pl-0"
-                    key={notification?.id}
-                    value="top"
-                  >
-                    <NotificationText
-                      slug={notification?.post?.slug}
-                      userImage={notification?.user.imageUrl}
-                      userName={notification?.user.username}
-                      actionType={notification?.type}
-                      createdAt={notification?.createdAt}
-                    />
-                  </DropdownMenuRadioItem>
-                );
-              })}
+              {notifications?.map((notification) => (
+                <DropdownMenuRadioItem
+                  onClick={() => setOpen(false)}
+                  className="cursor-pointer pl-0"
+                  key={notification?.id}
+                  value="top"
+                >
+                  <NotificationText
+                    slug={notification?.post?.slug}
+                    userImage={notification?.user.imageUrl}
+                    userName={notification?.user.username}
+                    actionType={notification?.type}
+                    createdAt={notification?.createdAt}
+                  />
+                </DropdownMenuRadioItem>
+              ))}
               {!isPending && notifications?.length === 0 && <span>not found</span>}
 
               {!error && notifications?.length > 0 && <div ref={loader} />}

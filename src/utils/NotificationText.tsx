@@ -13,7 +13,7 @@ interface Props {
   createdAt: Date | undefined;
   slug: string | undefined;
 }
-
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export function NotificationText({ userName, userImage, actionType, createdAt, slug }: Props) {
   if (!userName || !actionType || !createdAt) return null;
 
@@ -26,23 +26,23 @@ export function NotificationText({ userName, userImage, actionType, createdAt, s
     case "FOLLOW":
       actionText = "started following you";
       ActionIcon = Icons.notificationFollow;
-      redirectAddress = `${process.env.NEXT_PUBLIC_BASE_URL}/author/${userName}`;
+      redirectAddress = `${BASE_URL}/author/${userName}`;
       break;
     case "COMMENT":
       actionText = "commented on your post";
       ActionIcon = Icons.notificationMessage;
-      redirectAddress = `${process.env.NEXT_PUBLIC_BASE_URL}/article/${slug}`;
+      redirectAddress = `${BASE_URL}/article/${slug}`;
 
       break;
     case "LIKE":
       actionText = "liked your post";
       ActionIcon = Icons.notificationClapDark;
-      redirectAddress = `${process.env.NEXT_PUBLIC_BASE_URL}/article/${slug}`;
+      redirectAddress = `${BASE_URL}/article/${slug}`;
       break;
     case "COMMENT_LIKE":
       actionText = "liked your comment";
       ActionIcon = Icons.notificationClapDark;
-      redirectAddress = `${process.env.NEXT_PUBLIC_BASE_URL}/article/${slug}`;
+      redirectAddress = `${BASE_URL}/article/${slug}`;
       break;
 
     case "POST":
