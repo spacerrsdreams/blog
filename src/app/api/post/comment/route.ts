@@ -62,15 +62,29 @@ export const POST = async (req: NextRequest) => {
   }
   try {
     const body = await req.json();
-    const { postId, content, parentId } = CommentRequestSchema.parse(body);
+    const { postId, content, parentId, postAuthor } = CommentRequestSchema.parse(body);
 
-    const comment = await database.comments.create({
-      data: {
-        content,
-        userId: user.userId,
-        postId,
-        parentId: parentId ?? null,
-      },
+    const comment = await database.$transaction(async (transaction) => {
+      const createdComment = await transaction.comments.create({
+        data: {
+          content,
+          userId: user.userId,
+          postId,
+          parentId: parentId ?? null,
+        },
+      });
+
+      if (postAuthor && user.userId !== postAuthor) {
+        await transaction.notifications.create({
+          data: {
+            userId: user.userId,
+            postId,
+            addresseeId: postAuthor as string,
+            type: "COMMENT",
+          },
+        });
+      }
+      return createdComment;
     });
 
     return NextResponse.json(

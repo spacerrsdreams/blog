@@ -103,22 +103,44 @@ export const POST = async (req: NextRequest) => {
     const body = await req.json();
     const data = CreateArticleRequestSchema.parse(body);
 
-    const post = await database.posts.create({
-      data: {
-        authorId: userId,
-        slug: data.title.toLowerCase().replace(/ /g, "-") + "-" + uuidv4(),
-        title: data.title,
-        subTitle: data.subTitle,
-        tag: data.tag,
-        content: data.postContent,
-        coverImageSrc: data.coverImageSrc || "",
-      },
+    const post = await database.$transaction(async (transaction) => {
+      const newPost = await transaction.posts.create({
+        data: {
+          authorId: userId,
+          slug: data.title.toLowerCase().replace(/ /g, "-") + "-" + uuidv4(),
+          title: data.title,
+          subTitle: data.subTitle,
+          tag: data.tag,
+          content: data.postContent,
+          coverImageSrc: data.coverImageSrc || "",
+        },
+      });
+
+      const followers = await transaction.followers.findMany({
+        where: { followingId: userId },
+        select: { followerId: true },
+      });
+
+      const notifications = followers.map((follower) => {
+        return transaction.notifications.create({
+          data: {
+            userId: userId,
+            postId: newPost.id,
+            addresseeId: follower.followerId,
+            type: "POST",
+          },
+        });
+      });
+
+      await Promise.all(notifications);
+
+      return newPost;
     });
 
     if (post) {
       revalidatePath(ROUTES.root);
       return NextResponse.json(
-        { data: post, message: "Article published successfully." },
+        { data: post, message: "Article published and followers notified successfully." },
         { status: 201 },
       );
     } else {
@@ -160,12 +182,12 @@ export const PUT = async (req: NextRequest) => {
     if (post) {
       revalidatePath(ROUTES.root);
       return NextResponse.json(
-        { data: post, message: "Article published successfully." },
+        { data: post, message: "Article edited successfully." },
         { status: 201 },
       );
     } else {
       return NextResponse.json(
-        { error: "An error occurred while publishing the article." },
+        { error: "An error occurred while editing the article." },
         { status: 500 },
       );
     }

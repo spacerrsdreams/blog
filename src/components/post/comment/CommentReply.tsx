@@ -10,16 +10,11 @@ import { formatCommentDate } from "@/utils/formatCommentDate";
 import CommentLikeButton from "@/components/post/comment/CommentLikeButton";
 import { CommentOption } from "@/components/post/comment/CommentOption";
 
-//import { useCommentProvider } from "@/components/post/comment/CommentProvider";
-//import CommentReplyForm from "@/components/post/comment/CommentReplyForm";
-
 type Props = {
   comment: CommentWithUserProps;
 };
 
 export default function CommentReply({ comment }: Props) {
-  // const { inReply, currentCommentId } = useCommentProvider();
-
   const [totalCommentLikes, setTotalCommentLikes] = useState(comment.totalLikes);
   const [isLikedByUser, _setIsLikedByUser] = useState(comment.isLikedByUser);
   const loggedInUser = useUser();
@@ -62,7 +57,6 @@ export default function CommentReply({ comment }: Props) {
             isLikedByUser={isLikedByUser}
           />
         </div>
-        {/* {inReply && comment.id === currentCommentId && <CommentReplyForm postId={comment.postId} commentId={comment.id} />} */}
       </div>
     </div>
   );

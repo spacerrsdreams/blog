@@ -20,6 +20,7 @@ export default function LikeButton() {
     setTotalLikes,
     setUserTotalLikes,
     setIsLikedByUser,
+    author,
   } = usePostContext();
   const { user } = useUser();
   const { toast } = useToast();
@@ -30,7 +31,7 @@ export default function LikeButton() {
   const userId = user?.id;
 
   const like = (userLikes: number) => {
-    likePost({ postId, userLikes })
+    likePost({ postId, userLikes, authorId: author.id })
       .then(() => setLocalUserTotalLikes(0))
       .catch(() => {
         toast({

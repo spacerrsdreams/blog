@@ -1,6 +1,11 @@
+import { BellPlus, UserRoundPlus } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 type IconProps = React.HTMLAttributes<SVGElement> & { className?: string };
+type notificationIconProps = IconProps & {
+  fill: string;
+};
 
 export const Icons = {
   logo: (props: IconProps) => (
@@ -99,6 +104,38 @@ export const Icons = {
       </svg>
     );
   },
+  notificationClapDark: (props: IconProps) => {
+    return (
+      <svg
+        {...props}
+        className="mb-[2px] mr-[3px]"
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        aria-label="clap"
+      >
+        <path
+          fill="#000"
+          fillRule="evenodd"
+          d="M11.37.828 12 3.282l.63-2.454zM15.421 1.84l-1.185-.388-.338 2.5zM9.757 1.452l-1.184.389 1.523 2.112zM20.253 11.84 17.75 7.438c-.238-.353-.57-.584-.93-.643a.96.96 0 0 0-.753.183 1.13 1.13 0 0 0-.443.695c.014.019.03.033.044.053l2.352 4.138c1.614 2.95 1.1 5.771-1.525 8.395a7 7 0 0 1-.454.415c.997-.13 1.927-.61 2.773-1.457 2.705-2.704 2.517-5.585 1.438-7.377M12.066 9.01c-.129-.687.08-1.299.573-1.773l-2.062-2.063a1.123 1.123 0 0 0-1.555 0 1.1 1.1 0 0 0-.273.521z"
+          clipRule="evenodd"
+        ></path>
+        <path
+          fill="#000"
+          fillRule="evenodd"
+          d="M14.741 8.309c-.18-.267-.446-.455-.728-.502a.67.67 0 0 0-.533.127c-.146.113-.59.458-.199 1.296l1.184 2.503a.448.448 0 0 1-.236.755.445.445 0 0 1-.483-.248L7.614 6.106A.816.816 0 1 0 6.459 7.26l3.643 3.644a.446.446 0 1 1-.631.63L5.83 7.896l-1.03-1.03a.82.82 0 0 0-1.395.577.81.81 0 0 0 .24.576l1.027 1.028 3.643 3.643a.444.444 0 0 1-.144.728.44.44 0 0 1-.486-.098l-3.64-3.64a.82.82 0 0 0-1.335.263.81.81 0 0 0 .178.89l1.535 1.534 2.287 2.288a.445.445 0 0 1-.63.63l-2.287-2.288a.813.813 0 0 0-1.393.578c0 .216.086.424.238.577l4.403 4.403c2.79 2.79 5.495 4.119 8.681.931 2.269-2.271 2.708-4.588 1.342-7.086z"
+          clipRule="evenodd"
+        ></path>
+      </svg>
+    );
+  },
+  notificationFollow: (props: IconProps) => (
+    <UserRoundPlus {...props} className="translate-y-1 fill-black" />
+  ),
+  notificationPost: (props: IconProps) => (
+    <BellPlus {...props} className="h-5 w-5 -translate-x-[2px] fill-black" />
+  ),
   message: (props: IconProps) => (
     <svg
       className={cn("fill-gray-500", props.className)}
@@ -108,6 +145,22 @@ export const Icons = {
       {...props}
     >
       <path d="M18 16.8a7.14 7.14 0 0 0 2.24-5.32c0-4.12-3.53-7.48-8.05-7.48C7.67 4 4 7.36 4 11.48c0 4.13 3.67 7.48 8.2 7.48a8.9 8.9 0 0 0 2.38-.32c.23.2.48.39.75.56 1.06.69 2.2 1.04 3.4 1.04.22 0 .4-.11.48-.29a.5.5 0 0 0-.04-.52 6.4 6.4 0 0 1-1.16-2.65v.02zm-3.12 1.06l-.06-.22-.32.1a8 8 0 0 1-2.3.33c-4.03 0-7.3-2.96-7.3-6.59S8.17 4.9 12.2 4.9c4 0 7.1 2.96 7.1 6.6 0 1.8-.6 3.47-2.02 4.72l-.2.16v.26l.02.3a6.74 6.74 0 0 0 .88 2.4 5.27 5.27 0 0 1-2.17-.86c-.28-.17-.72-.38-.94-.59l.01-.02z"></path>
+    </svg>
+  ),
+  notificationMessage: (props: IconProps) => (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="none"
+      viewBox="0 0 16 16"
+      id="comment"
+    >
+      <path
+        fill="#212121"
+        d="M3.5 2C2.11929 2 1 3.11929 1 4.5V9.5C1 10.8807 2.11929 12 3.5 12H4V13.9422C4 14.7842 4.99168 15.2342 5.62533 14.6797L8.68787 12H12.5C13.8807 12 15 10.8807 15 9.5V4.5C15 3.11929 13.8807 2 12.5 2H3.5Z"
+      />
     </svg>
   ),
   bookmark: (props: IconProps) => (
@@ -239,6 +292,27 @@ export const Icons = {
           d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
         />
         <path stroke="gray" strokeLinecap="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+      </svg>
+    );
+  },
+  notification: (props: notificationIconProps) => {
+    return (
+      <svg
+        {...props}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill={props.fill}
+        viewBox="0 0 24 24"
+        aria-label="Notifications"
+        className="notification"
+      >
+        <path stroke="gray" strokeLinecap="round" d="M15 18.5a3 3 0 1 1-6 0"></path>
+        <path
+          stroke="gray"
+          strokeLinejoin="round"
+          d="M5.5 10.532V9a6.5 6.5 0 0 1 13 0v1.532c0 1.42.564 2.782 1.568 3.786l.032.032c.256.256.4.604.4.966v2.934a.25.25 0 0 1-.25.25H3.75a.25.25 0 0 1-.25-.25v-2.934c0-.363.144-.71.4-.966l.032-.032A5.35 5.35 0 0 0 5.5 10.532Z"
+        ></path>
       </svg>
     );
   },

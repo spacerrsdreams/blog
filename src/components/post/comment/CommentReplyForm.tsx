@@ -19,7 +19,7 @@ type Props = {
   setHasReply: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function CommentCreator({ postId, commentId, setHasReply }: Props) {
+export default function CommentReplyForm({ postId, commentId, setHasReply }: Props) {
   const [content, setContent] = useState("");
   const addCommentData = useCreateComment();
   const { setCommentsReplies, setInReply, setCommentsCount, viewReply, setViewReply, setComments } =
