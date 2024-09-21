@@ -72,6 +72,12 @@ export const ROUTES = {
         });
         return `/api/post/bookmark?${queryParams.toString()}`;
       },
+      getSuggestions: (feed: string) => {
+        const queryParams = new URLSearchParams({
+          feed,
+        });
+        return `/api/post/suggestion?${queryParams.toString()}`;
+      },
     },
 
     user: {

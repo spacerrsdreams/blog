@@ -47,7 +47,7 @@ export default function Post({
   handleRemoveImage,
 }: Props) {
   return (
-    <article className="flex size-full flex-col gap-10 px-4 md:px-20">
+    <article className="flex w-full flex-col gap-10 px-4 md:px-20">
       {coverImageSrc && (
         <ArticleCover
           src={coverImageSrc}

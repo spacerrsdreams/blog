@@ -110,7 +110,7 @@ export default function NotificationSection() {
       });
     }
   };
-  console.log(hasMoreNotifications);
+
   return (
     <div className="flex flex-col gap-6">
       <DropdownMenu
