@@ -6,6 +6,7 @@ import { siteConfig } from "@/config/siteConfig";
 import { database } from "@/lib/prisma";
 import NotFound from "@/components/post/article/NotFound";
 import Post from "@/components/post/Post";
+import Suggestions from "@/components/suggestions/Suggestions";
 
 export const dynamicParams = true;
 
@@ -82,25 +83,28 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <div className="flex w-full justify-center py-2">
-      <div className="w-full max-w-full py-2 md:max-w-[860px]">
-        <Post
-          author={post.author}
-          slug={post.slug}
-          articleId={post.id}
-          viewCount={post.viewCount}
-          title={post.title}
-          subTitle={post.subTitle}
-          tag={post.tag}
-          content={post.content as Value}
-          coverImageSrc={post.coverImageSrc}
-          createdAt={post.createdAt}
-          totalLikes={post.likeCount}
-          userTotalLikes={post.likes[0]?.likeCount}
-          totalComments={post._count.comments}
-          isLikedByUser={post.likes.length > 0}
-          isBookmarked={post.bookmarks.length > 0}
-        />
+    <div className="flex flex-col">
+      <div className="flex w-full justify-center py-2">
+        <div className="w-full max-w-full py-2 md:max-w-[860px]">
+          <Post
+            author={post.author}
+            slug={post.slug}
+            articleId={post.id}
+            viewCount={post.viewCount}
+            title={post.title}
+            subTitle={post.subTitle}
+            tag={post.tag}
+            content={post.content as Value}
+            coverImageSrc={post.coverImageSrc}
+            createdAt={post.createdAt}
+            totalLikes={post.likeCount}
+            userTotalLikes={post.likes[0]?.likeCount}
+            totalComments={post._count.comments}
+            isLikedByUser={post.likes.length > 0}
+            isBookmarked={post.bookmarks.length > 0}
+          />
+          <Suggestions feed={post.tag} />
+        </div>
       </div>
     </div>
   );
