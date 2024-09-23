@@ -12,11 +12,13 @@ export const GET = async (req: NextRequest) => {
   try {
     const data = await database.posts.findMany({
       skip: 0,
-      take: 6,
+      take: 8,
       where: {
         tag,
+        createdAt: {
+          gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        },
       },
-
       include: {
         author: true,
         _count: true,
