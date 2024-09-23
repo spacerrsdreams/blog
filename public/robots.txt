@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /*.js$
+Disallow: /*.json$
+
+Disallow: /images/
+Disallow: /fonts/
+Disallow: /api/*
+
+Allow: /public/
+Allow: /_next/static/

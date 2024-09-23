@@ -9,6 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       slug: true,
       modifiedAt: true,
       author: true,
+      title: true,
     },
   });
 
@@ -16,12 +17,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return {
       url: `${BASE_URL}/article/${post.slug}`,
       lastModified: post.modifiedAt,
+      title: post.title,
     };
   });
   const authorSitemaps = posts.map((post) => {
     return {
       url: `${BASE_URL}/author/${post.author.username}`,
       lastModified: post.author.updatedAt,
+      name: post.author?.firstName + " " + post.author?.lastName,
     };
   });
 
