@@ -165,7 +165,11 @@ export default function NotificationSection() {
                 );
               })}
 
-              {!isPending && notifications?.length === 0 && <span>not found</span>}
+              {!isPending && notifications?.length === 0 && (
+                <div className="flex justify-center">
+                  <span className="text-sm text-gray-500">{`You're all caught up`}</span>
+                </div>
+              )}
 
               {!error && notifications?.length > 0 && <div ref={loader} />}
 
