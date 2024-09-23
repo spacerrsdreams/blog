@@ -67,7 +67,7 @@ export default function PostPreviewEngagementBar({
           type="display"
         />
         <PostAction
-          Icon={<Icons.views className="pl-2" />}
+          Icon={<Icons.views />}
           totalCount={viewCount}
           displayClassName="flex items-center gap-[2px]"
           type="display"
