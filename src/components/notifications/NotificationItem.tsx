@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 import { formatCommentDate } from "@/utils/formatCommentDate";
 import { Icons } from "@/components/shared/Icons"; // Assuming you have icons like clapDark, followIcon, etc.
@@ -15,13 +14,12 @@ interface Props {
   slug: string | undefined;
   read: boolean | undefined;
 }
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export function NotificationText({
   userName,
   userImage,
   actionType,
   createdAt,
-  slug,
+
   read,
 }: Props) {
   if (!userName || !actionType || !createdAt) return null;
@@ -30,34 +28,28 @@ export function NotificationText({
 
   let actionText = "";
   let ActionIcon = null;
-  let redirectAddress = "";
   switch (actionType) {
     case "FOLLOW":
       actionText = "started following you";
       ActionIcon = Icons.notificationFollow;
-      redirectAddress = `${BASE_URL}/author/${userName}`;
       break;
     case "COMMENT":
       actionText = "commented on your post";
       ActionIcon = Icons.notificationMessage;
-      redirectAddress = `${BASE_URL}/article/${slug}`;
 
       break;
     case "LIKE":
       actionText = "liked your post";
       ActionIcon = Icons.notificationClapDark;
-      redirectAddress = `${BASE_URL}/article/${slug}`;
       break;
     case "COMMENT_LIKE":
       actionText = "liked your comment";
       ActionIcon = Icons.notificationClapDark;
-      redirectAddress = `${BASE_URL}/article/${slug}`;
       break;
 
     case "POST":
       actionText = "created a new post";
       ActionIcon = Icons.notificationPost;
-      redirectAddress = `${process.env.NEXT_PUBLIC_BASE_URL}/article/${slug}`;
       break;
     default:
       actionText = "Unknown action";
@@ -80,7 +72,7 @@ export function NotificationText({
           </div>
         )}
       </div>
-      <Link href={redirectAddress} className="flex w-full flex-col">
+      <div className="flex w-full flex-col">
         <div className="flex items-center justify-between">
           <div>
             <span className="text-md flex gap-1">
@@ -92,7 +84,7 @@ export function NotificationText({
 
           {!read && <div className="mr-4 h-3 w-3 rounded-full bg-[#0866ff]"></div>}
         </div>
-      </Link>
+      </div>
     </div>
   );
 }
