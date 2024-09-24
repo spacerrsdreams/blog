@@ -34,7 +34,6 @@ export const CommentRequestSchema = z
     postId: z.string().min(1, "Post ID must be at least 1 character long."),
     content: z.string().min(1, "Comment content must be at least 1 character long."),
     postAuthor: z.string().min(1, "Post Author ID must be at least 1 character long.").optional(),
-    // commentAuthor:z.string().min(1, "Comment Author ID must be at least 1 character long.").optional(),
     parentId: z.string().min(1).optional(),
   })
   .strict();

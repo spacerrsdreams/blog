@@ -1,6 +1,7 @@
 import { type NotificationPayload } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { UpdateNotificationStatus, useGetNotifications } from "@/services/notification";
@@ -30,6 +31,8 @@ export default function NotificationSection() {
   const [initialClick, setInitialClick] = useState(false);
   const { mutateAsync: updateNotificationStatus } = UpdateNotificationStatus();
   const [hasMoreNotifications, setHasMoreNotifications] = useState(false);
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  const router = useRouter();
 
   const { isSignedIn } = useUser();
 
@@ -96,7 +99,9 @@ export default function NotificationSection() {
     };
   }, [loader, isPending, hasMore]);
 
-  const handleItemClick = (id: string) => {
+  const handleItemClick = (id: string, actionType: string, slug: string) => {
+    const redirectAddress =
+      actionType === "FOLLOW" ? `${BASE_URL}/author/${slug}` : `${BASE_URL}/article/${slug}`;
     setOpen(false);
     const currentNotification = notifications.find((notification) => notification?.id === id);
 
@@ -108,6 +113,7 @@ export default function NotificationSection() {
           ),
         );
       });
+      router.push(redirectAddress);
     }
   };
 
@@ -132,25 +138,38 @@ export default function NotificationSection() {
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
             <div>
-              {notifications.map((notification) => (
-                <DropdownMenuRadioItem
-                  onClick={() => handleItemClick(notification?.id as string)}
-                  className="cursor-pointer pl-0"
-                  key={notification?.id}
-                  value="top"
-                >
-                  <NotificationText
-                    id={notification?.id}
-                    slug={notification?.post?.slug}
-                    read={notification?.read}
-                    userImage={notification?.user.imageUrl}
-                    userName={notification?.user.username}
-                    actionType={notification?.type}
-                    createdAt={notification?.createdAt}
-                  />
-                </DropdownMenuRadioItem>
-              ))}
-              {!isPending && notifications?.length === 0 && <span>not found</span>}
+              {notifications?.map((notification) => {
+                return (
+                  <DropdownMenuRadioItem
+                    onClick={() =>
+                      handleItemClick(
+                        notification?.id as string,
+                        notification?.type as string,
+                        notification?.post?.slug as string,
+                      )
+                    }
+                    className="cursor-pointer pl-0"
+                    key={notification?.id}
+                    value="top"
+                  >
+                    <NotificationText
+                      id={notification?.id}
+                      slug={notification?.post?.slug}
+                      read={notification?.read}
+                      userImage={notification?.user?.imageUrl}
+                      userName={notification?.user?.username}
+                      actionType={notification?.type}
+                      createdAt={notification?.createdAt}
+                    />
+                  </DropdownMenuRadioItem>
+                );
+              })}
+
+              {!isPending && notifications?.length === 0 && (
+                <div className="flex justify-center">
+                  <span className="text-sm text-gray-500">{`You're all caught up`}</span>
+                </div>
+              )}
 
               {!error && notifications?.length > 0 && <div ref={loader} />}
 

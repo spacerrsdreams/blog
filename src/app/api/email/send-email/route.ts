@@ -7,8 +7,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ERROR_CODES, ERROR_MESSAGES, handleError } from "@/lib/error";
 import { ReportStoryRequestSchema } from "@/services/types";
 
-//import { ReportStoryRequestSchema } from "@/services/types";
-
 const DOMAIN = process.env.MAILGUN_DOMAIN || "";
 const API_KEY = process.env.MAILGUN_API_KEY || "";
 const ADDRESS_EMAIL = process.env.MAILGUN_ADDRESS_EMAIL || "";

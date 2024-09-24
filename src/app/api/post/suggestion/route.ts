@@ -2,6 +2,7 @@ import { type TagsT } from "@/constants/tags";
 
 import { NextResponse, type NextRequest } from "next/server";
 
+import { calculateOneWeekBefore } from "@/utils/calculateOneWeekBefore";
 import { handleError } from "@/lib/error";
 import { database } from "@/lib/prisma";
 
@@ -12,11 +13,13 @@ export const GET = async (req: NextRequest) => {
   try {
     const data = await database.posts.findMany({
       skip: 0,
-      take: 6,
+      take: 8,
       where: {
         tag,
+        createdAt: {
+          gte: calculateOneWeekBefore(),
+        },
       },
-
       include: {
         author: true,
         _count: true,
