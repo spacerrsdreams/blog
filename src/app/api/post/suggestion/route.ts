@@ -2,6 +2,7 @@ import { type TagsT } from "@/constants/tags";
 
 import { NextResponse, type NextRequest } from "next/server";
 
+import { calculateOneWeekBefore } from "@/utils/calculateOneWeekBefore";
 import { handleError } from "@/lib/error";
 import { database } from "@/lib/prisma";
 
@@ -16,7 +17,7 @@ export const GET = async (req: NextRequest) => {
       where: {
         tag,
         createdAt: {
-          gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          gte: calculateOneWeekBefore(),
         },
       },
       include: {
