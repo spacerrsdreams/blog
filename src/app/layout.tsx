@@ -45,11 +45,6 @@ export default async function RootLayout({
             <PopupProvider>
               <Header userRole={userMetadata?.role === "admin" ? "admin" : ""} />
 
-              {/* Conditionally render based on user metadata (e.g., role) */}
-              {userMetadata?.role === "admin" && (
-                <div className="admin-banner">Welcome, Admin!</div>
-              )}
-
               <ArticleViewCounter />
               <main className="m-auto block max-w-[1336px]">{children}</main>
 
