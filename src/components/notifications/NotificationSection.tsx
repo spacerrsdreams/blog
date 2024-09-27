@@ -120,7 +120,7 @@ export default function NotificationSection() {
       router.push(redirectAddress);
     }
   };
-  console.log(notifications.length);
+
   return (
     <div className="flex flex-col gap-6">
       <DropdownMenu

@@ -1,18 +1,5 @@
 "use client";
 
-/*
-1. fetch initial comments with only hasReply and likes
-2. make dynamic fetching 20 comments only without replies
-3. add ability to like comment; restrict author to like its own comment
-4. add ability to reply; reply should be one level
-5. edit comment by comment author
-6. delete comment by comment author
-7. when you click view replies, fetch initial 20 replies
-8. make state if there are any replies left
-9. make dynamic fetching for replies
-10.
-
-*/
 import type { CommentWithUserProps } from "@/types";
 
 import { createContext, useContext, useState, type Dispatch, type SetStateAction } from "react";
