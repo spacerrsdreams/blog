@@ -144,7 +144,7 @@ export default function MoreActionsButton({
     <div className={className}>
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger>
-          <Ellipsis />
+          <Ellipsis className="h-8 w-8" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-52">
           {authorId !== userId && (
