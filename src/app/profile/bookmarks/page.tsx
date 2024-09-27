@@ -5,7 +5,6 @@ import type { BookmarkedPost } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { useGetBookmarksByAuthor } from "@/services/post/bookmark";
@@ -21,7 +20,6 @@ export default function Bookmarks() {
   const [initialCallIsLoading, setInitialCallIsLoading] = useState(true);
   const { isPending, mutateAsync: fetchBookmarksByAuthor, error } = useGetBookmarksByAuthor();
   const [dynamicScroll, setDynamicScroll] = useState({ from: 0, to: POST_LOADING_LIMIT });
-  const router = useRouter();
   const { user } = useUser();
 
   useEffect(() => {
@@ -74,10 +72,7 @@ export default function Bookmarks() {
     setAllPosts((prevPosts) => prevPosts.filter((post) => post.postId !== postId));
   };
   const onRemoveBookmark = (postId: string) => {
-    let lastLeft = false;
-    if (allPosts.length === 1) lastLeft = true;
     setAllPosts((prevPosts) => prevPosts.filter((post) => post.postId !== postId));
-    lastLeft && router.push("/");
   };
 
   return (
