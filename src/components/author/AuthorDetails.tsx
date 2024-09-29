@@ -26,10 +26,6 @@ export default async function AuthorDetails({ profileImageSrc, authorName, autho
       />
       <h2 className="font-bold">{authorName}</h2>
       <span className="text-muted-foreground">Created {posts.length} Posts</span>
-      <p className="text-sm text-muted-foreground">
-        Scientist | Inventor | Grandfather | Drunk | Mad Scientist | Genius | Cynic | Sociopath |
-        Narcissist | Anarchist | Father | Husband | Rick
-      </p>
     </div>
   );
 }
