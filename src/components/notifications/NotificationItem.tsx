@@ -40,11 +40,11 @@ export function NotificationText({
       break;
     case "LIKE":
       actionText = "liked your post";
-      ActionIcon = Icons.notificationClapDark;
+      ActionIcon = Icons.notificationClap;
       break;
     case "COMMENT_LIKE":
       actionText = "liked your comment";
-      ActionIcon = Icons.notificationClapDark;
+      ActionIcon = Icons.notificationClap;
       break;
 
     case "POST":
@@ -56,7 +56,7 @@ export function NotificationText({
   }
 
   return (
-    <div className="flex w-full items-center gap-2">
+    <div className="flex w-full items-center gap-4">
       <div className="relative">
         <Image
           alt={`${userName}'s profile picture`}
@@ -68,12 +68,12 @@ export function NotificationText({
 
         {ActionIcon && (
           <div className="absolute bottom-0 right-0 translate-x-3 translate-y-1 rounded-full bg-white bg-opacity-0 p-1">
-            <ActionIcon className="h-5 w-5 text-blue-500" />
+            <ActionIcon className="text-blue-500" />
           </div>
         )}
       </div>
       <div className="flex w-full flex-col">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-1">
           <div>
             <span className="text-md flex gap-1">
               <span className="text-md font-bold">{userName}</span>

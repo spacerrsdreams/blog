@@ -138,7 +138,7 @@ export default function NotificationSection() {
                   <span className="text-[13px] text-white">{quantity}</span>
                 </div>
               )}
-              <Icons.notification fill={`${hasMoreNotifications ? "black" : "none"}`} />
+              <Icons.notification />
             </span>
           )}
         </DropdownMenuTrigger>
