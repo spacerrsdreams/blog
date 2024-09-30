@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { type NotificationPayload } from "@/types";
 
 import { useUser } from "@clerk/nextjs";
@@ -32,13 +33,16 @@ export default function NotificationSection() {
   const { mutateAsync: updateNotificationStatus } = UpdateNotificationStatus();
   const [hasMoreNotifications, setHasMoreNotifications] = useState(false);
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  const [quantity, setQuantity] = useState(0);
   const router = useRouter();
 
   const { isSignedIn } = useUser();
 
   useEffect(() => {
     getNotifications({ from: 0, to: POST_LOADING_LIMIT }).then((newNotifications) => {
-      setHasMoreNotifications(newNotifications.some((not) => not?.read === false));
+      const unreadNotifications = newNotifications.filter((not) => not?.read === false);
+      setHasMoreNotifications(unreadNotifications.length > 0);
+      setQuantity(unreadNotifications.length);
     });
   }, [notifications]);
 
@@ -99,20 +103,26 @@ export default function NotificationSection() {
     };
   }, [loader, isPending, hasMore]);
 
-  const handleItemClick = (id: string, actionType: string, slug: string) => {
+  const handleItemClick = (id: string, actionType: string, userName: string, postId: string) => {
     const redirectAddress =
-      actionType === "FOLLOW" ? `${BASE_URL}/author/${slug}` : `${BASE_URL}/article/${slug}`;
+      actionType === "FOLLOW" ? `${BASE_URL}/author/${userName}` : `${BASE_URL}/article/${postId}`;
     setOpen(false);
     const currentNotification = notifications.find((notification) => notification?.id === id);
 
     if (currentNotification && !currentNotification.read) {
-      updateNotificationStatus(id).then(() => {
-        setNotifications((prevNotifications) =>
-          prevNotifications.map((notification) =>
-            notification?.id === id ? { ...notification, read: true } : notification,
-          ),
-        );
-      });
+      updateNotificationStatus(id)
+        .then(() => {
+          setNotifications((prevNotifications) =>
+            prevNotifications.map((notification) =>
+              notification?.id === id ? { ...notification, read: true } : notification,
+            ),
+          );
+          router.push(redirectAddress);
+        })
+        .catch((error) => {
+          console.error("Failed to update notification:", error);
+        });
+    } else {
       router.push(redirectAddress);
     }
   };
@@ -128,8 +138,13 @@ export default function NotificationSection() {
       >
         <DropdownMenuTrigger className="cursor-pointer" asChild>
           {isSignedIn && (
-            <span onClick={() => setOpen(true)}>
-              <Icons.notification fill={`${hasMoreNotifications ? "black" : "none"}`} />
+            <span onClick={() => setOpen(true)} className="relative">
+              {hasMoreNotifications && (
+                <div className="absolute -top-1 left-3 flex h-4 w-4 items-center justify-center rounded-full bg-red-500">
+                  <span className="text-[13px] text-white">{quantity}</span>
+                </div>
+              )}
+              <Icons.notification />
             </span>
           )}
         </DropdownMenuTrigger>
@@ -145,7 +160,8 @@ export default function NotificationSection() {
                       handleItemClick(
                         notification?.id as string,
                         notification?.type as string,
-                        notification?.post?.slug as string,
+                        notification?.user?.username as string,
+                        notification?.post?.id as string,
                       )
                     }
                     className="cursor-pointer pl-0"
@@ -154,7 +170,6 @@ export default function NotificationSection() {
                   >
                     <NotificationText
                       id={notification?.id}
-                      slug={notification?.post?.slug}
                       read={notification?.read}
                       userImage={notification?.user?.imageUrl}
                       userName={notification?.user?.username}

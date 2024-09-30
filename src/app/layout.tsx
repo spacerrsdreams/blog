@@ -6,6 +6,8 @@ import "./globals.css";
 
 import { PopupProvider } from "@/context/PopupProvider";
 
+import { auth, clerkClient } from "@clerk/nextjs/server"; // Import Clerk server-side utilities
+
 import { siteConfig } from "@/config/siteConfig";
 import { cn } from "@/lib/utils";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
@@ -23,18 +25,26 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { userId } = auth();
+  let userMetadata = null;
+  if (userId) {
+    const user = await clerkClient().users.getUser(userId);
+    userMetadata = user.privateMetadata;
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <ClerkProvider>
         <ReactQueryProvider>
           <body className={cn("bg-background font-sans antialiased", fontSans.variable)}>
             <PopupProvider>
-              <Header />
+              <Header userRole={userMetadata?.role === "admin" ? "admin" : ""} />
+
               <ArticleViewCounter />
               <main className="m-auto block max-w-[1336px]">{children}</main>
 

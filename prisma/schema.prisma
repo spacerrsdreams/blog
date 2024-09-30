@@ -17,7 +17,6 @@ enum Tags {
 
 model Posts {
   id            String    @id @default(uuid())
-  slug          String    @unique
   tag           Tags
   title         String
   subTitle      String

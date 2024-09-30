@@ -22,7 +22,7 @@ export default function CommentReply({ comment }: Props) {
   const isCommentCreator = loggedInUser?.user?.id === comment.userId;
 
   return (
-    <div className="mx-4 flex w-full items-center gap-4">
+    <div className="flex w-full items-center gap-4 pl-4">
       <div className="flex w-full flex-col gap-2">
         <div className="relative flex items-center gap-3">
           <Image

@@ -32,7 +32,6 @@ export const GET = async (req: NextRequest) => {
         post: {
           select: {
             id: true,
-            slug: true,
             tag: true,
             title: true,
             subTitle: true,

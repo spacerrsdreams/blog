@@ -183,7 +183,6 @@ export type ArticleT = {
 };
 export type Highlight = {
   id: string;
-  slug: string;
   tag: string;
   title: string;
   coverImageSrc: string | undefined;

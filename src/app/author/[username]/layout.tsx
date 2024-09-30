@@ -46,13 +46,16 @@ export default async function Layout({
         </div>
       </div>
       <div className="hidden min-h-screen w-full border-l border-border/40 pl-10 pr-6 md:block md:max-w-[250px] lg:max-w-[328px]">
-        <div className="relative inline-block size-full">
+        <div className="relative inline-block">
           <div className="pt-10" />
           <AuthorDetails
             authorId={author.id}
             authorName={`${author.firstName} ${author.lastName}.`}
             profileImageSrc={author.imageUrl}
           />
+        </div>
+        <div className="mt-10 flex size-56 items-center justify-center rounded-sm bg-purple-400">
+          <span className="text-center capitalize text-white">Your cool commercial here</span>
         </div>
       </div>
     </div>

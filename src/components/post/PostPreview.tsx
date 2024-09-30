@@ -10,7 +10,6 @@ import PostEngagementBar from "@/components/post/actions/PostPreviewEngagementBa
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export type Props = PostPreviewEngagementBarProps & {
-  slug: string;
   tag: string;
   title: string;
   subTitle: string;
@@ -23,7 +22,6 @@ export default function PostPreview({
   tag,
   title,
   postId,
-  slug,
   subTitle,
   author,
   createdAt,
@@ -82,7 +80,7 @@ export default function PostPreview({
       </div>
       <div className="flex items-center gap-4 sm:gap-8 md:gap-12">
         <div className="flex flex-1 flex-col gap-4">
-          <Link className="flex flex-col gap-4" href={`/article/${slug}`}>
+          <Link className="flex flex-col gap-4" href={`/article/${postId}`}>
             <div className="flex flex-col gap-2">
               <h3 className="text-xl font-bold capitalize sm:text-2xl">{title}</h3>
               <h4 className="text-sm text-muted-foreground md:text-base">
@@ -91,7 +89,6 @@ export default function PostPreview({
             </div>
             <PostEngagementBar
               postId={postId}
-              slug={slug}
               isBookmarked={isBookmarked}
               isLikedByUser={isLikedByUser}
               totalComments={totalComments}
@@ -106,7 +103,7 @@ export default function PostPreview({
           </Link>
         </div>
         {coverImageSrc && (
-          <Link href={`/article/${slug}`}>
+          <Link href={`/article/${postId}`}>
             <Image
               src={coverImageSrc}
               width={800}

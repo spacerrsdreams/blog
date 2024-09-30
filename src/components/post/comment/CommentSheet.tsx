@@ -17,7 +17,7 @@ export default function CommentSheet() {
       <Sheet>
         <CommentSheetTrigger initialCount={totalComments} />
         <SheetContent className="w-full overflow-x-scroll md:w-[24rem]">
-          <CommentSheetHeader initialCount={totalComments} />
+          <CommentSheetHeader />
           <CommentForm postId={postId} postAuthor={author.id} />
           <CommentSection postId={postId} />
           <div className="flex w-full justify-center text-center">

@@ -88,7 +88,6 @@ export default function Bookmarks() {
             key={uuidv4()}
             postId={data.post.id}
             currentFeed="all"
-            slug={data.post.slug}
             tag={data.post.tag}
             title={data.post.title}
             subTitle={data.post.subTitle}

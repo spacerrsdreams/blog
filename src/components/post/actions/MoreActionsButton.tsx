@@ -25,7 +25,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   postId: string;
-  slug?: string;
+  id?: string;
   authorId: string;
   isLikedByUser: boolean | undefined;
   className?: string;
@@ -35,7 +35,6 @@ type Props = {
 
 export default function MoreActionsButton({
   postId,
-  slug,
   isLikedByUser,
   authorId,
   className,
@@ -144,7 +143,7 @@ export default function MoreActionsButton({
     <div className={className}>
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger>
-          <Ellipsis />
+          <Ellipsis className="h-8 w-8" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-52">
           {authorId !== userId && (
@@ -185,12 +184,12 @@ export default function MoreActionsButton({
               <span className="text-muted-foreground">Undo claps</span>
             </DropdownMenuItem>
           )}
-          {slug && (
+          {postId && (
             <DropdownMenuItem
               className="px-4"
               onClick={(e) => {
                 e.preventDefault();
-                copyArticleUrl(slug);
+                copyArticleUrl(postId);
                 setOpen(false);
               }}
             >

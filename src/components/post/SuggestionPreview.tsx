@@ -91,7 +91,6 @@ export default function SuggestionPreview({
             </div>
             <PostEngagementBar
               postId={postId}
-              slug={slug}
               isBookmarked={isBookmarked}
               isLikedByUser={isLikedByUser}
               totalComments={totalComments}

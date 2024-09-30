@@ -19,7 +19,7 @@ export const PATCH = async (_req: NextRequest, { params }: { params: { id: strin
   try {
     const post = await database.posts.findUnique({
       where: {
-        slug: id,
+        id,
       },
     });
 

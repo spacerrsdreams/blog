@@ -98,7 +98,6 @@ export default function Home({ params }: { params: { username: string } }) {
               totalLikes={post.likeCount}
               userTotalLikes={post?.likes?.[0]?.likeCount || 0}
               currentFeed={feedToFetch || ""}
-              slug={post.slug}
               tag={post.tag}
               title={post.title}
               subTitle={post.subTitle}

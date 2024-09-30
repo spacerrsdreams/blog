@@ -110,7 +110,7 @@ export type NotificationPayload = {
     imageUrl: string;
   };
   post: {
-    slug: string;
+    id: string;
   } | null;
 } | null;
 
