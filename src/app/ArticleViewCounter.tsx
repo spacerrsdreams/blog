@@ -10,7 +10,7 @@ export default function ArticleViewCounter() {
   const previousPathname = useRef<string | null>(null);
   const { mutateAsync: incrementViewCountAsync } = useIncrementViewCount();
   const slug = (pathname.startsWith("/article") && pathname.replace("/article/", "")) as string;
-  console.log(slug);
+
   useEffect(() => {
     const handleRouteChange = async () => {
       if (previousPathname.current && pathname.startsWith("/article")) {

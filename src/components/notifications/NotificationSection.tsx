@@ -110,13 +110,19 @@ export default function NotificationSection() {
     const currentNotification = notifications.find((notification) => notification?.id === id);
 
     if (currentNotification && !currentNotification.read) {
-      updateNotificationStatus(id).then(() => {
-        setNotifications((prevNotifications) =>
-          prevNotifications.map((notification) =>
-            notification?.id === id ? { ...notification, read: true } : notification,
-          ),
-        );
-      });
+      updateNotificationStatus(id)
+        .then(() => {
+          setNotifications((prevNotifications) =>
+            prevNotifications.map((notification) =>
+              notification?.id === id ? { ...notification, read: true } : notification,
+            ),
+          );
+          router.push(redirectAddress);
+        })
+        .catch((error) => {
+          console.error("Failed to update notification:", error);
+        });
+    } else {
       router.push(redirectAddress);
     }
   };
@@ -153,9 +159,9 @@ export default function NotificationSection() {
                     onClick={() =>
                       handleItemClick(
                         notification?.id as string,
-                        notification?.post?.id as string,
                         notification?.type as string,
                         notification?.user?.username as string,
+                        notification?.post?.id as string,
                       )
                     }
                     className="cursor-pointer pl-0"
