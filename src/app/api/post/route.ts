@@ -1,7 +1,7 @@
 import type { TagsT } from "@/constants/tags";
 import type { Prisma } from "@prisma/client";
+
 // eslint-disable-next-line import/named
-import { v4 as uuidv4 } from "uuid";
 
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
@@ -107,7 +107,6 @@ export const POST = async (req: NextRequest) => {
       const newPost = await transaction.posts.create({
         data: {
           authorId: userId,
-          slug: data.title.toLowerCase().replace(/ /g, "-") + "-" + uuidv4(),
           title: data.title,
           subTitle: data.subTitle,
           tag: data.tag,
@@ -170,7 +169,6 @@ export const PUT = async (req: NextRequest) => {
         id: data.id,
       },
       data: {
-        slug: data.title.toLowerCase().replace(/ /g, "-") + "-" + uuidv4(),
         title: data.title,
         subTitle: data.subTitle,
         tag: data.tag,

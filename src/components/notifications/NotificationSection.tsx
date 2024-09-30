@@ -103,9 +103,9 @@ export default function NotificationSection() {
     };
   }, [loader, isPending, hasMore]);
 
-  const handleItemClick = (id: string, actionType: string, slug: string) => {
+  const handleItemClick = (id: string, actionType: string, userName: string, postId: string) => {
     const redirectAddress =
-      actionType === "FOLLOW" ? `${BASE_URL}/author/${slug}` : `${BASE_URL}/article/${slug}`;
+      actionType === "FOLLOW" ? `${BASE_URL}/author/${userName}` : `${BASE_URL}/article/${postId}`;
     setOpen(false);
     const currentNotification = notifications.find((notification) => notification?.id === id);
 
@@ -153,8 +153,9 @@ export default function NotificationSection() {
                     onClick={() =>
                       handleItemClick(
                         notification?.id as string,
+                        notification?.post?.id as string,
                         notification?.type as string,
-                        notification?.post?.slug as string,
+                        notification?.user?.username as string,
                       )
                     }
                     className="cursor-pointer pl-0"
@@ -163,7 +164,6 @@ export default function NotificationSection() {
                   >
                     <NotificationText
                       id={notification?.id}
-                      slug={notification?.post?.slug}
                       read={notification?.read}
                       userImage={notification?.user?.imageUrl}
                       userName={notification?.user?.username}

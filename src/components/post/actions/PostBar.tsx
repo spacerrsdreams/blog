@@ -13,11 +13,7 @@ import CommentSheet from "@/components/post/comment/CommentSheet";
 import { usePostContext } from "@/components/post/context/PostContext";
 import { Icons } from "@/components/shared/Icons";
 
-type Props = {
-  slug: string;
-};
-
-export default function PostBar({ slug }: Props) {
+export default function PostBar() {
   const {
     title,
     subTitle,
@@ -75,7 +71,6 @@ export default function PostBar({ slug }: Props) {
             <BookmarkButton fetchBookmarkState isBookmarked={isBookmarked} postId={postId} />
             <MoreActionsButton
               isLikedByUser={isLikedByUser}
-              slug={slug}
               authorId={author?.id}
               postId={postId}
               onUnlike={() => {

@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const post = await database.posts.findUnique({
     where: {
-      slug: slug,
+      id: slug,
     },
   });
 
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export async function generateStaticParams() {
   const posts = await database.posts.findMany({
     select: {
-      slug: true,
+      id: true,
     },
   });
 
@@ -49,7 +49,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   const post = await database.posts.findUnique({
     where: {
-      slug: slug,
+      id: slug,
     },
 
     include: {
@@ -88,7 +88,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
         <div className="w-full max-w-full py-2 md:max-w-[860px]">
           <Post
             author={post.author}
-            slug={post.slug}
             articleId={post.id}
             viewCount={post.viewCount}
             title={post.title}

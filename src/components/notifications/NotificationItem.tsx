@@ -11,7 +11,6 @@ interface Props {
   userImage: string | undefined;
   actionType: NotificationType | undefined;
   createdAt: Date | undefined;
-  slug: string | undefined;
   read: boolean | undefined;
 }
 export function NotificationText({

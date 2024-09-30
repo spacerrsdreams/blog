@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const post = await database.posts.findUnique({
     where: {
-      slug: slug,
+      id: slug,
     },
   });
 

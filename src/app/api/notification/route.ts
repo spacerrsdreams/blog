@@ -32,7 +32,7 @@ export const GET = async (req: NextRequest) => {
         },
         post: {
           select: {
-            slug: true,
+            id: true,
           },
         },
       },
