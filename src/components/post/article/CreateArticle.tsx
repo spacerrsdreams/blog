@@ -18,7 +18,6 @@ import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import type { Value } from "react-quill";
 
-import { ROUTES } from "@/utils/routes";
 import { useUploadImage } from "@/services/aws";
 import { useCreateArticle } from "@/services/post/article";
 import { CreateArticleRequestSchema, type CreateArticleRequestPayload } from "@/services/types";
@@ -44,6 +43,7 @@ export default function CreateArticle() {
   const navigate = useRouter();
   const [publishText, setPublishText] = useState("Publish Article");
   const [published, setPublished] = useState(false);
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   const form = useForm<CreateArticleRequestPayload>({
     resolver: zodResolver(CreateArticleRequestSchema),
@@ -59,7 +59,7 @@ export default function CreateArticle() {
 
   const onSubmit = (values: CreateArticleRequestPayload) => {
     createArticleAsync(values)
-      .then(() => {
+      .then((data) => {
         toast({
           title: "Success",
           description: "Article published successfully.",
@@ -68,7 +68,7 @@ export default function CreateArticle() {
         setPublishText("Article has published!");
         setPublished(true);
         setTimeout(() => {
-          navigate.push(ROUTES.root);
+          navigate.push(`${BASE_URL}/article/${data.data.id}`);
         }, 2000);
       })
       .catch((e) => {
