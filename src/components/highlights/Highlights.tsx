@@ -1,15 +1,19 @@
+import { Prisma } from "@prisma/client"; // Ensure Prisma types are imported if needed
+
 import { database } from "@/lib/prisma";
 import { type Highlight } from "@/services/types";
 import UserHighlight from "@/components/highlights/UserHighlight";
 
 export default async function Highlights() {
-  const posts = await database.$queryRaw<Highlight[] | undefined>`
-    SELECT DISTINCT ON (p."authorId") p.*,u.first_name,u.last_name,u.image_url
-    FROM posts p
-    INNER JOIN users u ON u.id = p."authorId"
-    ORDER BY p."authorId", p."likeCount" DESC
-    LIMIT 3;
-  `;
+  const topPostsByAuthorsQuery: Prisma.Sql = Prisma.sql`
+  SELECT DISTINCT ON (p."authorId") p.*, u.first_name, u.last_name, u.image_url
+  FROM posts p
+  INNER JOIN users u ON u.id = p."authorId"
+  ORDER BY p."authorId", p."likeCount" DESC
+  LIMIT 3;
+`;
+
+  const posts = await database.$queryRaw<Highlight[] | undefined>(topPostsByAuthorsQuery);
 
   return (
     <div className="flex flex-col gap-12">
