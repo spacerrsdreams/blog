@@ -1,5 +1,5 @@
 import { database } from "@/lib/prisma";
-import { topPostsByAuthorsQuery } from "@/services/post/article";
+import { topPostsByAuthorsQuery } from "@/services/post/topPosts";
 import { type Highlight } from "@/services/types";
 import UserHighlight from "@/components/highlights/UserHighlight";
 

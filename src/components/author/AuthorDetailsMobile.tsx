@@ -17,10 +17,6 @@ export default function AuthorDetailsMobile({ profileImageSrc, authorName }: Pro
       />
       <div className="space-y-2">
         <h1 className="font-semibold">{authorName}</h1>
-        <p className="text-sm text-muted-foreground">
-          Scientist | Inventor | Grandfather | Drunk | Mad Scientist | Genius | Cynic | Sociopath |
-          Narcissist | Anarchist | Father | Husband | Rick
-        </p>
         <p className="mt-2 text-sm">Posts - 32</p>
       </div>
     </div>
