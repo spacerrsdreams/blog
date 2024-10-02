@@ -36,6 +36,7 @@ export default async function Layout({
             <AuthorDetailsMobile
               authorName={`${author.firstName} ${author.lastName}.`}
               profileImageSrc={author.profileImageUrl}
+              authorId={author.id}
             />
           </div>
           <h1 className="hidden py-5 text-2xl font-bold md:block md:text-6xl">
