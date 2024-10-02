@@ -18,7 +18,6 @@ import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import type { Value } from "react-quill";
 
-import { ROUTES } from "@/utils/routes";
 import { useUploadImage } from "@/services/aws";
 import { useEditArticle } from "@/services/post/article";
 import {
@@ -65,6 +64,7 @@ export default function EditArticle(post: Props) {
   const navigate = useRouter();
   const [publishText, setPublishText] = useState("Edit Article");
   const [published, setPublished] = useState(false);
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   const form = useForm<EditArticleRequestPayload>({
     resolver: zodResolver(EditArticleFormSchema),
@@ -92,7 +92,7 @@ export default function EditArticle(post: Props) {
         setPublishText("Article has edited!");
         setPublished(true);
         setTimeout(() => {
-          navigate.push(ROUTES.root);
+          navigate.push(`${BASE_URL}/article/${post.articleId}`);
         }, 2000);
       })
       .catch((e) => {
