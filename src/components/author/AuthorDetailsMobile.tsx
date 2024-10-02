@@ -1,11 +1,23 @@
 import Image from "next/image";
 
+import { database } from "@/lib/prisma";
+
 type Props = {
   profileImageSrc: string;
   authorName: string;
+  authorId: string;
 };
 
-export default function AuthorDetailsMobile({ profileImageSrc, authorName }: Props) {
+export default async function AuthorDetailsMobile({
+  profileImageSrc,
+  authorName,
+  authorId,
+}: Props) {
+  const posts = await database.posts.findMany({
+    where: {
+      authorId,
+    },
+  });
   return (
     <div className="flex gap-3">
       <Image
@@ -17,11 +29,7 @@ export default function AuthorDetailsMobile({ profileImageSrc, authorName }: Pro
       />
       <div className="space-y-2">
         <h1 className="font-semibold">{authorName}</h1>
-        <p className="text-sm text-muted-foreground">
-          Scientist | Inventor | Grandfather | Drunk | Mad Scientist | Genius | Cynic | Sociopath |
-          Narcissist | Anarchist | Father | Husband | Rick
-        </p>
-        <p className="mt-2 text-sm">Posts - 32</p>
+        <p className="mt-2 text-sm">Created {posts.length} Posts</p>
       </div>
     </div>
   );
